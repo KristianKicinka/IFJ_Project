@@ -1,0 +1,18 @@
+#ifndef ERROR_H
+#define ERROR_H
+
+typedef enum {
+    SCANNER_ANALYSIS_FAIL,
+    SCANNER_ANALYSIS_SUCCESS,
+    SYNTAX_ANALYSIS_FAIL,
+    SYNTAX_ANALYSIS_SUCCESS,
+    SEMANTIC_ANALYSIS_UNDEF_VAR,
+    SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE,
+    SEMANTIC_ANALYSIS_FAIL,
+    INTERNAL_FAILATURE,
+
+}Error_type;
+
+void process_error(Error_type *err_type);
+
+#endif // !ERROR_H
