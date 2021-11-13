@@ -1,8 +1,8 @@
 CC=gcc
 CFLAGS=-Wall -std=c11 -pedantic -lm
-FILES=custom_string_test.c ../custom_string.c 
+FILES=custom_string_test.c ../custom_string.c ../stack.c stack_test.c
 
-.PHONY: test-string clean
+.PHONY: test-string test-stack clean
 
 
 # List of tests
@@ -10,12 +10,18 @@ FILES=custom_string_test.c ../custom_string.c
 test-string: $(FILES)
 	$(CC) $(CFLAGS) -o $@ $(FILES)
 
+test-stack: $(FILES)
+	$(CC) $(CFLAGS) -o $@ $(FILES)
 # Calling tests 
 
 test_string: test-string
 	@./test-string
 	@rm -f test-string
 
+test_stack: test-stack
+	@./test-stack
+	@rm -f test-stack	
+
 clean:
-	@rm -f test-string
+	@rm -f test-string test-stack
 
