@@ -18,7 +18,7 @@ typedef struct Stack_symmbol_t{
     Stack_t *top; 
 }Stack_symbol_t;
 
-bool Stack_Init(Stack_symbol_t *);
+void Stack_Init(Stack_symbol_t *);
 
 bool Stack_Push(Stack_symbol_t *, char, char);
 
@@ -28,12 +28,14 @@ char Stack_Top_Symbol(Stack_symbol_t *);
 
 char Stack_Top_Symbol_Type(Stack_symbol_t *);
 
-bool Stack_Pop_Many(Stack_symbol_t *, int count);
+void Stack_Pop_Many(Stack_symbol_t *, int count);
 
 Stack_t *Stack_Top(Stack_symbol_t *);
 
 bool Stack_Is_Empty(Stack_symbol_t *);
 
 bool Stack_Is_Full(Stack_symbol_t *);
+
+bool Stack_Free(Stack_symbol_t *stack);
 
 #endif
