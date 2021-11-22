@@ -9,7 +9,7 @@
 
 typedef struct Stack_t{
     char stack_symbol;
-    char stack_symbol_type;
+    bool isterminal;
     struct Stack_t *next;
     //typ (ne)terminalu na vrchu
 }Stack_t;
@@ -20,7 +20,7 @@ typedef struct Stack_symmbol_t{
 
 void Stack_Init(Stack_symbol_t *);
 
-bool Stack_Push(Stack_symbol_t *, char, char);
+bool Stack_Push(Stack_symbol_t *, char, bool);
 
 bool Stack_Pop(Stack_symbol_t *);
 
