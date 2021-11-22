@@ -35,10 +35,16 @@ typedef enum{
 
    // Special symbols
 
-   TYPE_SEMICOLON,                  // [ ; ]
-   TYPE_RIGHT_BRACKET,              // [ ) ]
-   TYPE_LEFT_BRACKET,               // [ ( ]
-   TYPE_COMMA                       // [ , ]
+   TYPE_SEMICOLON,                        // [ ; ]
+   TYPE_RIGHT_ROUND_BRACKET,              // [ ) ]
+   TYPE_LEFT_ROUND_BRACKET,               // [ ( ]
+   TYPE_COMMA,                            // [ , ]
+   TYPE_RIGHT_SQUARE_BRACKET,             // [ ] ]
+   TYPE_LEFT_SQUARE_BRACKET,              // [ [ ]
+   TYPE_RIGHT_CURLY_BRACKET,              // [ } ]
+   TYPE_LEFT_CURLY_BRACKET,               // [ { ]
+   TYPE_HASHTAG,                          // [ # ]
+
 
 }Token_type;
 
@@ -63,10 +69,10 @@ typedef enum{
  
 typedef union{
    Custom_string *custom_string;
-   unsigned int integer_value;
-   unsigned double double_value;
    Key_word key_word;
-
+   int integer_value;
+   double double_value;
+   
 }Token_info;
  
 typedef struct token_t {
