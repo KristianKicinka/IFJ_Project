@@ -4,7 +4,7 @@
 #include <string.h>
 #include "custom_string.h"
 
-#define CUSTOM_STRING_DEF_LEN 8
+//#define CUSTOM_STRING_DEF_LEN 8
 
 /**
  * @brief Funkcia inicializuje custom string
@@ -15,17 +15,19 @@
  */
 
 bool custom_string_init(Custom_string *str){
+
+    int length = 0;
+    int memory = 1; 
     
-    char *new_string = (char *) malloc(sizeof(char)*(CUSTOM_STRING_DEF_LEN));
+    char *new_string = (char *) malloc(sizeof(char)*(memory));
     if(new_string == NULL){
-        free(new_string);
         return false;
     }
         
     str->string_value = new_string;
-    str->length = 0;
+    str->length = length;
     str->string_value[str->length] = '\0';
-    str->size_of_allocated_memory = CUSTOM_STRING_DEF_LEN;
+    str->size_of_allocated_memory = memory;
 
     return true;
 }
@@ -41,21 +43,24 @@ bool custom_string_init(Custom_string *str){
 
 bool custom_string_add_character(Custom_string *str, char character){
 
+
     if(str->size_of_allocated_memory <= str->length + 1){
+
         char *str_tmp;
-        str_tmp = (char *) realloc(str->string_value,(str->size_of_allocated_memory + CUSTOM_STRING_DEF_LEN) * sizeof(char));
+        str_tmp = (char *) realloc(str->string_value,(str->size_of_allocated_memory + 2) * sizeof(char));
 
         if(str_tmp == NULL){
-            free(str->string_value);
             return false;
         }
 
-        str->size_of_allocated_memory = str->size_of_allocated_memory + CUSTOM_STRING_DEF_LEN;
+        str->string_value = str_tmp;
+        str->size_of_allocated_memory = str->size_of_allocated_memory + 2 ;
     }
 
     str->string_value[str->length] = character;
-    str->string_value[str->length + 1 ] = '\0';
     str->length++;
+    str->string_value[str->length] = '\0';
+    
 
     return true;
 }
@@ -73,17 +78,17 @@ bool custom_string_add_another_string(Custom_string *str, char *str_to_add){
 
     int to_add_length = strlen(str_to_add);
     int length_after_add_string = str->length + to_add_length;
-    int memory_after_add_string = length_after_add_string + 1;
+    int memory_after_add_string = length_after_add_string + 2;
     
     if(str->size_of_allocated_memory <= memory_after_add_string ){
 
         char *str_tmp;
-        str_tmp = (char *) realloc(str->string_value,(str->size_of_allocated_memory + memory_after_add_string ) * sizeof(char));
-
+        str_tmp = (char *) realloc(str->string_value,( memory_after_add_string ) * sizeof(char));
+    
         if(str_tmp == NULL){
-            free(str->string_value);
             return false;
         }
+        str->string_value = str_tmp;
         str->size_of_allocated_memory = memory_after_add_string;
     }
 
@@ -111,12 +116,12 @@ bool custom_string_copy_string(Custom_string *source, Custom_string *destination
     if(destination->size_of_allocated_memory <= new_dest_memory ){
 
         char *str_tmp;
-        str_tmp = (char *) realloc(destination->string_value,(destination->size_of_allocated_memory + new_dest_memory ) * sizeof(char));
+        str_tmp = (char *) realloc(destination->string_value,( new_dest_memory ) * sizeof(char));
 
         if(str_tmp == NULL){
-            free(destination->string_value);
             return false;
         }
+        destination->string_value = str_tmp;
         destination->size_of_allocated_memory = new_dest_memory;
     }
 
