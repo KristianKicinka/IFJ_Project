@@ -457,7 +457,7 @@ int generate_token(Token *token, Custom_string *string){
                 
                 break;
             case STATE_ESC_SEQ_SLASH_N:
-                if()
+                if() //TODO
                 break;
 
             case STATE_ESC_SEQ_FINAL:
@@ -489,6 +489,7 @@ int generate_token(Token *token, Custom_string *string){
             case STATE_LINE_COMMENTARY_F:
 
                 if(current_charcter == '\n' || current_charcter == EOF){
+                    token->token_info.row_number++;
                     current_state = STATE_START_F;
                     ungetc(current_charcter,stdin);
                 }else if (current_charcter == '['){

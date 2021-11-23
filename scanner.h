@@ -41,16 +41,16 @@ typedef enum{
 
 typedef enum{
 
-   TYPE_IDENTIFICATOR_FUNCTION,
-   TYPE_IDENTIFICATOR_VARIABLE,
-   TYPE_INT_NUMBER,
+   TYPE_IDENTIFICATOR_FUNCTION = 21,
+   TYPE_IDENTIFICATOR_VARIABLE = 20,
+   TYPE_INT_NUMBER = 22,
    TYPE_DOUBLE_NUMBER,
-   TYPE_STRING,
+   TYPE_STRING = 23,
    TYPE_UNDEFINED,
 
    // Logical operators
 
-   TYPE_EKV,                        // [ == ]
+   TYPE_EKV = 18,                        // [ == ]
    TYPE_NEKV,                       // [ != ]
    TYPE_LTHEN,                      // [ < ]
    TYPE_GTHEN,                      // [ > ]
@@ -71,36 +71,36 @@ typedef enum{
 
    // Special symbols
 
-   TYPE_SEMICOLON,                        // [ ; ]
-   TYPE_RIGHT_ROUND_BRACKET,              // [ ) ]
-   TYPE_LEFT_ROUND_BRACKET,               // [ ( ]
-   TYPE_COMMA,                            // [ , ]
+   TYPE_SEMICOLON = 13,                        // [ ; ]
+   TYPE_RIGHT_ROUND_BRACKET = 14,              // [ ) ]
+   TYPE_LEFT_ROUND_BRACKET = 15,               // [ ( ]
+   TYPE_COMMA = 16,                            // [ , ]
    TYPE_RIGHT_SQUARE_BRACKET,             // [ ] ]
    TYPE_LEFT_SQUARE_BRACKET,              // [ [ ]
    TYPE_RIGHT_CURLY_BRACKET,              // [ } ]
    TYPE_LEFT_CURLY_BRACKET,               // [ { ]
    TYPE_HASHTAG,                          // [ # ]
-   TYPE_COLON,                            // [ : ]
+   TYPE_COLON = 17,                            // [ : ]
    TYPE_DOT,                              // [ . ]
    TYPE_ASSIGN,                           // [ = ]
 
    // KEYWORDS
-   TYPE_KW_EOF,
-   TYPE_KW_DO,
-   TYPE_KW_ELSE,
-   TYPE_KW_END,
-   TYPE_KW_FUNCTION,
-   TYPE_KW_GLOBAL,
-   TYPE_KW_IF,
+   TYPE_KW_EOF = 19,
+   TYPE_KW_DO = 1,
+   TYPE_KW_ELSE = 2,
+   TYPE_KW_END = 3,
+   TYPE_KW_FUNCTION = 4,
+   TYPE_KW_GLOBAL = 5,
+   TYPE_KW_IF = 6,
    TYPE_KW_INTEGER,
-   TYPE_KW_LOCAL,
-   TYPE_KW_NIL,
-   TYPE_KW_NUMBER,
-   TYPE_KW_REQUIRE,
-   TYPE_KW_RETURN,
+   TYPE_KW_LOCAL = 7,
+   TYPE_KW_NIL = 8,
+   TYPE_KW_NUMBER = 9,
+   TYPE_KW_REQUIRE = 0,
+   TYPE_KW_RETURN = 10,
    TYPE_KW_STRING,
-   TYPE_KW_THEN,
-   TYPE_KW_WHILE
+   TYPE_KW_THEN = 11,
+   TYPE_KW_WHILE = 12
 
 }Token_type;
 
