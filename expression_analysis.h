@@ -1,0 +1,6 @@
+#ifndef EXPRESSION_ANALYSIS
+#define EXPRESSION_ANALYSIS
+
+//stuff
+
+#endif // !EXPRESSION_ANALYSIS

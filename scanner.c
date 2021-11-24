@@ -121,6 +121,7 @@ int generate_token(Token *token, Custom_string *string){
     int current_state = SCANNER_START;
     char *ptr;
     bool is_double = false;
+    char escape_numbers[4] = {0,0,0};
 
     if(custom_string_init(tmp_str) == 0){
         custom_string_free_memory(tmp_str);
@@ -441,7 +442,7 @@ int generate_token(Token *token, Custom_string *string){
                     current_state = STATE_ESC_SEQ_FINAL;
                 }else if(current_character == '\\' ){
                     current_state = STATE_ESC_SEQ_SLASH_N;
-                }else if(current_state < 32 || current_state == '#' || current_state == EOF){
+                }else if(current_charcter < 32 || current_charcter == '#' || current_charcter == EOF){
                     ungetc(current_charcter,stdin);
                     custom_string_free_memory(tmp_str);
                     return process_error(SCANNER_ANALYSIS_FAIL);
@@ -457,7 +458,14 @@ int generate_token(Token *token, Custom_string *string){
                 
                 break;
             case STATE_ESC_SEQ_SLASH_N:
-                if() //TODO
+                if(current_charcter == 'a' ){
+                    int error = custom_string_add_character(tmp_str,'\a');
+                    if(error == 0){
+                        custom_string_free_memory(tmp_str);
+                        return process_error(INTERNAL_FAILATURE);
+                    }
+                    current_state = STATE_START_F;
+                } 
                 break;
 
             case STATE_ESC_SEQ_FINAL:
@@ -491,7 +499,7 @@ int generate_token(Token *token, Custom_string *string){
                 if(current_charcter == '\n' || current_charcter == EOF){
                     token->token_info.row_number++;
                     current_state = STATE_START_F;
-                    ungetc(current_charcter,stdin);
+                    //ungetc(current_charcter,stdin);
                 }else if (current_charcter == '['){
                     current_state = STATE_BLOCK_COMMENT_N;
                 }else{
@@ -506,8 +514,11 @@ int generate_token(Token *token, Custom_string *string){
                 }else if(current_charcter == EOF){
 
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_FAIL);
+                    return process_error(SCANNER_ANALYSIS_SUCCESS);
 
+                }else if(current_charcter == '\n'){
+                    token->token_info.row_number++;
+                    current_state = STATE_START_F;
                 }else{
                     current_state = STATE_LINE_COMMENTARY_F;
                 }
