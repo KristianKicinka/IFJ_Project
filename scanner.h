@@ -34,7 +34,8 @@ typedef enum{
    STATE_ESC_SEQ_SLASH_N = 125,
    STATE_ESC_SEQ_NUMBER_1_N = 126,
    STATE_ESC_SEQ_NUMBER_2_N = 127,
-   STATE_ESC_SEQ_FINAL = 128
+   STATE_ESC_SEQ_FINAL = 128,
+   STATE_ESC_SEQ_WHITE = 129
 
    
 }Fsm_states;
@@ -115,13 +116,15 @@ typedef struct token_t {
 
 
 
-void process_identificator(Custom_string *string, Token *token, char character);
+int process_identificator(Custom_string *string, Token *token, char character);
 
-void process_double_value(Custom_string *string, Token *token);
+int process_double_value(Custom_string *string, Token *token);
 
-void process_integer_value(Custom_string *string, Token *token);
+int process_integer_value(Custom_string *string, Token *token);
 
 int generate_token(Token *token, Custom_string *string);
+
+void init_token(Token *token);
 
 #endif // !SCANNER_H
 

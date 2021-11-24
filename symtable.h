@@ -29,6 +29,7 @@ typedef struct symbol_table_symbol {
     Global_var global_var;
     Defined_function defined_function;
     // add parameters (Parameters *parameters)
+    
 
 }table_symbol_t;
 
