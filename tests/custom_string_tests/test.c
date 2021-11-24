@@ -1,5 +1,5 @@
 
-#include "../custom_string.h"
+#include "../../custom_string.h"
 #include <stdio.h>
 
 void print_string(Custom_string *str);

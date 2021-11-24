@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "error.h"
 
-int process_error(Error_type *err_type){
+int process_error(Error_type err_type){
 
     if(err_type == SCANNER_ANALYSIS_FAIL){
         return 1;
