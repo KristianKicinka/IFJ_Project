@@ -40,67 +40,63 @@ typedef enum{
 }Fsm_states;
 
 typedef enum{
-
-   TYPE_IDENTIFICATOR_FUNCTION = 21,
-   TYPE_IDENTIFICATOR_VARIABLE = 20,
-   TYPE_INT_NUMBER = 22,
-   TYPE_DOUBLE_NUMBER,
-   TYPE_STRING = 23,
-   TYPE_UNDEFINED,
-
-   // Logical operators
-
-   TYPE_EKV = 18,                        // [ == ]
-   TYPE_NEKV,                       // [ != ]
-   TYPE_LTHEN,                      // [ < ]
-   TYPE_GTHEN,                      // [ > ]
-   TYPE_GEKV,                       // [ >= ]
-   TYPE_LEKV,                       // [ <= ]
-
-   // Aritmetic operators
-
-   TYPE_PLUS,                       // [ + ]
-   TYPE_MINUS,                      // [ - ]
-   TYPE_MULTIPLICATE,               // [ * ]
-   TYPE_DIVIDE,                     // [ / ]
-   TYPE_DIVIDE_INT,                 // [ // ]
-
-   // String operations
-
-   TYPE_STRING_CONCAT,              // [ .. ]
-
-   // Special symbols
-
-   TYPE_SEMICOLON = 13,                        // [ ; ]
-   TYPE_RIGHT_ROUND_BRACKET = 14,              // [ ) ]
-   TYPE_LEFT_ROUND_BRACKET = 15,               // [ ( ]
-   TYPE_COMMA = 16,                            // [ , ]
-   TYPE_RIGHT_SQUARE_BRACKET,             // [ ] ]
-   TYPE_LEFT_SQUARE_BRACKET,              // [ [ ]
-   TYPE_RIGHT_CURLY_BRACKET,              // [ } ]
-   TYPE_LEFT_CURLY_BRACKET,               // [ { ]
-   TYPE_HASHTAG,                          // [ # ]
-   TYPE_COLON = 17,                            // [ : ]
-   TYPE_DOT,                              // [ . ]
-   TYPE_ASSIGN,                           // [ = ]
-
    // KEYWORDS
-   TYPE_KW_EOF = 19,
+   TYPE_KW_REQUIRE = 0,
    TYPE_KW_DO = 1,
    TYPE_KW_ELSE = 2,
    TYPE_KW_END = 3,
    TYPE_KW_FUNCTION = 4,
    TYPE_KW_GLOBAL = 5,
    TYPE_KW_IF = 6,
-   TYPE_KW_INTEGER,
    TYPE_KW_LOCAL = 7,
    TYPE_KW_NIL = 8,
    TYPE_KW_NUMBER = 9,
-   TYPE_KW_REQUIRE = 0,
    TYPE_KW_RETURN = 10,
-   TYPE_KW_STRING,
    TYPE_KW_THEN = 11,
-   TYPE_KW_WHILE = 12
+   TYPE_KW_WHILE = 12,
+   TYPE_SEMICOLON = 13,                        // [ ; ]
+   TYPE_RIGHT_ROUND_BRACKET = 14,              // [ ) ]
+   TYPE_LEFT_ROUND_BRACKET = 15,               // [ ( ]
+   TYPE_COMMA = 16,                            // [ , ]
+   TYPE_COLON = 17,                            // [ : ]
+   TYPE_EKV = 18,                              // [ == ]
+   TYPE_KW_EOF = 19,                           
+   TYPE_IDENTIFICATOR_VARIABLE = 20,
+   TYPE_IDENTIFICATOR_FUNCTION = 21,
+   //KW
+   TYPE_KW_INTEGER = 22,
+   TYPE_KW_STRING = 23,                //string type string
+   
+   //CONST
+   TYPE_STRING = 24,                   //string const "abcd"
+   TYPE_INT_NUMBER = 25,
+   TYPE_DOUBLE_NUMBER = 26,
+   // Aritmetic operators
+   TYPE_PLUS = 27,                       // [ + ]
+   TYPE_MINUS = 28,                      // [ - ]
+   TYPE_MULTIPLICATE = 29,               // [ * ]
+   TYPE_DIVIDE = 30,                     // [ / ]
+   TYPE_DIVIDE_INT = 31,                 // [ // ]
+   // String operations
+   TYPE_STRING_CONCAT = 32,              // [ .. ]
+   // Logical operators
+   TYPE_LTHEN = 33,                      // [ < ]
+   TYPE_LEKV = 34,                       // [ <= ]
+   TYPE_GTHEN = 35,                      // [ > ]
+   TYPE_GEKV = 36,                       // [ >= ]
+   TYPE_NEKV = 37,                       // [ != ]
+   //END of Terminals = total: 38
+   
+   // Special symbols
+   TYPE_UNDEFINED,
+   TYPE_RIGHT_SQUARE_BRACKET,             // [ ] ]
+   TYPE_LEFT_SQUARE_BRACKET,              // [ [ ]
+   TYPE_RIGHT_CURLY_BRACKET,              // [ } ]
+   TYPE_LEFT_CURLY_BRACKET,               // [ { ]
+   TYPE_HASHTAG,                          // [ # ]
+ 
+   TYPE_DOT,                              // [ . ]
+   TYPE_ASSIGN                            // [ = ]
 
 }Token_type;
 

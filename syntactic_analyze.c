@@ -1,6 +1,6 @@
 #include <stdlib.h>
-#include "syntactic_analyze.h"
-#include "scanner.h"
+//#include "syntactic_analyze.h"
+//#include "scanner.h"
 #include "LL_table.h"
 
 

@@ -3,6 +3,8 @@
     "files.associations": {
         "parser.h": "c",
         "syntactic_analyze.h": "c",
-        "stack.h": "c"
+        "stack.h": "c",
+        "stdlib.h": "c",
+        "scanner.h": "c"
     }
 }
