@@ -2,6 +2,7 @@
 #define SYMBOL_TABLE_H
 
 #include "scanner.h"
+#include "funct_params_list.h"
 
 #define SYMBOL_TABLE_SIZE 30000 
 
@@ -22,21 +23,21 @@ typedef enum {
     IS_NOT_DEFINED
 }Defined_function;
 
-typedef struct symbol_table_symbol {
+typedef struct symbol_table_data {
 
     char *identificator;
+    bool is_function;
     Symbol_type type_of_symbol;
     Global_var global_var;
     Defined_function defined_function;
-    // add parameters (Parameters *parameters)
-    
+    Parameters_list *list_of_parameters;
 
-}table_symbol_t;
+}table_data;
 
 
 typedef struct symbol_table_item {
     char *key;
-    table_symbol_t data;
+    table_data data;
     struct table_item_t *next;
 
 }table_item_t;
