@@ -1,3 +1,12 @@
+/**
+ * 
+ * Project : Implementace překladače imperativního jazyka IFJ21.
+ * 
+ * @file custom_string.c 
+ * @author Kristián Kičinka (xkicin02)
+ * @brief  Vlastná verzia stringu (rozhranie)
+ * 
+ */
 
 #ifndef CUSTOM_STRING_H
 #define CUSTOM_STRING_H

@@ -1,3 +1,13 @@
+/**
+ * 
+ * Project : Implementace překladače imperativního jazyka IFJ21.
+ * 
+ * @file funct_params_list.h 
+ * @author Kristián Kičinka (xkicin02)
+ * @brief  Spracovávanie parametrov funkcií (rozhranie)
+ * 
+ */
+
 #ifndef FUNCT_PARAMS_LIST_H
 #define FUNCT_PARAMS_LIST_H
 

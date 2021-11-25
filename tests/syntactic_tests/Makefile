@@ -1,27 +1,32 @@
 CC=gcc
 CFLAGS=-Wall -std=c11 -pedantic -lm  -ggdb3
-FILES=custom_string_test.c ../custom_string.c #../stack.c stack_test.c
+FILES= ../../LL_table.h ../../LL_table.c
 
-.PHONY: test-string test-stack clean
+.PHONY: test-synt clean
 
 
 # List of tests
 
-test-string: $(FILES)
+test-synt: $(FILES)
 	$(CC) $(CFLAGS) -o $@ $(FILES)
 
 #test-stack: $(FILES)
 #	$(CC) $(CFLAGS) -o $@ $(FILES)
 # Calling tests 
 
-test_string: test-string
-	@./test-string
-	@rm -f test-string
+#test_string: test-string
+#	@./test-string
+#	@rm -f test-string
 
 #test_stack: test-stack
 #	@./test-stack
 #	@rm -f test-stack	
 
+syntactic_analyze_test: test-synt
+	@./test-synt
+	@rm -f test-synt
+
+
 clean:
-	@rm -f test-string test-stack
+	@rm -f test-synt
 

@@ -1,4 +1,12 @@
-// tests for lex_analysis
+/**
+ * 
+ * Project : Implementace překladače imperativního jazyka IFJ21.
+ * 
+ * @file test.c 
+ * @author Kristián Kičinka (xkicin02)
+ * @brief  Testovací skript lexikalnej analýzy 
+ * 
+ */
 
 
 #include "../../scanner.h"

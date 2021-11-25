@@ -1,3 +1,13 @@
+/**
+ * 
+ * Project : Implementace překladače imperativního jazyka IFJ21.
+ * 
+ * @file scanner.h 
+ * @author Kristián Kičinka (xkicin02)
+ * @brief  Lexikálna analýza (rozhranie)
+ * 
+ */
+
 #ifndef SCANNER_H
 #define SCANNER_H 
 
@@ -94,6 +104,7 @@ typedef enum{
    TYPE_GTHEN = 35,                      // [ > ]
    TYPE_GEKV = 36,                       // [ >= ]
    TYPE_NEKV = 37,                       // [ != ]
+   TYPE_ASSIGN = 38,                     // [ = ]
 
    //END of Terminals = total: 38
    
@@ -106,7 +117,7 @@ typedef enum{
    TYPE_HASHTAG,                          // [ # ]
  
    TYPE_DOT,                              // [ . ]
-   TYPE_ASSIGN                            // [ = ]
+  
 
 }Token_type;
 

@@ -1,3 +1,13 @@
+/**
+ * 
+ * Project : Implementace překladače imperativního jazyka IFJ21.
+ * 
+ * @file error.h 
+ * @author Kristián Kičinka (xkicin02)
+ * @brief  Spracovávanie chybových stavov (rozhranie)
+ * 
+ */
+
 #ifndef ERROR_H
 #define ERROR_H
 
