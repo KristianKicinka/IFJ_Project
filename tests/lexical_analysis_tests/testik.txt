@@ -1,3 +1,3 @@
-andrej = 15
+andrej = "Ahoj\n\"Sve'te \\\034"
 --if statement
 return

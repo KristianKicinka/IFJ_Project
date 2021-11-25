@@ -1,3 +1,14 @@
+/**
+ * 
+ * Project : Implementace překladače imperativního jazyka IFJ21.
+ * 
+ * @file symtable.h 
+ * @author Kristián Kičinka (xkicin02)
+ * @brief  Tybuľka symbolov (rozhranie)
+ * 
+ */
+
+
 #ifndef SYMBOL_TABLE_H
 #define SYMBOL_TABLE_H
 
