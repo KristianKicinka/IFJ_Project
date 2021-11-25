@@ -3,7 +3,10 @@
 
 #include <stdio.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include "custom_string.h"
+
+#define COUNT_OF_KEYWORDS 15
 
 typedef enum{
    STATE_START_F = 100,
@@ -105,13 +108,14 @@ typedef union{
    Custom_string *custom_string;
    int integer_value;
    double double_value;
-   int row_number;
-   
+
 }Token_info;
  
 typedef struct token_t {
    Token_type type_of_token;
    Token_info token_info;
+   int row_number;
+   bool has_str_val;
 }Token;
 
 
@@ -124,7 +128,6 @@ int process_integer_value(Custom_string *string, Token *token);
 
 int generate_token(Token *token, Custom_string *string);
 
-void init_token(Token *token);
 
 #endif // !SCANNER_H
 
