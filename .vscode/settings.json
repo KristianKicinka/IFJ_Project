@@ -6,5 +6,6 @@
         "stack.h": "c",
         "stdlib.h": "c",
         "scanner.h": "c"
-    }
+    },
+    "C_Cpp.dimInactiveRegions": false
 }
