@@ -32,7 +32,7 @@ typedef enum
     PA, // < PUSH ADD
     R,  // > REDUCE
     P,  // = PUSH
-    E   // * ERROR
+    E,   // * ERROR
     U   //   UNTIL
 } PSA_sign;
 
