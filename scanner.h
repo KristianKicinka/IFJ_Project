@@ -44,6 +44,7 @@ typedef enum{
 }Fsm_states;
 
 typedef enum{
+
    // KEYWORDS
    TYPE_KW_REQUIRE = 0,
    TYPE_KW_DO = 1,
@@ -67,6 +68,7 @@ typedef enum{
    TYPE_KW_EOF = 19,                           
    TYPE_IDENTIFICATOR_VARIABLE = 20,
    TYPE_IDENTIFICATOR_FUNCTION = 21,
+
    //KW
    TYPE_KW_INTEGER = 22,
    TYPE_KW_STRING = 23,                //string type string
@@ -75,20 +77,24 @@ typedef enum{
    TYPE_STRING = 24,                   //string const "abcd"
    TYPE_INT_NUMBER = 25,
    TYPE_DOUBLE_NUMBER = 26,
+
    // Aritmetic operators
    TYPE_PLUS = 27,                       // [ + ]
    TYPE_MINUS = 28,                      // [ - ]
    TYPE_MULTIPLICATE = 29,               // [ * ]
    TYPE_DIVIDE = 30,                     // [ / ]
    TYPE_DIVIDE_INT = 31,                 // [ // ]
+
    // String operations
    TYPE_STRING_CONCAT = 32,              // [ .. ]
+
    // Logical operators
    TYPE_LTHEN = 33,                      // [ < ]
    TYPE_LEKV = 34,                       // [ <= ]
    TYPE_GTHEN = 35,                      // [ > ]
    TYPE_GEKV = 36,                       // [ >= ]
    TYPE_NEKV = 37,                       // [ != ]
+
    //END of Terminals = total: 38
    
    // Special symbols
@@ -108,7 +114,6 @@ typedef union{
    Custom_string *custom_string;
    int integer_value;
    double double_value;
-
 }Token_info;
  
 typedef struct token_t {

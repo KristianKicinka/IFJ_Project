@@ -97,7 +97,6 @@ int generate_token(Token *token, Custom_string *string){
     }
 
     token->token_info.custom_string = string;
-    token->row_number = 1;
     token->has_str_val = false;
 
     Custom_string tmp_string;
@@ -426,6 +425,7 @@ int generate_token(Token *token, Custom_string *string){
                     return process_error(SCANNER_ANALYSIS_FAIL);
                 }
                 break;
+
             case STATE_NUMBER_EXPONENT_NUMBER_F:
 
                 if(isdigit(current_character)){
@@ -444,6 +444,7 @@ int generate_token(Token *token, Custom_string *string){
                     return process_double_value(tmp_str,token);
                 }
                 break;
+
             case STATE_ESCAPE_SEQ_N:
 
                 if (current_character == '"' ){
@@ -464,8 +465,8 @@ int generate_token(Token *token, Custom_string *string){
                     }
                     current_state = STATE_ESCAPE_SEQ_N;
                 }
-                
                 break;
+
             case STATE_ESC_SEQ_SLASH_N:{
                 bool error = true;
 
@@ -521,6 +522,7 @@ int generate_token(Token *token, Custom_string *string){
 
                 break;
             }
+
             case STATE_ESC_SEQ_WHITE:
                 if(isspace(current_character)){
                     current_state = STATE_ESC_SEQ_WHITE;
@@ -583,6 +585,7 @@ int generate_token(Token *token, Custom_string *string){
 
                 break;
             }
+            
             case STATE_MINUS:
 
                 if(current_character == '-'){
