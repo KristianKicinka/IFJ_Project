@@ -1,7 +1,7 @@
 #include "stack.h"
 #include "error.h"
 
-void Stack_Init(Stack_symbol_t *stack){
+void Stack_Init(Stack_symbol_t *stack){ 
 	stack->top=NULL;
 }
 
@@ -23,7 +23,7 @@ bool Stack_Push(Stack_symbol_t *stack, bool isterminal, Token_type term, nterms_
        Stack_t *new_symbol = (Stack_t*)malloc(sizeof(Stack_t));
        if(new_symbol==NULL){
           // printf("Malloc noveho itemu do stacku zlyhal\n");
-           //process_error(INTERNAL_FAILATURE));
+           process_error(INTERNAL_FAILATURE));
            return FALSE; //malloc sa nepodaril
        }
        new_symbol->term=term;

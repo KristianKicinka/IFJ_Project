@@ -110,7 +110,7 @@ int LLtable[NUMBER_OF_NTERMS][NUMBER_OF_TERMS]={
 /*code_nt*/             { SE,    SE,  SE,  EPS,    SE,      SE,    5,    9,   SE,   SE,      7,    SE,     4,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   8,     6,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},       
 /*return_nt add EPS*/   { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     24,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*check_ret_params_nt EPS?*/ { SE,    SE, EPS,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  25,    SE,    SE,   SE,        25,          25,         25,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*returns_nt   EPS?*/   { SE,    SE,  EPS,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       26,      SE,      SE,   SE,  SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*returns_nt   EPS?*/   { SE,    SE, EPS,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       26,      SE,      SE,   SE,  SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*func_call_nt */       { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  27,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*call_param_nt*/       { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,       EPS,      SE,       SE,      SE,      SE,   SE,  28,    SE,    SE,   SE,        28,          28,         28,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*call_params_nt*/      { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,       EPS,      SE,       29,      SE,      SE,   SE,  SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
@@ -133,29 +133,56 @@ int LLtable[NUMBER_OF_NTERMS][NUMBER_OF_TERMS]={
 
 };
 
-void CheckGrammar(Token token, Stack_t stack){
+int CheckGrammar(){
     
-    Token_type = stackIncdex;
-    
+    Stack_symbol_t stack; 
+    Stack_Init(&stack);
+    Stack_Push(&stack, false, NULL, NT_PROLOG); //pushnem pociatocny neterminal
+
     while(true){
+
+        Token term;
+        Token *actualterm = &term;
+
+        Custom_string my_string;
+        Custom_string *my_str = &my_string;
+
+        custom_string_init(my_str);
+
         if(!Stack_Is_Empty(&stack)){
             if(stack.top->isterminal==false){ //na vrchu staku je neterminal
-               Token_type inputIndex=generate_token()//get token
-               stackIndex=stack.top->nterm;
+               int err=generate_token(actualterm, my_str);//zoberiem token
+               Token_type inputIndex=actualterm->type_of_token;//vezmem jeho index podla enumu
+               int stackIndex=stack.top->nterm;//zoberem index ne(terminalu) na stacku
                int ruleNumber=LLtable[stackIndex][inputIndex]; //vyber pravidla
                if(ruleNumber==SE){
                    printf("Syntax error\n");
                    if(!Stack_Is_Empty(&stack)){
-                       printf("Stack: %s\n", stack.top->nterm);
+                       printf("Stack: %c\n", stack.top->nterm);
                    } 
-                return;
+                   custom_string_free_memory(my_str);
+                   return process_error(SYNTAX_ANALYSIS_FAIL);
                }else{
+                   printf("Cislo vybraneho pravidla %d \n",ruleNumber);
                    rule_t rule=RULES[ruleNumber]; //vybranie pravidla
-                   printf("%s\n", rule);
+                   Stack_Pop(&stack); //popnem neterminal z vrcholu stacku
+                   for (int i=rule.number_of_derivations-1; i>=0; i--){  //rozvinute pravidla na stack pushujem reverzne
+                       Stack_Push(&stack, rule.right_side_of_derivation->isterminal, rule.right_side_of_derivation->term, rule.right_side_of_derivation->nterm);
+                   }                
                }
-            }
-                
+            }else{ //na vrchole stacku je terminal 
+                //int err=generate_token(actualterm, my_str);//zoberiem token
+                if(actualterm->type_of_token==Stack_Top_Terminal(&stack)){ //na vrchole zasobika je terminal, na vstupe je rovnaky terminal
+                    Stack_Pop(&stack); //popujem stack
+                }else{
+                    printf("Syntax error\n");
+                    Stack_Free(&stack);
+                }
+            }    
+        }else{
+            printf("Success\n");
         }
+        custom_string_free_memory(my_str);
     }
 }
 

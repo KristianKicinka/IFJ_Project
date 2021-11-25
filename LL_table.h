@@ -4,6 +4,7 @@
 #include <stdbool.h> 
 #include "scanner.h"
 #include "stack.c"
+#include "error.h"
 #define SE -1
 #define EPS -2
 #define NUMBER_OF_RULES 70
