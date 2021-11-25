@@ -10,8 +10,9 @@ void print_token(Token *token,int i);
 int main(int argc, char const *argv[]){
 
     
+    int index = 0;
 
-    for (int i = 0; i < 5; i++){
+    while(!feof(stdin)){
 
         Token my_token;
         Token *my_tok = &my_token;
@@ -29,9 +30,10 @@ int main(int argc, char const *argv[]){
             return 1;
         }
             
-        print_token(my_tok,i);
+        print_token(my_tok,index);
 
-        custom_string_free_memory(my_str);       
+        custom_string_free_memory(my_str);
+        index++;       
     }
     
     
@@ -40,9 +42,9 @@ int main(int argc, char const *argv[]){
 }
 
 
-void print_token(Token *token, int i){
+void print_token(Token *token, int index){
     printf("######################################################\n");
-    printf("TOKEN ( %d ) VALUES \n",i);
+    printf("TOKEN ( %d ) VALUES \n",index);
     printf("Token type : %d \n",token->type_of_token);
     printf("Token value int : %d \n",(int) token->token_info.integer_value);
     printf("Token value double : %f \n",token->token_info.double_value);
