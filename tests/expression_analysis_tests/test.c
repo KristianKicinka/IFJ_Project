@@ -2,4 +2,8 @@
 #include <stdlib.h>
 #include "../../expression_analysis.h"
 
-//TODO
+int main()
+{
+    // TODO
+    return 0;
+}
