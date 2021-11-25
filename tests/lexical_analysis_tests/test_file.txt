@@ -1,2 +1,3 @@
 andrej = 10
+--[[if]]
 return
