@@ -1,3 +1,13 @@
+/**
+ * 
+ * Project : Implementace překladače imperativního jazyka IFJ21.
+ * 
+ * @file scanner.h 
+ * @author Kristián Kičinka (xkicin02)
+ * @brief  Lexikálna analýza (rozhranie)
+ * 
+ */
+
 #ifndef SCANNER_H
 #define SCANNER_H 
 

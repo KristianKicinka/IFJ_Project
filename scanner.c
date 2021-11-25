@@ -1,3 +1,13 @@
+/**
+ * 
+ * Project : Implementace překladače imperativního jazyka IFJ21.
+ * 
+ * @file scanner.c 
+ * @author Kristián Kičinka (xkicin02)
+ * @brief  Lexikálna analýza (implementácia)
+ * 
+ */
+
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
