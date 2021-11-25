@@ -1,8 +1,18 @@
+/**
+ * 
+ * Project : Implementace překladače imperativního jazyka IFJ21.
+ * 
+ * @file symtable.c 
+ * @author Kristián Kičinka (xkicin02)
+ * @brief  Tybuľka symbolov (implementácia)
+ * 
+ */
+
 #include "symtable.h"
 #include <stdlib.h>
 #include <string.h>
 
-int HT_SIZE = MAX_HT_SIZE;
+int HT_SIZE = SYMBOL_TABLE_SIZE;
 
 int get_hash(char *key) {
   int result = 1;
@@ -12,6 +22,8 @@ int get_hash(char *key) {
   }
   return (result % HT_SIZE);
 }
+
+
 
 
 

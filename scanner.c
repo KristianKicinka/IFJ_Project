@@ -1,3 +1,13 @@
+/**
+ * 
+ * Project : Implementace překladače imperativního jazyka IFJ21.
+ * 
+ * @file scanner.c 
+ * @author Kristián Kičinka (xkicin02)
+ * @brief  Lexikálna analýza (implementácia)
+ * 
+ */
+
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -457,8 +467,8 @@ int generate_token(Token *token, Custom_string *string){
                     return process_error(SCANNER_ANALYSIS_FAIL);
                 }else{
 
-                    bool error = custom_string_copy_string(tmp_str,token->token_info.custom_string);
-                    token->has_str_val = true;
+                    bool error = custom_string_add_character(tmp_str,(char) current_character);
+        
                     if(error == false){
                     custom_string_free_memory(tmp_str);
                     return process_error(INTERNAL_FAILATURE);
@@ -580,6 +590,7 @@ int generate_token(Token *token, Custom_string *string){
                 }
 
                 token->type_of_token = TYPE_STRING;
+                token->has_str_val = true;
                 custom_string_free_memory(tmp_str);
                 return process_error(SCANNER_ANALYSIS_SUCCESS);
 

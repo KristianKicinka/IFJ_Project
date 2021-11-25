@@ -32,8 +32,28 @@ typedef enum
     PA, // < PUSH ADD
     R,  // > REDUCE
     P,  // = PUSH
-    E,   // * ERROR
+    E,  // * ERROR
     U   //   UNTIL
 } PSA_sign;
+
+typedef enum
+{
+    LENG_E,        // E -> # E
+    E_MUL_E,       // E -> E * E
+    E_DIV_E,       // E -> E / E
+    E_DDIV_E,      // E -> E // E
+    E_PLUS_E,      // E -> E + E
+    E_MINUS_E,     // E -> E - E
+    E_CONC_E,      // E -> E .. E
+    E_LESS_E,      // E -> E < E
+    E_MORE_E,      // E -> E > E
+    E_LESSOE_E,    // E -> E <= E
+    E_MOREOE_E,    // E -> E >= E
+    E_EQ_E,        // E -> E = E
+    E_NOTEQ_E,     // E -> E ~= E
+    OPERAND,       // E -> i
+    LBRAC_E_RBRAC, // E -> (E)
+    INVALID        // Non existing rule
+} PSA_rules;
 
 #endif // !EXPRESSION_ANALYSIS

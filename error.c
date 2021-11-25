@@ -1,3 +1,13 @@
+/**
+ * 
+ * Project : Implementace překladače imperativního jazyka IFJ21.
+ * 
+ * @file error.c 
+ * @author Kristián Kičinka (xkicin02)
+ * @brief  Spracovávanie chybových stavov (implementácia)
+ * 
+ */
+
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
