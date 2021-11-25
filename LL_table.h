@@ -3,11 +3,12 @@
 
 #include <stdbool.h> 
 #include "scanner.h"
+#include "stack.c"
 #define SE -1
 #define EPS -2
 #define NUMBER_OF_RULES 70
-#define NUMBER_OF_TERMS 38 //45?
-#define NUMBER_OF_NTERMS 34
+#define NUMBER_OF_TERMS 40 //45?
+#define NUMBER_OF_NTERMS 36
 #define NUMBER_OF_DERIVATIONS 10
 /*
 typedef enum{
@@ -89,19 +90,19 @@ typedef enum{
     NT_TO_ASSIGN=21,
     NT_ASSIGN_VALUE=22,
     NT_ASSIGN_VALUES=23,
-    NT_TO_ASSIGN2=24,
-    NT_ASSIGN_NEW=25,
-    NT_ASSIGN=26,
-    NT_WHILE=27,
-    NT_IF=28,
-    NT_START=29,
-    NT_DOUBLE_DOT=30,
-    NT_DOUBLE_DOTS=31,
-    NT_CHECK_EOF=32,
-    NT_CODE_IF=33,
-    NT_END=34
+    NT_ASSIGN_FROM=24,
+    NT_TO_ASSIGN2=25,
+    NT_ASSIGN_NEW=26,
+    NT_ASSIGN=27,
+    NT_WHILE=28,
+    NT_IF=29,
+    NT_START=30,
+    NT_DOUBLE_DOT=31,
+    NT_DOUBLE_DOTS=32,
+    NT_CHECK_EOF=33,
+    NT_CODE_IF=34,
+    NT_END=35
    
-
 }nterms_type;
 
 typedef struct symbol_t {

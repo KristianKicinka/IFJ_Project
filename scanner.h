@@ -86,6 +86,7 @@ typedef enum{
    TYPE_GTHEN = 35,                      // [ > ]
    TYPE_GEKV = 36,                       // [ >= ]
    TYPE_NEKV = 37,                       // [ != ]
+   TYPE_ASSIGN = 38,                     // [ = ]
    //END of Terminals = total: 38
    
    // Special symbols
@@ -97,7 +98,7 @@ typedef enum{
    TYPE_HASHTAG,                          // [ # ]
  
    TYPE_DOT,                              // [ . ]
-   TYPE_ASSIGN                            // [ = ]
+  
 
 }Token_type;
 

@@ -1,19 +1,14 @@
-#include "../stack.h"
-#include "../stack.c"
+#include "../../stack.c"
+//#include "../stack.c"
 //#include <stdio.h>
 //#include <stdbool.h>
 //#include <stdlib.h>
 
-void test_stack_insert(Stack_symbol_t *stack){
+void test_stack_insert(Stack_symbol_t *stack, Token_type term, nterms_type nterm, bool isterminal){
     int success=0;
-    for (int i = 0; i < 10; i++){
-        if(i==3 || i==4){
-            Stack_Push(stack, i, 'T');
-        }else{
-            Stack_Push(stack, i, 'N');
-        }
-    }
-    printf("TEST STACK PUSH: %d\n", success);
+        Stack_Push(stack, TYPE_KW_ELSE, NULL, true);
+        Stack_Push(stack, NULL, NT_ARGUMENT, false);
+        printf("TEST STACK PUSH: %d\n", success);
 }
 
 void test_stack_print(Stack_symbol_t *stack){
@@ -29,10 +24,10 @@ void test_stack_print(Stack_symbol_t *stack){
     }else{
         printf("TEST NEUSPESNY: %d\n", success);
     }
-     }
+}
      
 void test_till_top_terminal(Stack_symbol_t *stack){
-    while(stack->top->stack_symbol_type!='T'){
+    while(stack->top->isterminal==false){
         Stack_Pop(stack);
     }
     printf("Nasiel som terminal> %d, %c\n", Stack_Top_Symbol(stack), Stack_Top_Symbol_Type(stack));

@@ -1,7 +1,7 @@
 #include "stack.h"
 #include "error.h"
 
-void Stack_Init(Stack_symbol_t *stack ){
+void Stack_Init(Stack_symbol_t *stack){
 	stack->top=NULL;
 }
 
@@ -19,15 +19,16 @@ bool Stack_Pop(Stack_symbol_t *stack){
     return FALSE; //pop sa nepodaril
 }
 
-bool Stack_Push(Stack_symbol_t *stack, char data, bool type){
+bool Stack_Push(Stack_symbol_t *stack, bool isterminal, Token_type term, nterms_type nterm){
        Stack_t *new_symbol = (Stack_t*)malloc(sizeof(Stack_t));
        if(new_symbol==NULL){
           // printf("Malloc noveho itemu do stacku zlyhal\n");
            //process_error(INTERNAL_FAILATURE));
            return FALSE; //malloc sa nepodaril
        }
-       new_symbol->stack_symbol=data;
-       new_symbol->isterminal=type;
+       new_symbol->term=term;
+       new_symbol->nterm=nterm;
+       new_symbol->isterminal=isterminal;
        new_symbol->next=stack->top;
        stack->top=new_symbol;
        return TRUE; //znak sa uspesne pushol na stack
@@ -51,17 +52,25 @@ Stack_t *Stack_Top(Stack_symbol_t *stack){
     }
 }
 
-char Stack_Top_Symbol(Stack_symbol_t *stack){
+Token_type Stack_Top_Terminal(Stack_symbol_t *stack){
     if(Stack_Is_Empty(stack)){ //zasobnik je prazdny
         //printf("STACK TOP TYPE> zasobnik je uz prazdny\n");
         return FALSE;
     }else{
-        return stack->top->stack_symbol;
-        
+        return stack->top->term;
     }
 }
 
-char Stack_Top_Symbol_Type(Stack_symbol_t *stack){
+nterms_type Stack_Top_NonTerminal(Stack_symbol_t *stack){
+    if(Stack_Is_Empty(stack)){ //zasobnik je prazdny
+        //printf("STACK TOP TYPE> zasobnik je uz prazdny\n");
+        return FALSE;
+    }else{
+        return stack->top->nterm;
+    }
+}
+
+bool Stack_Top_Symbol_Type(Stack_symbol_t *stack){
     if(Stack_Is_Empty(stack)){ //zasobnik je prazdny
         //printf("STACK TOP TYPE> zasobnik je uz prazdny\n");
         return FALSE;
