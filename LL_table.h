@@ -2,9 +2,10 @@
 #define _LL_TABLE_H
 
 #include <stdbool.h> 
-#include "scanner.h"
 #include "stack.h" //odst
+#include "scanner.h"
 #include "error.h"
+
 #define SE -1
 #define EPS -2
 #define NUMBER_OF_RULES 70

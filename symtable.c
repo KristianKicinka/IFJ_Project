@@ -50,7 +50,7 @@ table_item_t *search(table_symbol_t *table, char *key){
   return NULL;
 }
 
-void insert_symbol_variable(symbol_table_t *table, char *key , char *id, Symbol_type type, Additional_info *info){
+void insert_symbol_variable(symbol_table_t *table, char *key , char *identificator, Symbol_type type, Additional_info *info){
 
   table_item_t *new_item = malloc(sizeof(table_item_t));
   if(new_item == NULL)
@@ -65,7 +65,43 @@ void insert_symbol_variable(symbol_table_t *table, char *key , char *id, Symbol_
   
   strcpy(new_item->key,key);
 
-  //TODO
+  new_item->data.identificator = identificator;
+  new_item->data.type_of_symbol = type;
+  new_item->data.symbol_info = info;
+  new_item->data.is_function = false;
+  
+  if(found_item != NULL){
+    found_item->value = value;
+    free(new_item->key);
+    free(new_item);
+
+  }else{
+    new_item->next = (*table)[new_index];
+    (*table)[new_index] = new_item;
+  }
+
+}
+
+void insert_symbol_function(symbol_table_t *table, char *key , char *identificator, Symbol_type type, Additional_info *info, Parameters_list *parameters){
+
+  table_item_t *new_item = malloc(sizeof(table_item_t));
+  if(new_item == NULL)
+    return;
+
+  new_item->key = malloc(sizeof(char)*(strlen(key)+1));
+  if(new_item->key == NULL)
+    return;
+  
+  int new_index = get_hash(key);
+  table_item_t *found_item = ht_search(table,key);
+  
+  strcpy(new_item->key,key);
+
+  new_item->data.identificator = identificator;
+  new_item->data.type_of_symbol = type;
+  new_item->data.symbol_info = info;
+  new_item->data.is_function = true;
+  
   
   if(found_item != NULL){
     found_item->value = value;

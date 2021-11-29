@@ -1,5 +1,6 @@
 #ifndef _STACK_H
 #define _STACK_H
+
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>

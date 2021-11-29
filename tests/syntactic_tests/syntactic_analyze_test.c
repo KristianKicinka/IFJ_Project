@@ -1,12 +1,12 @@
-//#include "../syntactic_analyze.c"
-//#include "../syntactic_analyze.h"
+//#include "syntactic_analyze.c"
+#include "../../syntactic_analyze.h"
 //#include "../../LL_table.c"
-#include "../../LL_table.h"
+//#include "../../LL_table.h"
 
 int main(){
     
     while(!feof(stdin)){
-        int err=CheckGrammar()
+        int err=CheckGrammar();
     }
 
 
@@ -18,6 +18,6 @@ int main(){
     }*/
 
 
-    Stack_Free(&stack);
+    //Stack_Free(&stack);
     return 0;
 }   
