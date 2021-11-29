@@ -1,10 +1,13 @@
 //#include "../syntactic_analyze.c"
 //#include "../syntactic_analyze.h"
-#include "../../LL_table.c"
+//#include "../../LL_table.c"
+#include "../../LL_table.h"
 
 int main(){
     
-    
+    while(!feof(stdin)){
+        int err=CheckGrammar()
+    }
 
 
 

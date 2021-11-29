@@ -1,5 +1,9 @@
 #include "stack.h"
 #include "error.h"
+//#include "LL_table.h" //added
+
+//typedef struct Stack_symbol_t Stack_symbol_t;
+//typedef struct Stack_t Stack_t;
 
 void Stack_Init(Stack_symbol_t *stack){ 
 	stack->top=NULL;
@@ -23,7 +27,7 @@ bool Stack_Push(Stack_symbol_t *stack, bool isterminal, Token_type term, nterms_
        Stack_t *new_symbol = (Stack_t*)malloc(sizeof(Stack_t));
        if(new_symbol==NULL){
           // printf("Malloc noveho itemu do stacku zlyhal\n");
-           process_error(INTERNAL_FAILATURE));
+           process_error(INTERNAL_FAILATURE);
            return FALSE; //malloc sa nepodaril
        }
        new_symbol->term=term;
@@ -33,6 +37,7 @@ bool Stack_Push(Stack_symbol_t *stack, bool isterminal, Token_type term, nterms_
        stack->top=new_symbol;
        return TRUE; //znak sa uspesne pushol na stack
 }
+
 bool Stack_Is_Empty(Stack_symbol_t *stack){
     if(stack->top==NULL){
         //printf("STACK IS EMPTY> Zasobnik je prazdny\n");

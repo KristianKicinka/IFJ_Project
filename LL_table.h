@@ -3,7 +3,7 @@
 
 #include <stdbool.h> 
 #include "scanner.h"
-#include "stack.c"
+#include "stack.h" //odst
 #include "error.h"
 #define SE -1
 #define EPS -2
