@@ -1,8 +1,9 @@
 #include "../../stack.h"
 //#include "../stack.c"
-//#include <stdio.h>
-//#include <stdbool.h>
-//#include <stdlib.h>
+//#include "../../LL_table.h"
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
 
 void test_stack_insert(Stack_symbol_t *stack, Token_type term, nterms_type nterm, bool isterminal){
     int success=0;

@@ -56,7 +56,9 @@ typedef table_item_t *symbol_table_t[SYMBOL_TABLE_SIZE];
 int get_hash(char *key);
 void table_init(symbol_table_t *table);
 
-void insert_symbol_variable(symbol_table_t *table, char *key , char *id, Symbol_type type, Additional_info *info);
+void insert_symbol_variable(symbol_table_t *table, char *key , char *identificator, Symbol_type type, Additional_info *info);
+void insert_symbol_function(symbol_table_t *table, char *key , char *identificator, Symbol_type type, Additional_info *info, Parameters_list *parameters);
+
 void delete_symbol(symbol_table_t *table, char *key);
 
 table_item_t *search(table_symbol_t *table, char *key);

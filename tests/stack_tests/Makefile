@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -std=c11 -pedantic -lm  -ggdb3
-FILES= ../../stack.c stack_test.c ../../scanner.c ../../LL_table.c ../../error.c ../syntactic_tests/syntactic_analyze_test.c
+FILES= ../../stack.c stack_test.c ../../error.c  ../../LL_table.c #../syntactic_tests/syntactic_analyze_test.c
 
 .PHONY: test-stack clean
 
