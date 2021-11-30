@@ -1,4 +1,5 @@
 #include "LL_table.h"
+#include "nterms.h"
 //F - fixed
 //R - need repair 
 //C - check rule twice
@@ -133,11 +134,12 @@ int LLtable[NUMBER_OF_NTERMS][NUMBER_OF_TERMS]={
 
 };
 
-int CheckGrammar(){
     
+int CheckGrammar(){
+
     Stack_symbol_t stack; 
     Stack_Init(&stack);
-    Stack_Push(&stack, false, NULL, NT_PROLOG); //pushnem pociatocny neterminal
+    Stack_Push(&stack, false, -42, NT_PROLOG); //pushnem pociatocny neterminal
 
     while(true){
 

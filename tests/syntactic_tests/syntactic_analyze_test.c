@@ -6,7 +6,7 @@
 int main(){
     
     while(!feof(stdin)){
-        int err=CheckGrammar()
+        int err=CheckGrammar();
     }
 
 

@@ -4,7 +4,10 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "scanner.h"
-#include "LL_table.h"
+//#include "LL_table.h"
+#include "nterms.h"
+
+//typedef enum nterms_type nterms_type;
 
 #define TRUE 1
 #define FALSE 0

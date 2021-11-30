@@ -1,0 +1,45 @@
+#ifndef _NTERMS_H
+#define _NTERMS_H
+
+typedef enum{
+    //neterminaly
+    NT_PROLOG=0,
+    NT_VALUE=1,
+    NT_ASSVAL=2,
+    NT_DATA_TYPE=3,
+    NT_EXPRESSION=4,
+    NT_FUNC_DEC=5,
+    NT_PARAM=6,
+    NT_PARAMS=7,
+    NT_FUNC=8,
+    NT_ARG=9,
+    NT_ARGUMENT=10,
+    NT_RET_ARG=11,
+    NT_RET_ARGS=12,
+    NT_CODE=13,
+    NT_RETURN=14,
+    NT_CHECK_RET_PARAMS=15,
+    NT_RETURNS=16,
+    NT_FUNC_CALL=17,
+    NT_CALL_PARAM=18,
+    NT_CALL_PARAMS=19,
+    NT_ASSIGN_EXISTING=20,
+    NT_TO_ASSIGN=21,
+    NT_ASSIGN_VALUE=22,
+    NT_ASSIGN_VALUES=23,
+    NT_ASSIGN_FROM=24,
+    NT_TO_ASSIGN2=25,
+    NT_ASSIGN_NEW=26,
+    NT_ASSIGN=27,
+    NT_WHILE=28,
+    NT_IF=29,
+    NT_START=30,
+    NT_DOUBLE_DOT=31,
+    NT_DOUBLE_DOTS=32,
+    NT_CHECK_EOF=33,
+    NT_CODE_IF=34,
+    NT_END=35
+   
+}nterms_type;
+
+#endif
