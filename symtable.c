@@ -112,7 +112,16 @@ void insert_symbol_function(symbol_table_t *table, char *key){
   //new_item->data.type_of_symbol = TYPE_UNSET;         nepoužíva sa 
   new_item->data.symbol_type = TYPE_FUNCTION;
 
+  new_item->data.list_of_parameters = (Data_list*) malloc(sizeof(Data_list));
+  if(new_item->data.list_of_parameters == NULL)
+    return;
+
   function_data_list_init(new_item->data.list_of_parameters);       // hadze segfault
+
+  new_item->data.list_of_return_types = (Data_list*) malloc(sizeof(Data_list));
+  if(new_item->data.list_of_return_types == NULL)
+    return;
+
   function_data_list_init(new_item->data.list_of_return_types);
   
   // Nemalo by nastat

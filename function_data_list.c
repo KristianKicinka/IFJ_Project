@@ -23,6 +23,7 @@ void function_data_list_init(Data_list *list){
     }
 
     list->items = new_item;
+    list->items[list->items_count] = -1;
 
 }
 
