@@ -254,12 +254,12 @@ void table_dispose(symbol_table_t *table){
       table_item_t *temp_item = (*table)[index];
       (*table)[index] = temp_item->next;
 
-      if(temp_item->data.list_of_parameters != NULL){
+      if(temp_item->data.symbol_type == TYPE_FUNCTION && temp_item->data.list_of_parameters != NULL){
         function_data_list_free_memory(temp_item->data.list_of_parameters);
         free(temp_item->data.list_of_parameters);
       }
 
-      if(temp_item->data.list_of_return_types != NULL){
+      if(temp_item->data.symbol_type == TYPE_FUNCTION && temp_item->data.list_of_return_types != NULL){
         function_data_list_free_memory(temp_item->data.list_of_return_types);
         free(temp_item->data.list_of_return_types);
       }
