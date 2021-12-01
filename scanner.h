@@ -109,7 +109,7 @@ typedef enum{
    //END of Terminals = total: 38
    
    // Special symbols
-   TYPE_UNDEFINED,
+   TYPE_UNSET,
    TYPE_RIGHT_SQUARE_BRACKET,             // [ ] ]
    TYPE_LEFT_SQUARE_BRACKET,              // [ [ ]
    TYPE_RIGHT_CURLY_BRACKET,              // [ } ]

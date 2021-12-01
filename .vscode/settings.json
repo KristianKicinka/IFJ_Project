@@ -5,7 +5,8 @@
         "syntactic_analyze.h": "c",
         "stack.h": "c",
         "stdlib.h": "c",
-        "scanner.h": "c"
+        "scanner.h": "c",
+        "funct_params_list.h": "c"
     },
     "C_Cpp.dimInactiveRegions": false
 }
