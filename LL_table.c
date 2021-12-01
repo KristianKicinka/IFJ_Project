@@ -22,8 +22,8 @@ const rule_t RULES[NUMBER_OF_RULES]={
   /* 11 - code_if_nt -> code_nt code_if_nt */           {.number_of_derivations=2, {{.isterminal=false, .nterm=NT_CODE},                    {.isterminal=false, .nterm=NT_CODE_IF}}},                
   /* 12 - while_nt -> <kw_while> expression_nt <kw_do> code_nt <kw_end> */  
                                                         {.number_of_derivations=5, {{.isterminal=true, .term=TYPE_KW_WHILE},                {.isterminal=false, .nterm=NT_EXPRESSION},                   {.isterminal=true, .term=TYPE_KW_DO},                  {.isterminal=false, .nterm=NT_CODE},                              {.isterminal=true, .term=TYPE_KW_END}}},
-  /* 13 - if_nt -> <kw_if> expression_nt <kw_then> code_nt <kw_else> code_nt <kw_end> */
-                                                        {.number_of_derivations=7, {{.isterminal=true, .term=TYPE_KW_IF},                   {.isterminal=false, .nterm=NT_EXPRESSION},                   {.isterminal=true, .term=TYPE_KW_THEN},                {.isterminal=false, .nterm=NT_CODE},                              {.isterminal=true, .term=TYPE_KW_ELSE},                     {.isterminal=false, .nterm=NT_CODE},        {.isterminal=true, .term=TYPE_KW_END}}},
+  /* 13 - if_nt -> <kw_if> expression_nt <kw_then> code_if_nt <kw_else> code_nt <kw_end> */
+                                                        {.number_of_derivations=7, {{.isterminal=true, .term=TYPE_KW_IF},                   {.isterminal=false, .nterm=NT_EXPRESSION},                   {.isterminal=true, .term=TYPE_KW_THEN},                {.isterminal=false, .nterm=NT_CODE_IF},                           {.isterminal=true, .term=TYPE_KW_ELSE},                    {.isterminal=false, .nterm=NT_CODE},        {.isterminal=true, .term=TYPE_KW_END}}},
   /* 14 - func_dec -> <kw_global> <func_id> <:> <kw_function> <(> param_nt <)> double_dot_nt start*/
                                                         {.number_of_derivations=9, {{.isterminal=true, .term=TYPE_KW_GLOBAL},               {.isterminal=true,  .term=TYPE_IDENTIFICATOR_VARIABLE},      {.isterminal=true,  .term=TYPE_COLON},                 {.isterminal=true, .term=TYPE_KW_FUNCTION},                       {.isterminal=true, .term=TYPE_LEFT_ROUND_BRACKET},         {.isterminal=false, .nterm=NT_PARAM},      {.isterminal=true, .term=TYPE_RIGHT_ROUND_BRACKET},    {.isterminal=false, .nterm=NT_DOUBLE_DOT},     {.isterminal=false, .nterm=NT_START}}},
   /* 15 - double_dot_nt -> <:> datatype double_dots_nt*/{.number_of_derivations=3, {{.isterminal=true, .term=TYPE_COLON},                   {.isterminal=false, .nterm=NT_DATA_TYPE},                    {.isterminal=false, .nterm=NT_DOUBLE_DOTS}}},
@@ -32,14 +32,14 @@ const rule_t RULES[NUMBER_OF_RULES]={
   /* 18 - params_nt -> , datatype params_nt */          {.number_of_derivations=3, {{.isterminal=true, .term=TYPE_COMMA},                   {.isterminal=false, .nterm=NT_DATA_TYPE},                    {.isterminal=false, .nterm=NT_PARAMS}}},
   /* 19 - check_eof_nt -> end */                        {.number_of_derivations=1, {{.isterminal=false, .nterm=NT_END}}},
   /* 20 - check_eof_nt -> start   */                    {.number_of_derivations=1, {{.isterminal=false, .nterm=NT_START}}},
-  /* 21 - func_nt -> <kw_function> <func_id> <(> arg_nt <)> double_dot_nt code_nt <kw_end>*/
-                                                        {.number_of_derivations=8, {{.isterminal=true, .term=TYPE_KW_FUNCTION},             {.isterminal=true, .term=TYPE_IDENTIFICATOR_FUNCTION},       {.isterminal=true, .term=TYPE_LEFT_ROUND_BRACKET},     {.isterminal=false, .nterm=NT_ARG},                               {.isterminal=true, .term=TYPE_RIGHT_ROUND_BRACKET},     {.isterminal=false, .nterm=NT_DOUBLE_DOT},  {.isterminal=false, .nterm=NT_CODE},   {.isterminal=true, .term=TYPE_KW_END}}},
+  /*A21 - func_nt -> <kw_function> <func_id> <(> arg_nt <)> double_dot_nt code_nt <kw_end> check_eof_nt */
+                                                        {.number_of_derivations=9, {{.isterminal=true, .term=TYPE_KW_FUNCTION},             {.isterminal=true, .term=TYPE_IDENTIFICATOR_FUNCTION},       {.isterminal=true, .term=TYPE_LEFT_ROUND_BRACKET},     {.isterminal=false, .nterm=NT_ARG},                               {.isterminal=true, .term=TYPE_RIGHT_ROUND_BRACKET},     {.isterminal=false, .nterm=NT_DOUBLE_DOT},  {.isterminal=false, .nterm=NT_CODE},   {.isterminal=true, .term=TYPE_KW_END}, {.isterminal=false, .nterm=NT_CHECK_EOF}}},
   /*F22 - arg_nt -> <id> <:> datatype argument_nt  */   {.number_of_derivations=4, {{.isterminal=true, .term=TYPE_IDENTIFICATOR_VARIABLE},  {.isterminal=true, .term=TYPE_COLON},                        {.isterminal=false, .nterm=NT_DATA_TYPE},              {.isterminal=false, .nterm=NT_ARGUMENT}}},
   /*F23 - argument_nt -> , <id> <:> datatype argument_nt */  
                                                         {.number_of_derivations=3, {{.isterminal=true, .term=TYPE_IDENTIFICATOR_VARIABLE},  {.isterminal=true, .term=TYPE_COLON},                        {.isterminal=false, .nterm=NT_DATA_TYPE}}},  
   
   /*F24 - return_nt -> <KW_RETURN> check_ret_params_nt*/{.number_of_derivations=2, {{.isterminal=true, .term=TYPE_KW_RETURN},               {.isterminal=false, .nterm=NT_CHECK_RET_PARAMS}}}, 
-  /*F25 - check_ret_params_nt -> value returns_nt */    {.number_of_derivations=2, {{.isterminal=true, .nterm=NT_VALUE},                    {.isterminal=false, .nterm=NT_RETURNS}}},                      
+  /*F25 - check_ret_params_nt -> value returns_nt */    {.number_of_derivations=2, {{.isterminal=false, .nterm=NT_VALUE},                    {.isterminal=false, .nterm=NT_RETURNS}}},                      
   /*F26 - returns_nt -> , value returns_nt          */  {.number_of_derivations=3, {{.isterminal=true, .term=TYPE_COMMA},                   {.isterminal=false, .nterm=NT_VALUE},                        {.isterminal=false, .nterm=NT_RETURNS}}},
   /* 27 - func_call_nt -> <func_id> <(> call_param_nt <)> check_eof_nt*/
                                                         {.number_of_derivations=5, {{.isterminal=true, .term=TYPE_IDENTIFICATOR_FUNCTION},  {.isterminal=true, .term=TYPE_LEFT_ROUND_BRACKET},           {.isterminal=false, .nterm=NT_CALL_PARAM},             {.isterminal=true, .term=TYPE_RIGHT_ROUND_BRACKET},             {.isterminal=false, .nterm=NT_CHECK_EOF}}},
@@ -56,7 +56,7 @@ const rule_t RULES[NUMBER_OF_RULES]={
   /*F36 - assign_from -> value assign_values_nt */      {.number_of_derivations=2, {{.isterminal=false, .term=NT_VALUE},                    {.isterminal=false, .nterm=NT_ASSIGN_VALUES}}},                                                   
   /*F37 - assign_from -> func_call_nt assign_values_nt*/{.number_of_derivations=2, {{.isterminal=false, .nterm=NT_FUNC_CALL},               {.isterminal=false, .nterm=NT_ASSIGN_VALUES}}},
   /* 38 - assign_new_nt -> <kw_local> <id> <:> datatype <=> assign_nt */
-                                                        {.number_of_derivations=6, {{.isterminal=true, .term=TYPE_KW_LOCAL},                {.isterminal=true, .term=TYPE_IDENTIFICATOR_VARIABLE},       {.isterminal=true, .term=NT_DOUBLE_DOT},               {.isterminal=false, .nterm=NT_DATA_TYPE},                           {.isterminal=true, .term=TYPE_EKV},             {.isterminal=false, .nterm=NT_ASSIGN}}}, 
+                                                        {.number_of_derivations=6, {{.isterminal=true, .term=TYPE_KW_LOCAL},                {.isterminal=true, .term=TYPE_IDENTIFICATOR_VARIABLE},       {.isterminal=true, .term=TYPE_COLON},               {.isterminal=false, .nterm=NT_DATA_TYPE},                           {.isterminal=true, .term=TYPE_ASSIGN},             {.isterminal=false, .nterm=NT_ASSIGN}}}, 
   /* 39 - assign_nt -> value */                         {.number_of_derivations=1, {{.isterminal=false, .nterm=NT_VALUE}}}, 
   /* 40 - assign_nt -> func_call_nt */                  {.number_of_derivations=1, {{.isterminal=false, .nterm=NT_FUNC_CALL}}},
   /* VALUES, DATATYPES, ASSIGNING VALUES */
@@ -73,31 +73,43 @@ const rule_t RULES[NUMBER_OF_RULES]={
   /* 51 - datatype->number */                           {.number_of_derivations=1, {{.isterminal=true, .term=TYPE_KW_NUMBER}}},
   /* 52 - datatype->string */                           {.number_of_derivations=1, {{.isterminal=true, .term=TYPE_KW_STRING}}},
   /*E53 - end -> <token_eof_t> */                       {.number_of_derivations=1, {{.isterminal=true, .term=TYPE_KW_EOF}}},  
-  /*T24 missing rule*/                                  {.number_of_derivations=5, {{.isterminal=true, .term=TYPE_IDENTIFICATOR_VARIABLE},  {.isterminal=true, .term=TYPE_COLON},                        {.isterminal=false, .nterm=NT_DATA_TYPE},              {.isterminal=true, .term=TYPE_COMMA},                             {.isterminal=false, .nterm=NT_ARGUMENT}}}
+  /*T24 unknown rule*/                               /* {.number_of_derivations=5, {{.isterminal=true, .term=TYPE_IDENTIFICATOR_VARIABLE},  {.isterminal=true, .term=TYPE_COLON},                        {.isterminal=false, .nterm=NT_DATA_TYPE},              {.isterminal=true, .term=TYPE_COMMA},                             {.isterminal=false, .nterm=NT_ARGUMENT}}}*/
   /* EXPRESSIONS */ 
-  /* 55 - expression_nt -> (expression_nt)*/          
-  /* 56 - expression_nt -> value */
-  /* 57 - expression_nt -> expression_nt + expression_nt */
-  /* 58 - expression_nt -> expression_nt - expression_nt */
-  /* 59 - expression_nt -> expression_nt * expression_nt */ 
-  /* 60 - expression_nt -> expression_nt / expression_nt */
-  /* 61 - expression_nt -> expression_nt // expression_nt */
-  /* 62 - expression_nt -> expression_nt .. expression_nt */
-  /* 63 - expression_nt -> # expression_nt */
-  /* 64 - expression_nt -> expression_nt < expression_nt */
-  /* 65 - expression_nt -> expression_nt <= expression_nt */
-  /* 66 - expression_nt -> expression_nt > expression_nt */
-  /* 67 - expression_nt -> expression_nt >= expression_nt */
-  /* 68 - expression_nt -> expression_nt == expression_nt */
-  /* 69 - expression_nt -> expression_nt ~= expression_nt */
-
-
+  /* 54 - expression_nt -> (expression_nt)*/            {.number_of_derivations=3, {{.isterminal=true, .term=TYPE_LEFT_ROUND_BRACKET}, {.isterminal=false, .nterm=NT_EXPRESSION}, {.nterm=true, .term=TYPE_RIGHT_ROUND_BRACKET}}},
+  /* 55 - expression_nt -> value */                     {.number_of_derivations=1, {{.isterminal=false, .nterm=NT_VALUE}}},
+  /* 56 - expression_nt -> expression_nt + expression_nt */
+                                                        {.number_of_derivations=3, {{.isterminal=false, .nterm=NT_EXPRESSION}, {.isterminal=true, .term=TYPE_PLUS}, {.isterminal=false, .nterm=NT_EXPRESSION}}},
+  /* 57 - expression_nt -> expression_nt - expression_nt */
+                                                        {.number_of_derivations=3, {{.isterminal=false, .nterm=NT_EXPRESSION}, {.isterminal=true, .term=TYPE_MINUS}, {.isterminal=false, .nterm=NT_EXPRESSION}}},
+  /* 58 - expression_nt -> expression_nt * expression_nt */ 
+                                                        {.number_of_derivations=3, {{.isterminal=false, .nterm=NT_EXPRESSION}, {.isterminal=true, .term=TYPE_MULTIPLICATE}, {.isterminal=false, .nterm=NT_EXPRESSION}}},            
+  /* 59 - expression_nt -> expression_nt / expression_nt */
+                                                        {.number_of_derivations=3, {{.isterminal=false, .nterm=NT_EXPRESSION}, {.isterminal=true, .term=TYPE_DIVIDE}, {.isterminal=false, .nterm=NT_EXPRESSION}}},
+  /* 60 - expression_nt -> expression_nt // expression_nt */
+                                                        {.number_of_derivations=3, {{.isterminal=false, .nterm=NT_EXPRESSION}, {.isterminal=true, .term=TYPE_DIVIDE_INT}, {.isterminal=false, .nterm=NT_EXPRESSION}}},
+  /* 61 - expression_nt -> expression_nt .. expression_nt */
+                                                        {.number_of_derivations=3, {{.isterminal=false, .nterm=NT_EXPRESSION}, {.isterminal=true, .term=TYPE_STRING_CONCAT}, {.isterminal=false, .nterm=NT_EXPRESSION}}},
+  /* 62 - expression_nt -> # expression_nt */           {.number_of_derivations=2, {{.isterminal=true, .term=TYPE_HASHTAG}, {.isterminal=false, .nterm=NT_EXPRESSION}}},
+  /* 63 - expression_nt -> expression_nt < expression_nt */
+                                                        {.number_of_derivations=3, {{.isterminal=false, .nterm=NT_EXPRESSION}, {.isterminal=true, .term=TYPE_LTHEN}, {.isterminal=false, .nterm=NT_EXPRESSION}}},
+  /* 64 - expression_nt -> expression_nt <= expression_nt */
+                                                        {.number_of_derivations=3, {{.isterminal=false, .nterm=NT_EXPRESSION}, {.isterminal=true, .term=TYPE_LEKV}, {.isterminal=false, .nterm=NT_EXPRESSION}}},
+  /* 65 - expression_nt -> expression_nt > expression_nt */
+                                                        {.number_of_derivations=3, {{.isterminal=false, .nterm=NT_EXPRESSION}, {.isterminal=true, .term=TYPE_GTHEN}, {.isterminal=false, .nterm=NT_EXPRESSION}}},
+  /* 66 - expression_nt -> expression_nt >= expression_nt */
+                                                        {.number_of_derivations=3, {{.isterminal=false, .nterm=NT_EXPRESSION}, {.isterminal=true, .term=TYPE_GEKV}, {.isterminal=false, .nterm=NT_EXPRESSION}}},
+  /* 67 - expression_nt -> expression_nt == expression_nt */
+                                                        {.number_of_derivations=3, {{.isterminal=false, .nterm=NT_EXPRESSION}, {.isterminal=true, .term=TYPE_EKV}, {.isterminal=false, .nterm=NT_EXPRESSION}}},
+  /* 68 - expression_nt -> expression_nt ~= expression_nt */
+                                                        {.number_of_derivations=3, {{.isterminal=false, .nterm=NT_EXPRESSION}, {.isterminal=true, .term=TYPE_NEKV}, {.isterminal=false, .nterm=NT_EXPRESSION}}},
+ /* zatial iba pre RETURN, premysliet co doplnit */
+ /* LAST ADDED 69 - check_eof_nt -> code_nt        */   {.number_of_derivations=1, {{.isterminal=false, .nterm=NT_CODE}}}, 
 };
 
 int LLtable[NUMBER_OF_NTERMS][NUMBER_OF_TERMS]={
 /*                      REQUIRE  DO  ELSE  END  FUNCTION  GLOBAL  IF  LOCAL  NIL  NUMBER  RETURN  THEN  WHILE  SEMICOLN  R_BRACKET L_BRACKET  COMMA  DOUBLEDOT  ASSIGN  EOF   ID  FUNC_ID  INT  STRING   STRING_CONST  INT_CONST  NUMBER_CONST    PLUS    MINUS    MULTIPLY  DIV  DOUBLEDIV   CONCAT   LESS   LE   GREATER   GE   NOTEQUAL  EQUAL $ */
 /*prolog*/              {  0,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE}, //1  
-/*value_nt*/            { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   43,    SE,    SE,   SE,        SE,          41,         42,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*value_nt*/            { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   44,    SE,    SE,   SE,        43,          41,         42,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*assval_nt*/           { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   49,   46,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   48,    SE,    45,   47,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE}, 
 /*datatype_nt*/         { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   51,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    50,   52,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*expression_n*/        { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      54,       SE,      SE,      SE,   SE,   55,    SE,    SE,   SE,        55,          55,         55,          56,      57,       58,     59,    60,        61,     62,   63,     64,    65,     68,     67},
@@ -109,11 +121,11 @@ int LLtable[NUMBER_OF_NTERMS][NUMBER_OF_TERMS]={
 /*argument_nt       */  { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,       EPS,      SE,       23,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*ret_arg_nt   VOID*/   { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*ret_args_nt  VOID*/   { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*code_nt*/             { SE,    SE,  SE,  EPS,    SE,      SE,    5,    9,   SE,   SE,      7,    SE,     4,     SE,        SE,      SE,       SE,      SE,      SE,   SE,    8,     6,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},       
-/*return_nt add EPS*/   { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     24,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*check_ret_params_nt EPS?*/ { SE,    SE, EPS,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,    SE,  25,    SE,    SE,   SE,        25,          25,         25,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*returns_nt   EPS?*/   { SE,    SE, EPS,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       26,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*func_call_nt */       { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   27,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*code_nt*/             { SE,    SE,  SE,  EPS,    SE,      SE,    6,   10,   SE,   SE,      8,    SE,     5,     SE,        SE,      SE,       SE,      SE,      SE,   SE,    9,     7,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},       
+/*return_nt add EPS*/   { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     24,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,         EPS,     EPS,      EPS,    EPS,   EPS,       EPS,    EPS,  EPS,    EPS,   EPS,     SE,     SE},
+/*check_ret_params_ntE*/{ SE,    SE, EPS,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,    SE,  25,    SE,    SE,   SE,        25,          25,         25,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*returns_nt   EPS?*/   { SE,    SE, EPS,  EPS,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       26,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*func_call_nt */       { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    27,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*call_param_nt*/       { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,       EPS,      SE,       SE,      SE,      SE,   SE,   28,    SE,    SE,   SE,        28,          28,         28,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*call_params_nt*/      { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,       EPS,      SE,       29,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*assign_existing_nt*/  { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   30,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
@@ -128,18 +140,20 @@ int LLtable[NUMBER_OF_NTERMS][NUMBER_OF_TERMS]={
 /*if_nt*/               { SE,    SE,  SE,   SE,    SE,      SE,   13,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*start*/               { SE,    SE,  SE,    4,     3,       2,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,    4,   SE,     1,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*double_dot_nt*/       { SE,    SE,  SE,   SE,   EPS,     EPS,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      15,      SE,  EPS,   SE,   EPS,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*double_dots_nt*/      { SE,    SE,  SE,   SE,   EPS,     EPS,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       16,      SE,      SE,  EPS,   SE,   EPS,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*check_eof_nt*/        { SE,    SE,  SE,   19,    20,      20,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    20,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*code_if_nt*/          { SE,    SE,  SE,   SE,    SE,      SE,   11,   11,   SE,   SE,     11,    SE,    11,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   11,    11,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*double_dots_nt*/      { SE,    SE,  SE,   SE,   EPS,     EPS,  EPS,   SE,   SE,   SE,    EPS,    SE,    SE,     SE,        SE,      SE,       16,      SE,      SE,  EPS,   SE,   EPS,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*check_eof_nt*/        { SE,    SE,  SE,   19,    20,      20,   SE,   SE,   SE,   SE,     69,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   53,   SE,    20,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*code_if_nt E*/        { SE,    SE, EPS,   SE,    SE,      SE,   11,   11,   SE,   SE,     11,    SE,    11,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   11,    11,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*end_nt*/              { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   53,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 
 };
 
-    
+int run=1;  
+
 int CheckGrammar(Stack_symbol_t stack){
     int can_get_token=1;
     while(true){
-        printf("##### new run #####\n");
+        printf("##### RUN %d #####\n", run);
+        run++;
         Token term;
         Token *actualterm = &term;
 
@@ -168,6 +182,7 @@ int CheckGrammar(Stack_symbol_t stack){
                printf("stack index: %d input index :%d\n", stackIndex, inputIndex);
                int ruleNumber=LLtable[stackIndex][inputIndex]; //vyber pravidla
                printf("Rule number: %d\n", ruleNumber);
+
                if(ruleNumber==SE){
                    printf("Syntax error\n");
                    if(!Stack_Is_Empty(&stack)){
@@ -182,8 +197,8 @@ int CheckGrammar(Stack_symbol_t stack){
                    Stack_Pop(&stack); //popnem neterminal z vrcholu stacku
                    for (int i=rule.number_of_derivations-1; i>=0; i--){  //rozvinute pravidla na stack pushujem reverzne
                        //printf("Pushujem na stack:  isterminal: %d rule term: %d rule nterm: %d\n",  rule.right_side_of_derivation[i].isterminal, rule.right_side_of_derivation[i].term, rule.right_side_of_derivation[i].nterm);
-                       Stack_Push(&stack, rule.right_side_of_derivation[i].isterminal, rule.right_side_of_derivation[i].term, rule.right_side_of_derivation[i].nterm);
-                       printf("Na stack sa pushlo: isterminal: %d stac term: %d stac nterm: %d\n", stack.top->isterminal, stack.top->term, stack.top->nterm);
+                        Stack_Push(&stack, rule.right_side_of_derivation[i].isterminal, rule.right_side_of_derivation[i].term, rule.right_side_of_derivation[i].nterm);                       
+                        printf("Na stack sa pushlo: isterminal: %d stac term: %d stac nterm: %d\n", stack.top->isterminal, stack.top->term, stack.top->nterm);
                    }                
                }
             }else{ //na vrchole stacku je terminal 

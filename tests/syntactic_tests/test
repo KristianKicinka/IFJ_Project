@@ -1,2 +1,10 @@
 require "ifj21"
-global g : function (integer) : integer
+global g : function (integer) : integer -- deklarace funkce
+function f(x : integer) : integer
+if 1 then
+else
+local res : integer = g(x)
+return res
+end
+end
+main()

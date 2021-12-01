@@ -53,7 +53,7 @@ typedef enum{
 
     //TODO pridat expression + - * / ,...
     //spolu 38 vraj upravit aj define pocet
-    -T_ADDITION=27,                          // [ + ]
+    -T_ADDITION=27,                         // [ + ]
     T_DIFFERENCE=28,                        // [ - ]
     T_MULTIPLICATION=29,                    // [ * ]
     T_DIVISION=30,                          // [ / ]
@@ -62,7 +62,7 @@ typedef enum{
     T_LESS=33,                              // [ < ]
     T_LESS_OR_EQUAL=34,                     // [ <= ]
     T_GREATER=35,                           // [ > ]
-    T_GREATER_OR_EQUAL=36,                   // [ >= ]
+    T_GREATER_OR_EQUAL=36,                  // [ >= ]
     T_NOT_EQUAL=37                          // [ ~= ]
 
 }terms_type;

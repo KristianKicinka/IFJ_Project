@@ -4,7 +4,7 @@
 #include "../../LL_table.h"
 
 int main(){
-    
+
     Stack_symbol_t stack; 
     Stack_Init(&stack);
     Stack_Push(&stack, false, -42, NT_PROLOG); //pushnem pociatocny neterminal
