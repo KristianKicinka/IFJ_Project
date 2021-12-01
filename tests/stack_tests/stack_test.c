@@ -7,7 +7,9 @@
 
 void test_stack_insert(Stack_symbol_t *stack, Token_type term, nterms_type nterm, bool isterminal){
     int success=0;
-        Stack_Push(stack, term, nterm, isterminal);
+        Stack_Push(stack, isterminal, term, nterm);
+        printf("Pushol som: %d, %d\n", term, nterm);
+        printf("%d %d\n", stack->top->term, stack->top->nterm);
         printf("TEST STACK PUSH: %d\n", success);
 }
 
@@ -16,7 +18,7 @@ void test_stack_print(Stack_symbol_t *stack){
     int success=0;
     while(!Stack_Is_Empty(stack)){
         //printf("%d, %c\n", stack->top->stack_symbol, stack->top->stack_symbol_type);
-        printf("%d, %d, %c\n", Stack_Top_Symbol_Terminal(stack), Stack_Top_Symbol_NonTerminal(stack), Stack_Top_Symbol_Type(stack));
+        printf("%d, %d, \n", Stack_Top_Terminal(stack), Stack_Top_NonTerminal(stack));
         success=Stack_Pop(stack);
     }
      if(success){
@@ -30,7 +32,7 @@ void test_till_top_terminal(Stack_symbol_t *stack){
     while(stack->top->isterminal==false){
         Stack_Pop(stack);
     }
-    printf("Nasiel som terminal> %d, %c\n", Stack_Top_Symbol_Terminal(stack), Stack_Top_Symbol_Type(stack));
+    printf("Nasiel som terminal, neteminal musi byt -42> %d, %d\n", Stack_Top_Terminal(stack), Stack_Top_NonTerminal(stack));
 }
 
 void test_stack_empty(Stack_symbol_t *stack){
@@ -51,6 +53,7 @@ int main(){
 
     test_stack_empty(&stack);
 
+    test_stack_insert(&stack, -42, NT_ARGUMENT, false);
     test_stack_insert(&stack, TYPE_KW_WHILE, -42, true);
 
     test_stack_empty(&stack);

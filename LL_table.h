@@ -79,5 +79,6 @@ typedef struct rules_t{
     struct symbol_t right_side_of_derivation[NUMBER_OF_DERIVATIONS];
 }rule_t;
 
+int CheckGrammar();
 
 #endif

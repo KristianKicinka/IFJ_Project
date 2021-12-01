@@ -31,9 +31,9 @@ bool Stack_Push(Stack_symbol_t *, bool, Token_type, nterms_type);
 
 bool Stack_Pop(Stack_symbol_t *);
 
-Token_type Stack_Top_Symbol_Terminal(Stack_symbol_t *);
+Token_type Stack_Top_Terminal(Stack_symbol_t *);
 
-nterms_type Stack_Top_Symbol_NonTerminal(Stack_symbol_t *);
+nterms_type Stack_Top_NonTerminal(Stack_symbol_t *);
 
 bool Stack_Top_Symbol_Type(Stack_symbol_t *);
 

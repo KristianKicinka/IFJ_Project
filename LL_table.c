@@ -11,7 +11,7 @@ const rule_t RULES[NUMBER_OF_RULES]={
   /*  1 - start_nt -> func_call_nt start_nt */          {.number_of_derivations=2, {{.isterminal=false, .nterm=NT_FUNC_CALL},               {.isterminal=false, .nterm=NT_START}}},
   /*  2 - start_nt -> func_dec_nt start_nt */           {.number_of_derivations=2, {{.isterminal=false, .nterm=NT_FUNC_DEC},                {.isterminal=false, .nterm=NT_START}}},
   /*  3 - start_nt -> func_nt start_nt */               {.number_of_derivations=2, {{.isterminal=false, .nterm=NT_FUNC},                    {.isterminal=false, .nterm=NT_START}}},
-  /*  4 - start_nt -> end           */                  {.number_of_derivations=1, {{.isterminal=false, .nterm=TYPE_KW_END}}},
+  /*  4 - start_nt -> end           */                  {.number_of_derivations=1, {{.isterminal=false, .nterm=NT_END}}},
   /*  code_nt -> eps */             
   /*  5 - code_nt -> while_nt code_nt */                {.number_of_derivations=2, {{.isterminal=false, .nterm=NT_WHILE},                   {.isterminal=false, .nterm=NT_CODE}}},
   /*  6 - code_nt -> if_nt code_nt */                   {.number_of_derivations=2, {{.isterminal=false, .nterm=NT_IF},                      {.isterminal=false, .nterm=NT_CODE}}},    
@@ -25,7 +25,7 @@ const rule_t RULES[NUMBER_OF_RULES]={
   /* 13 - if_nt -> <kw_if> expression_nt <kw_then> code_nt <kw_else> code_nt <kw_end> */
                                                         {.number_of_derivations=7, {{.isterminal=true, .term=TYPE_KW_IF},                   {.isterminal=false, .nterm=NT_EXPRESSION},                   {.isterminal=true, .term=TYPE_KW_THEN},                {.isterminal=false, .nterm=NT_CODE},                              {.isterminal=true, .term=TYPE_KW_ELSE},                     {.isterminal=false, .nterm=NT_CODE},        {.isterminal=true, .term=TYPE_KW_END}}},
   /* 14 - func_dec -> <kw_global> <func_id> <:> <kw_function> <(> param_nt <)> double_dot_nt start*/
-                                                        {.number_of_derivations=9, {{.isterminal=true, .term=TYPE_KW_GLOBAL},               {.isterminal=true,  .term=TYPE_IDENTIFICATOR_FUNCTION},      {.isterminal=true,  .term=TYPE_LEFT_ROUND_BRACKET},    {.isterminal=false, .nterm=NT_ARG},                               {.isterminal=true, .nterm=TYPE_RIGHT_ROUND_BRACKET},        {.isterminal=false, .nterm=NT_DOUBLE_DOT},  {.isterminal=false, .nterm=NT_CODE},    {.isterminal=true, .term=TYPE_KW_END}, {.isterminal=false, .nterm=NT_START}}},
+                                                        {.number_of_derivations=9, {{.isterminal=true, .term=TYPE_KW_GLOBAL},               {.isterminal=true,  .term=TYPE_IDENTIFICATOR_VARIABLE},      {.isterminal=true,  .term=TYPE_COLON},                 {.isterminal=true, .term=TYPE_KW_FUNCTION},                       {.isterminal=true, .term=TYPE_LEFT_ROUND_BRACKET},         {.isterminal=false, .nterm=NT_PARAM},      {.isterminal=true, .term=TYPE_RIGHT_ROUND_BRACKET},    {.isterminal=false, .nterm=NT_DOUBLE_DOT},     {.isterminal=false, .nterm=NT_START}}},
   /* 15 - double_dot_nt -> <:> datatype double_dots_nt*/{.number_of_derivations=3, {{.isterminal=true, .term=TYPE_COLON},                   {.isterminal=false, .nterm=NT_DATA_TYPE},                    {.isterminal=false, .nterm=NT_DOUBLE_DOTS}}},
   /* 16 - double_dots_nt -> , datatype double_dots_nt */{.number_of_derivations=3, {{.isterminal=true, .term=TYPE_COMMA},                   {.isterminal=false, .nterm=NT_DATA_TYPE},                    {.isterminal=false, .nterm=NT_DOUBLE_DOTS}}},                                                                                                 
   /* 17 - param_nt -> datatype params_nt */             {.number_of_derivations=2, {{.isterminal=false, .nterm=NT_DATA_TYPE},               {.isterminal=false, .nterm=NT_PARAMS}}},
@@ -37,7 +37,7 @@ const rule_t RULES[NUMBER_OF_RULES]={
   /*F22 - arg_nt -> <id> <:> datatype argument_nt  */   {.number_of_derivations=4, {{.isterminal=true, .term=TYPE_IDENTIFICATOR_VARIABLE},  {.isterminal=true, .term=TYPE_COLON},                        {.isterminal=false, .nterm=NT_DATA_TYPE},              {.isterminal=false, .nterm=NT_ARGUMENT}}},
   /*F23 - argument_nt -> , <id> <:> datatype argument_nt */  
                                                         {.number_of_derivations=3, {{.isterminal=true, .term=TYPE_IDENTIFICATOR_VARIABLE},  {.isterminal=true, .term=TYPE_COLON},                        {.isterminal=false, .nterm=NT_DATA_TYPE}}},  
-                                                        {.number_of_derivations=5, {{.isterminal=true, .term=TYPE_IDENTIFICATOR_VARIABLE},  {.isterminal=true, .term=TYPE_COLON},                        {.isterminal=false, .nterm=NT_DATA_TYPE},              {.isterminal=true, .term=TYPE_COMMA},                             {.isterminal=false, .nterm=NT_ARGUMENT}}},
+  
   /*F24 - return_nt -> <KW_RETURN> check_ret_params_nt*/{.number_of_derivations=2, {{.isterminal=true, .term=TYPE_KW_RETURN},               {.isterminal=false, .nterm=NT_CHECK_RET_PARAMS}}}, 
   /*F25 - check_ret_params_nt -> value returns_nt */    {.number_of_derivations=2, {{.isterminal=true, .nterm=NT_VALUE},                    {.isterminal=false, .nterm=NT_RETURNS}}},                      
   /*F26 - returns_nt -> , value returns_nt          */  {.number_of_derivations=3, {{.isterminal=true, .term=TYPE_COMMA},                   {.isterminal=false, .nterm=NT_VALUE},                        {.isterminal=false, .nterm=NT_RETURNS}}},
@@ -72,77 +72,74 @@ const rule_t RULES[NUMBER_OF_RULES]={
   /* 50 - datatype->int */                              {.number_of_derivations=1, {{.isterminal=true, .term=TYPE_KW_INTEGER}}},
   /* 51 - datatype->number */                           {.number_of_derivations=1, {{.isterminal=true, .term=TYPE_KW_NUMBER}}},
   /* 52 - datatype->string */                           {.number_of_derivations=1, {{.isterminal=true, .term=TYPE_KW_STRING}}},
-  /*E53 - end -> <token_eof_t> */                       {.number_of_derivations=1, {{.isterminal=true, .term=TYPE_KW_EOF}}}  
+  /*E53 - end -> <token_eof_t> */                       {.number_of_derivations=1, {{.isterminal=true, .term=TYPE_KW_EOF}}},  
+  /*T24 missing rule*/                                  {.number_of_derivations=5, {{.isterminal=true, .term=TYPE_IDENTIFICATOR_VARIABLE},  {.isterminal=true, .term=TYPE_COLON},                        {.isterminal=false, .nterm=NT_DATA_TYPE},              {.isterminal=true, .term=TYPE_COMMA},                             {.isterminal=false, .nterm=NT_ARGUMENT}}}
   /* EXPRESSIONS */ 
-  /* 54 - expression_nt -> (expression_nt)*/          
-  /* 55 - expression_nt -> value */
-  /* 56 - expression_nt -> expression_nt + expression_nt */
-  /* 57 - expression_nt -> expression_nt - expression_nt */
-  /* 58 - expression_nt -> expression_nt * expression_nt */ 
-  /* 59 - expression_nt -> expression_nt / expression_nt */
-  /* 60 - expression_nt -> expression_nt // expression_nt */
-  /* 61 - expression_nt -> expression_nt .. expression_nt */
-  /* 62 - expression_nt -> # expression_nt */
-  /* 63 - expression_nt -> expression_nt < expression_nt */
-  /* 64 - expression_nt -> expression_nt <= expression_nt */
-  /* 65 - expression_nt -> expression_nt > expression_nt */
-  /* 66 - expression_nt -> expression_nt >= expression_nt */
-  /* 67 - expression_nt -> expression_nt == expression_nt */
-  /* 68 - expression_nt -> expression_nt ~= expression_nt */
+  /* 55 - expression_nt -> (expression_nt)*/          
+  /* 56 - expression_nt -> value */
+  /* 57 - expression_nt -> expression_nt + expression_nt */
+  /* 58 - expression_nt -> expression_nt - expression_nt */
+  /* 59 - expression_nt -> expression_nt * expression_nt */ 
+  /* 60 - expression_nt -> expression_nt / expression_nt */
+  /* 61 - expression_nt -> expression_nt // expression_nt */
+  /* 62 - expression_nt -> expression_nt .. expression_nt */
+  /* 63 - expression_nt -> # expression_nt */
+  /* 64 - expression_nt -> expression_nt < expression_nt */
+  /* 65 - expression_nt -> expression_nt <= expression_nt */
+  /* 66 - expression_nt -> expression_nt > expression_nt */
+  /* 67 - expression_nt -> expression_nt >= expression_nt */
+  /* 68 - expression_nt -> expression_nt == expression_nt */
+  /* 69 - expression_nt -> expression_nt ~= expression_nt */
 
 
 };
 
 int LLtable[NUMBER_OF_NTERMS][NUMBER_OF_TERMS]={
 /*                      REQUIRE  DO  ELSE  END  FUNCTION  GLOBAL  IF  LOCAL  NIL  NUMBER  RETURN  THEN  WHILE  SEMICOLN  R_BRACKET L_BRACKET  COMMA  DOUBLEDOT  ASSIGN  EOF   ID  FUNC_ID  INT  STRING   STRING_CONST  INT_CONST  NUMBER_CONST    PLUS    MINUS    MULTIPLY  DIV  DOUBLEDIV   CONCAT   LESS   LE   GREATER   GE   NOTEQUAL  EQUAL $ */
-/*prolog*/              {  0,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE}, //1  
-/*value_nt*/            { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  43,    SE,    SE,   SE,        SE,          41,         42,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*assval_nt*/           { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   49,   46,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  48,    SE,    45,   47,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE}, 
-/*datatype_nt*/         { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   51,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  SE,    SE,    50,   52,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*expression_n*/        { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      54,       SE,      SE,      SE,   SE,  55,    SE,    SE,   SE,        55,          55,         55,          56,      57,       58,     59,    60,        61,     62,   63,     64,    65,     68,     67},
-/*func_dec*/            { SE,    SE,  SE,   SE,    SE,      14,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*param_nt*/            { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   17,     SE,    SE,    SE,     SE,       EPS,      SE,       SE,      SE,      SE,   SE,  SE,    SE,    17,   17,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE}, 
-/*params_nt*/           { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,       EPS,      SE,       18,      SE,      SE,   SE,  SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*func_nt*/             { SE,    SE,  SE,   SE,    21,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*arg_nt*/              { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,       EPS,      SE,       SE,      SE,      SE,   SE,  22,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*argument_nt       */  { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,       EPS,      SE,       23,      SE,      SE,   SE,  SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*ret_arg_nt   VOID*/   { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*ret_args_nt  VOID*/   { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*code_nt*/             { SE,    SE,  SE,  EPS,    SE,      SE,    5,    9,   SE,   SE,      7,    SE,     4,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   8,     6,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},       
-/*return_nt add EPS*/   { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     24,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*check_ret_params_nt EPS?*/ { SE,    SE, EPS,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  25,    SE,    SE,   SE,        25,          25,         25,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*returns_nt   EPS?*/   { SE,    SE, EPS,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       26,      SE,      SE,   SE,  SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*func_call_nt */       { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  27,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*call_param_nt*/       { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,       EPS,      SE,       SE,      SE,      SE,   SE,  28,    SE,    SE,   SE,        28,          28,         28,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*call_params_nt*/      { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,       EPS,      SE,       29,      SE,      SE,   SE,  SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*assign_existing_nt*/  { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  30,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*to_assign_nt*/        { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  31,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*assign_value_nt*/     { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  33,    34,    SE,   SE,        33,          33,         33,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*assign_values_nt*/    { SE,   EPS,  SE,   SE,    SE,      SE,  EPS,  EPS,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       35,      SE,      SE,   SE, EPS,   EPS,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*assign_from_nt*/      { SE,    SE,  SE,  EPS,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,   EPS,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  36,    37,    SE,   SE,        36,          36,         36,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*to_assign2_nt*/       { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       32,      SE,     EPS,   SE,  SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*assign_new_nt*/       { SE,    SE,  SE,   SE,    SE,      SE,   SE,   38,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*assign_nt*/           { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  39,    40,    SE,   SE,        39,          39,         39,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*while_nt*/            { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    12,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*if_nt*/               { SE,    SE,  SE,   SE,    SE,      SE,   13,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*start*/               { SE,    SE,  SE,    4,     3,       2,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  SE,     1,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*double_dot_nt*/       { SE,    SE,  SE,   SE,   EPS,     EPS,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      15,      SE,  EPS,  SE,   EPS,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*double_dots_nt*/      { SE,    SE,  SE,   SE,   EPS,     EPS,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       16,      SE,      SE,  EPS,  SE,   EPS,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*check_eof_nt*/        { SE,    SE,  SE,   19,    20,      20,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  SE,    20,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*code_if_nt*/          { SE,    SE,  SE,   SE,    SE,      SE,   11,   11,   SE,   SE,     11,    SE,    11,     SE,        SE,      SE,       SE,      SE,      SE,   SE,  11,    11,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*end_nt*/              { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   53,  SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*prolog*/              {  0,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE}, //1  
+/*value_nt*/            { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   43,    SE,    SE,   SE,        SE,          41,         42,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*assval_nt*/           { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   49,   46,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   48,    SE,    45,   47,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE}, 
+/*datatype_nt*/         { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   51,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    50,   52,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*expression_n*/        { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      54,       SE,      SE,      SE,   SE,   55,    SE,    SE,   SE,        55,          55,         55,          56,      57,       58,     59,    60,        61,     62,   63,     64,    65,     68,     67},
+/*func_dec*/            { SE,    SE,  SE,   SE,    SE,      14,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*param_nt*/            { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   17,     SE,    SE,    SE,     SE,       EPS,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    17,   17,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE}, 
+/*params_nt*/           { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,       EPS,      SE,       18,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*func_nt*/             { SE,    SE,  SE,   SE,    21,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*arg_nt*/              { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,       EPS,      SE,       SE,      SE,      SE,   SE,   22,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*argument_nt       */  { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,       EPS,      SE,       23,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*ret_arg_nt   VOID*/   { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*ret_args_nt  VOID*/   { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*code_nt*/             { SE,    SE,  SE,  EPS,    SE,      SE,    5,    9,   SE,   SE,      7,    SE,     4,     SE,        SE,      SE,       SE,      SE,      SE,   SE,    8,     6,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},       
+/*return_nt add EPS*/   { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     24,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*check_ret_params_nt EPS?*/ { SE,    SE, EPS,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,    SE,  25,    SE,    SE,   SE,        25,          25,         25,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*returns_nt   EPS?*/   { SE,    SE, EPS,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       26,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*func_call_nt */       { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   27,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*call_param_nt*/       { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,       EPS,      SE,       SE,      SE,      SE,   SE,   28,    SE,    SE,   SE,        28,          28,         28,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*call_params_nt*/      { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,       EPS,      SE,       29,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*assign_existing_nt*/  { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   30,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*to_assign_nt*/        { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   31,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*assign_value_nt*/     { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   33,    34,    SE,   SE,        33,          33,         33,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*assign_values_nt*/    { SE,   EPS,  SE,   SE,    SE,      SE,  EPS,  EPS,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       35,      SE,      SE,   SE,  EPS,   EPS,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*assign_from_nt*/      { SE,    SE,  SE,  EPS,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,   EPS,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   36,    37,    SE,   SE,        36,          36,         36,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*to_assign2_nt*/       { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       32,      SE,     EPS,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*assign_new_nt*/       { SE,    SE,  SE,   SE,    SE,      SE,   SE,   38,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*assign_nt*/           { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   39,    40,    SE,   SE,        39,          39,         39,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*while_nt*/            { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    12,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*if_nt*/               { SE,    SE,  SE,   SE,    SE,      SE,   13,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*start*/               { SE,    SE,  SE,    4,     3,       2,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,    4,   SE,     1,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*double_dot_nt*/       { SE,    SE,  SE,   SE,   EPS,     EPS,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      15,      SE,  EPS,   SE,   EPS,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*double_dots_nt*/      { SE,    SE,  SE,   SE,   EPS,     EPS,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       16,      SE,      SE,  EPS,   SE,   EPS,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*check_eof_nt*/        { SE,    SE,  SE,   19,    20,      20,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    20,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*code_if_nt*/          { SE,    SE,  SE,   SE,    SE,      SE,   11,   11,   SE,   SE,     11,    SE,    11,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   11,    11,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*end_nt*/              { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   53,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 
 };
 
     
-int CheckGrammar(){
-
-    Stack_symbol_t stack; 
-    Stack_Init(&stack);
-    Stack_Push(&stack, false, -42, NT_PROLOG); //pushnem pociatocny neterminal
-
+int CheckGrammar(Stack_symbol_t stack){
+    int can_get_token=1;
     while(true){
-
+        printf("##### new run #####\n");
         Token term;
         Token *actualterm = &term;
 
@@ -150,13 +147,27 @@ int CheckGrammar(){
         Custom_string *my_str = &my_string;
 
         custom_string_init(my_str);
+     
 
         if(!Stack_Is_Empty(&stack)){
             if(stack.top->isterminal==false){ //na vrchu staku je neterminal
-               int err=generate_token(actualterm, my_str);//zoberiem token
+             if(can_get_token){
+                 int err=generate_token(actualterm, my_str);//zoberiem token
+                 printf("Prijaty terminal: %d \n", actualterm->type_of_token);  
+                  if(err==1){
+                    printf("error occured\n");
+                    return 1;
+               }  
+             }
+              can_get_token=1;
+              printf("Na vrchole stacku je neterminal\n");
+              
                Token_type inputIndex=actualterm->type_of_token;//vezmem jeho index podla enumu
                int stackIndex=stack.top->nterm;//zoberem index ne(terminalu) na stacku
+               printf("neterminal na vrchu stacku: %d\n", Stack_Top_NonTerminal(&stack));
+               printf("stack index: %d input index :%d\n", stackIndex, inputIndex);
                int ruleNumber=LLtable[stackIndex][inputIndex]; //vyber pravidla
+               printf("Rule number: %d\n", ruleNumber);
                if(ruleNumber==SE){
                    printf("Syntax error\n");
                    if(!Stack_Is_Empty(&stack)){
@@ -165,27 +176,44 @@ int CheckGrammar(){
                    custom_string_free_memory(my_str);
                    return process_error(SYNTAX_ANALYSIS_FAIL);
                }else{
+                    can_get_token=0;
                    printf("Cislo vybraneho pravidla %d \n",ruleNumber);
                    rule_t rule=RULES[ruleNumber]; //vybranie pravidla
                    Stack_Pop(&stack); //popnem neterminal z vrcholu stacku
                    for (int i=rule.number_of_derivations-1; i>=0; i--){  //rozvinute pravidla na stack pushujem reverzne
-                       Stack_Push(&stack, rule.right_side_of_derivation->isterminal, rule.right_side_of_derivation->term, rule.right_side_of_derivation->nterm);
+                       //printf("Pushujem na stack:  isterminal: %d rule term: %d rule nterm: %d\n",  rule.right_side_of_derivation[i].isterminal, rule.right_side_of_derivation[i].term, rule.right_side_of_derivation[i].nterm);
+                       Stack_Push(&stack, rule.right_side_of_derivation[i].isterminal, rule.right_side_of_derivation[i].term, rule.right_side_of_derivation[i].nterm);
+                       printf("Na stack sa pushlo: isterminal: %d stac term: %d stac nterm: %d\n", stack.top->isterminal, stack.top->term, stack.top->nterm);
                    }                
                }
             }else{ //na vrchole stacku je terminal 
-                //int err=generate_token(actualterm, my_str);//zoberiem token
+                
+                //printf("Prijaty terminal: %d \n", actualterm->type_of_token);
+                printf("DOLE stack: %d, input: %d\n", stack.top->term, actualterm->type_of_token);
                 if(actualterm->type_of_token==Stack_Top_Terminal(&stack)){ //na vrchole zasobika je terminal, na vstupe je rovnaky terminal
+                    printf("na vstupe je rovnaky terminal ako na vrchole stacku, POP\n");
                     Stack_Pop(&stack); //popujem stack
+                    int err=generate_token(actualterm, my_str);//zoberiem token
+                    can_get_token=0;
+                    printf("Prijaty terminal: %d \n", actualterm->type_of_token);
+                    if(err){
+                         printf("error occured \n");
+                        return 1;
+                    }
+                    //generate_token(actualterm, my_str);//zoberiem token
                 }else{
-                    printf("Syntax error\n");
+                    printf("Syntax error end\n");
                     Stack_Free(&stack);
+                    return 1;
                 }
             }    
         }else{
             printf("Success\n");
+            return 0;
         }
-        custom_string_free_memory(my_str);
+         custom_string_free_memory(my_str);   
     }
+      
 }
 
 
