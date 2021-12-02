@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include "scanner.h"
+#include "lexical_analysis.h"
 //#include "LL_table.h"
 #include "nterms.h"
 

@@ -4,14 +4,14 @@
 #include <stdbool.h> 
 #include "stack.h" //odst
 #include "nterms.h"
-#include "scanner.h"
+#include "lexical_analysis.h"
 #include "error.h"
 
 #define SE -1
 #define EPS -2
-#define NUMBER_OF_RULES 70
+#define NUMBER_OF_RULES 74
 #define NUMBER_OF_TERMS 40 //45?
-#define NUMBER_OF_NTERMS 36
+#define NUMBER_OF_NTERMS 37
 #define NUMBER_OF_DERIVATIONS 10
 /*
 typedef enum{

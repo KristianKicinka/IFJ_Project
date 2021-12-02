@@ -38,7 +38,8 @@ typedef enum{
     NT_DOUBLE_DOTS=32,
     NT_CHECK_EOF=33,
     NT_CODE_IF=34,
-    NT_END=35
+    NT_END=35,
+    NT_OPTIONAL_EKV=36
    
 }nterms_type;
 
