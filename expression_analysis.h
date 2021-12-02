@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "error.h"
 
 #define TABLE 17 // Size of the table
 
@@ -24,7 +25,13 @@ typedef enum
     ID = 13,       //  IDENTIFIER
     LBRACKET = 14, //  (
     RBRACKET = 15, //  )
-    DOLAR = 16     //  $$
+    DOLLAR = 16,     //  $$
+
+    EXPRESSION,
+    EXPRESSION_S,
+    EXPRESSION_N,
+    EXPRESSION_I,
+    PUSH_SYMBOL
 } PSA_symbol;
 
 typedef enum
@@ -55,5 +62,7 @@ typedef enum
     LBRAC_E_RBRAC, // E -> (E)
     INVALID        // Non existing rule
 } PSA_rules;
+
+int stack_free_return(Error_type ret_val);
 
 #endif // !EXPRESSION_ANALYSIS
