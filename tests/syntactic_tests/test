@@ -1,7 +1,7 @@
 require "ifj21"
 function main() --Hlavni telo programu
 local a : integer = nil
-local vysl : integer = a
+local vysl : integer
 a = readi()
 if a then
 a = 1

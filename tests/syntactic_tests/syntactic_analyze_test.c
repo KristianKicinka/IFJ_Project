@@ -14,8 +14,8 @@ int main(){
         err=CheckGrammar(stack);
         //printf("nic %d\n", err);
     }
-
-    Stack_Free(&stack);
+    
+    //Stack_Free(&stack);
 
 
    /*

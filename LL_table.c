@@ -125,7 +125,7 @@ int LLtable[NUMBER_OF_NTERMS][NUMBER_OF_TERMS]={
 /*argument_nt       */  { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,       EPS,      SE,       23,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*ret_arg_nt   VOID*/   { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*ret_args_nt  VOID*/   { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*code_nt*/             { SE,    SE,  SE,  EPS,    SE,      SE,    6,   10,   SE,   SE,      8,    SE,     5,     SE,        SE,      SE,       SE,      SE,      SE,   SE,    9,     7,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},       
+/*code_nt*/             { SE,    SE, EPS,  EPS,    SE,      SE,    6,   10,   SE,   SE,      8,    SE,     5,     SE,        SE,      SE,       SE,      SE,      SE,   SE,    9,     7,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},       
 /*return_nt add EPS*/   { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     24,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,         EPS,     EPS,      EPS,    EPS,   EPS,       EPS,    EPS,  EPS,    EPS,   EPS,     SE,     SE},
 /*check_ret_params_ntE*/{ SE,    SE, EPS,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,    SE,  25,    SE,    SE,   SE,        25,          25,         25,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*returns_nt   EPS?*/   { SE,    SE, EPS,  EPS,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       26,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
@@ -134,8 +134,8 @@ int LLtable[NUMBER_OF_NTERMS][NUMBER_OF_TERMS]={
 /*call_params_nt*/      { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,       EPS,      SE,       29,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*assign_existing_nt*/  { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   30,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*to_assign_nt*/        { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   31,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*assign_value_nt*/     { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   33,    34,    SE,   SE,        33,          33,         33,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*assign_values_nt*/    { SE,   EPS,  SE,   SE,    SE,      SE,  EPS,  EPS,   SE,   SE,     24,    SE,    SE,     SE,        SE,      SE,       35,      SE,      SE,   SE,  EPS,   EPS,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*assign_value_nt*/     { SE,    SE,  SE,  EPS,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   33,    34,    SE,   SE,        33,          33,         33,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*assign_values_nt*/    { SE,   EPS,  SE,  EPS,    SE,      SE,  EPS,  EPS,   SE,   SE,     24,    SE,   EPS,     SE,        SE,      SE,       35,      SE,      SE,   SE,  EPS,   EPS,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*assign_from_nt*/      { SE,    SE,  SE,  EPS,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,   EPS,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   36,    37,    SE,   SE,        36,          36,         36,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*to_assign2_nt*/       { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       32,      SE,     EPS,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,    EPS},
 /*assign_new_nt*/       { SE,    SE,  SE,   SE,    SE,      SE,   SE,   38,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
@@ -160,12 +160,12 @@ int CheckGrammar(Stack_symbol_t stack){
         run++;
         Token term;
         Token *actualterm = &term;
+        
 
         Custom_string my_string;
         Custom_string *my_str = &my_string;
-
+        
         custom_string_init(my_str);
-     
 
         if(!Stack_Is_Empty(&stack)){
             if(stack.top->isterminal==false){ //na vrchu staku je neterminal
@@ -222,12 +222,15 @@ int CheckGrammar(Stack_symbol_t stack){
                     //generate_token(actualterm, my_str);//zoberiem token
                 }else{
                     printf("Syntax error end\n");
+                    custom_string_free_memory(my_str);
                     Stack_Free(&stack);
                     return 1;
                 }
             }    
         }else{
             printf("Success\n");
+            custom_string_free_memory(my_str);
+            Stack_Free(&stack);
             return 0;
         }
          custom_string_free_memory(my_str);   
