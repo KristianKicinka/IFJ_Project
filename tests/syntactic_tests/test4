@@ -1,0 +1,12 @@
+require "ifj21"
+function whitespaces()
+local
+s
+:
+string
+=
+"\x3A0"
+s = "a\255b"
+local x:integer=0
+write(x)
+end whitespaces()

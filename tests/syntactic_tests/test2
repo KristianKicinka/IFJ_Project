@@ -1,0 +1,20 @@
+require "ifj21"
+global g : function (integer) : integer -- deklarace funkce
+function f(x : integer) : integer
+if x then return x
+else
+local res : integer = g(x)
+return res
+end
+end
+function g(x : integer) : integer
+if x then
+local x : integer = f(x) 
+return x
+else return 200 end 
+end
+function main()
+local res : integer = g(10)
+write(res)
+end main()
+

@@ -12,19 +12,9 @@ int main(){
 
     while(!feof(stdin) && err==0){
         err=CheckGrammar(stack);
-        //printf("nic %d\n", err);
+        printf("GRAMAMR RETURN CODE: %d\n", err);
     }
+    printf("Stack je: %d \n", Stack_Is_Empty(&stack));
     
-    //Stack_Free(&stack);
-
-
-   /*
-   REVERSE RULES
-    for(int i=number_of_derivations-1, i>=0, i--){
-        push();
-    }*/
-
-
-    //Stack_Free(&stack);
     return 0;
 }   

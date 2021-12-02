@@ -1,0 +1,21 @@
+require "ifj21"
+function main() 
+local a : integer = nil
+local vysl : integer
+write("Zadejte cislo pro vypocet faktorialu\n")
+a = readi()
+if a then
+write("a je nil\n")
+return else end
+if a then
+write("Faktorial nelze spocitat\n")
+else
+vysl = 1
+while 0 do
+vysl = vysl
+a = 1
+end
+write("Vysledek je: ", vysl, "\n")
+end
+end
+main()

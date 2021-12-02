@@ -54,7 +54,7 @@ const rule_t RULES[NUMBER_OF_RULES]={
   /* 34 - assign_value_nt -> func_call_nt assign_values_nt // a=foo(b) */
                                                         {.number_of_derivations=2, {{.isterminal=false, .nterm=NT_FUNC_CALL},               {.isterminal=false, .nterm=NT_ASSIGN_VALUE}}},
   /*F35 - assign_values_nt -> , assign_from*/           {.number_of_derivations=2, {{.isterminal=true, .term=TYPE_COMMA},                   {.isterminal=false, .nterm=NT_ASSIGN_FROM}}},                             
-  /*F36 - assign_from -> value assign_values_nt */      {.number_of_derivations=2, {{.isterminal=false, .term=NT_VALUE},                    {.isterminal=false, .nterm=NT_ASSIGN_VALUES}}},                                                   
+  /*F36 - assign_from -> value assign_values_nt */      {.number_of_derivations=2, {{.isterminal=false, .nterm=NT_VALUE},                    {.isterminal=false, .nterm=NT_ASSIGN_VALUES}}},                                                   
   /*F37 - assign_from -> func_call_nt assign_values_nt*/{.number_of_derivations=2, {{.isterminal=false, .nterm=NT_FUNC_CALL},               {.isterminal=false, .nterm=NT_ASSIGN_VALUES}}},
   /* 38 - assign_new_nt -> <kw_local> <id> <:> datatype optional_ekv_nt */
                                                         {.number_of_derivations=5, {{.isterminal=true, .term=TYPE_KW_LOCAL},                {.isterminal=true, .term=TYPE_IDENTIFICATOR_VARIABLE},       {.isterminal=true, .term=TYPE_COLON},                 {.isterminal=false, .nterm=NT_DATA_TYPE},                         {.isterminal=false, .nterm=NT_OPTIONAL_EKV}}}, 
@@ -127,7 +127,7 @@ int LLtable[NUMBER_OF_NTERMS][NUMBER_OF_TERMS]={
 /*ret_args_nt  VOID*/   { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*code_nt*/             { SE,    SE, EPS,  EPS,    SE,      SE,    6,   10,   SE,   SE,      8,    SE,     5,     SE,        SE,      SE,       SE,      SE,      SE,   SE,    9,     7,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},       
 /*return_nt add EPS*/   { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     24,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,         EPS,     EPS,      EPS,    EPS,   EPS,       EPS,    EPS,  EPS,    EPS,   EPS,     SE,     SE},
-/*check_ret_params_ntE*/{ SE,    SE, EPS,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,    SE,  25,    SE,    SE,   SE,        25,          25,         25,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*check_ret_params_ntE*/{ SE,    SE, EPS,  EPS,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,    SE,  25,    SE,    SE,   SE,        25,          25,         25,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*returns_nt   EPS?*/   { SE,    SE, EPS,  EPS,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       26,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*func_call_nt */       { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    27,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*call_param_nt*/       { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,       EPS,      SE,       SE,      SE,      SE,   SE,   28,    SE,    SE,   SE,        28,          28,         28,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
@@ -144,10 +144,10 @@ int LLtable[NUMBER_OF_NTERMS][NUMBER_OF_TERMS]={
 /*if_nt*/               { SE,    SE,  SE,   SE,    SE,      SE,   13,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*start*/               { SE,    SE,  SE,    4,     3,       2,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,    4,   SE,     1,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*double_dot_nt E*/     { SE,   EPS,  SE,   SE,   EPS,     EPS,   SE,  EPS,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      15,      SE,  EPS,  EPS,   EPS,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*double_dots_nt*/      { SE,    SE,  SE,   SE,   EPS,     EPS,  EPS,   SE,   SE,   SE,    EPS,    SE,    SE,     SE,        SE,      SE,       16,      SE,      SE,  EPS,   SE,   EPS,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*check_eof_nt*/        { SE,    SE,  SE,   19,    20,      20,   69,   69,   SE,   SE,     69,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   53,   SE,    20,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*double_dots_nt*/      { SE,    SE,  SE,   SE,   EPS,     EPS,  EPS,  EPS,   SE,   SE,    EPS,    SE,    SE,     SE,        SE,      SE,       16,      SE,      SE,  EPS,   SE,   EPS,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*check_eof_nt*/        { SE,    SE,  69,   19,    20,      20,   69,   69,   SE,   SE,     69,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   53,   30,    20,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*code_if_nt E*/        { SE,    SE, EPS,   SE,    SE,      SE,   11,   11,   SE,   SE,     11,    SE,    11,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   11,    11,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*end_nt*/              { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   53,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*end_nt*/              { SE,    SE,  SE,  EPS,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   53,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*optinal_ekv_nt   */   { SE,    SE,  SE,  EPS,    SE,      SE,   72,   72,   70,   SE,     72,    SE,    72,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   72,    72,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     71},
 };
 
@@ -160,7 +160,6 @@ int CheckGrammar(Stack_symbol_t stack){
         run++;
         Token term;
         Token *actualterm = &term;
-        
 
         Custom_string my_string;
         Custom_string *my_str = &my_string;
@@ -173,7 +172,9 @@ int CheckGrammar(Stack_symbol_t stack){
                  int err=generate_token(actualterm, my_str);//zoberiem token
                  printf("Prijaty terminal: %d \n", actualterm->type_of_token);  
                   if(err==1){
-                    printf("error occured\n");
+                    printf("UP error getting token\n");
+                    custom_string_free_memory(my_str);
+                    Stack_Free(&stack);
                     return 1;
                }  
              }
@@ -193,7 +194,7 @@ int CheckGrammar(Stack_symbol_t stack){
                        printf("Stack: %c\n", stack.top->nterm);
                    } 
                    custom_string_free_memory(my_str);
-                   return process_error(SYNTAX_ANALYSIS_FAIL);
+                   return process_error(INTERNAL_FAILATURE);
                }else{
                     can_get_token=0;
                    printf("Cislo vybraneho pravidla %d \n",ruleNumber);
@@ -216,15 +217,19 @@ int CheckGrammar(Stack_symbol_t stack){
                     can_get_token=0;
                     printf("Prijaty terminal: %d \n", actualterm->type_of_token);
                     if(err){
-                         printf("error occured \n");
-                        return 1;
+                        printf("error getting token\n");
+                        custom_string_free_memory(my_str);
+                        Stack_Free(&stack);
+                        return process_error(INTERNAL_FAILATURE);
+                        return 1; //dead code
                     }
                     //generate_token(actualterm, my_str);//zoberiem token
                 }else{
                     printf("Syntax error end\n");
                     custom_string_free_memory(my_str);
                     Stack_Free(&stack);
-                    return 1;
+                    return process_error(SYNTAX_ANALYSIS_FAIL);
+                    return 1; //dead code
                 }
             }    
         }else{
