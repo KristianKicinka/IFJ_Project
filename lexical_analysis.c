@@ -134,6 +134,7 @@ int generate_token(Token *token, Custom_string *string){
                     current_state = STATE_START_F;
                 }else if (isspace(current_character) && current_character == '\n' ){
                     token->row_number++ ;
+                    current_state = STATE_START_F;
                 }else if (current_character == '='){
                     current_state = STATE_EQUALS_F;
                 }else if (current_character == '<'){

@@ -1,4 +1,6 @@
 andrej = "Ahoj\010\"Sve'te # \\\034"
 --if statement
-string = "retezec\032s\032lomitkem\032\092\032a\010novym\035radkem"
+string
+=
+"retezec\032s\032lomitkem\032\092\032a\010novym\035radkem"
 return
