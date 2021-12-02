@@ -15,6 +15,8 @@
 
 #include "lexical_analysis.h"
 
+#define HASH_SEQUENCE "035"
+
 char *keywords_array[COUNT_OF_KEYWORDS] = {
    "do","else","end","function",
    "global","if","integer","local",
@@ -460,7 +462,7 @@ int generate_token(Token *token, Custom_string *string){
                     current_state = STATE_ESC_SEQ_FINAL;
                 }else if(current_character == '\\' ){
                     current_state = STATE_ESC_SEQ_SLASH_N;
-                }else if(current_character < 32 || current_character == '#' || current_character == EOF){
+                }else if(current_character < 32 || current_character == EOF){
                     ungetc(current_character,stdin);
                     custom_string_free_memory(tmp_str);
                     return process_error(LEXICAL_ANALYSIS_FAIL);
@@ -478,6 +480,7 @@ int generate_token(Token *token, Custom_string *string){
 
             case STATE_ESC_SEQ_SLASH_N:{
                 bool error = true;
+                bool error_2 = true;
 
                 if(current_character == 'a' ){
                     error = custom_string_add_character(tmp_str,'\a');
@@ -513,6 +516,16 @@ int generate_token(Token *token, Custom_string *string){
                 }else if(current_character == '\n'){
                     error = custom_string_add_character(tmp_str,'\n');
                     current_state = STATE_ESCAPE_SEQ_N;
+                }else if(current_character == '#'){
+
+                    error = custom_string_add_character(tmp_str,'\\');
+                    char *ptr;  char sequence = (char) strtol(HASH_SEQUENCE,&ptr,10);
+                    if(*ptr){
+                        error_2 = custom_string_add_character(tmp_str,sequence);
+                    }else{
+                        error_2 = true;
+                    }
+                    current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == 'z'){
                     current_state = STATE_ESC_SEQ_WHITE;
                 }else if(isdigit(current_character)){
@@ -524,7 +537,7 @@ int generate_token(Token *token, Custom_string *string){
                     return process_error(LEXICAL_ANALYSIS_FAIL);
                 }
 
-                if(error == false){
+                if(error == false || error_2 == false){
                     custom_string_free_memory(tmp_str);
                     return process_error(INTERNAL_FAILATURE);
                 }
