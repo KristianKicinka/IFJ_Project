@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "custom_string.h"
+#include "error.h"
 
 #define COUNT_OF_KEYWORDS 15
 
@@ -143,6 +144,8 @@ int process_double_value(Custom_string *string, Token *token);
 int process_integer_value(Custom_string *string, Token *token);
 
 int generate_token(Token *token, Custom_string *string);
+
+int call_lex_error(char character,Error_type error);
 
 
 #endif // !LEXICAL_ANALYSIS_H

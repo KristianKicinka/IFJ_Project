@@ -54,10 +54,13 @@ void print_token(Token *token, int index){
     printf("######################################################\n");
     printf("TOKEN ( %d ) VALUES \n",index);
     printf("Token type : %d \n",token->type_of_token);
-    printf("Token value int : %d \n",(int) token->token_info.integer_value);
+    if(token->type_of_token == TYPE_INT_NUMBER)
+        printf("Token value int : %d \n",(int) token->token_info.integer_value);
+    if(token->type_of_token == TYPE_DOUBLE_NUMBER)
     printf("Token value double : %f \n",token->token_info.double_value);
     if(token->has_str_val == true)
         printf("Token value string : %s \n",token->token_info.custom_string->string_value);
+
     printf("Token row number : %d \n",(int)token->row_number);
     printf("######################################################\n");
     

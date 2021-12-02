@@ -13,7 +13,6 @@
 #include <stdio.h>
 #include <ctype.h>
 
-#include "error.h"
 #include "lexical_analysis.h"
 
 char *keywords_array[COUNT_OF_KEYWORDS] = {
@@ -557,20 +556,28 @@ int generate_token(Token *token, Custom_string *string){
 
                     escape_numbers[2] = current_character;
                     char *ptr;
+                    char *ptr_int;
                     char tmp_char = (char) strtol(escape_numbers,&ptr,10);
+                    int tmp_int = (int) strtol(escape_numbers,&ptr_int,10);
 
-                    if(*ptr){
+                    if(*ptr && *ptr_int){
                         ungetc(current_character,stdin);
                         custom_string_free_memory(tmp_str);
                         return process_error(INTERNAL_FAILATURE);
                     }else{
-                        bool error = custom_string_add_character(tmp_str,tmp_char);
-                        if(error == false){
+                        if(tmp_int >= 0 && tmp_int <= 255){
+                            bool error = custom_string_add_character(tmp_str,tmp_char);
+                            if(error == false){
+                                ungetc(current_character,stdin);
+                                custom_string_free_memory(tmp_str);
+                                return process_error(INTERNAL_FAILATURE);
+                            }else{
+                                current_state = STATE_ESCAPE_SEQ_N;
+                            }
+                        }else{
                             ungetc(current_character,stdin);
                             custom_string_free_memory(tmp_str);
                             return process_error(INTERNAL_FAILATURE);
-                        }else{
-                            current_state = STATE_ESCAPE_SEQ_N;
                         }
                     }
                     
