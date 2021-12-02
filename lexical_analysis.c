@@ -520,12 +520,15 @@ int generate_token(Token *token, Custom_string *string){
 
                     error = custom_string_add_character(tmp_str,'\\');
                     char *ptr;  char sequence = (char) strtol(HASH_SEQUENCE,&ptr,10);
+                    
                     if(*ptr){
                         error_2 = custom_string_add_character(tmp_str,sequence);
                     }else{
                         error_2 = true;
                     }
+
                     current_state = STATE_ESCAPE_SEQ_N;
+
                 }else if(current_character == 'z'){
                     current_state = STATE_ESC_SEQ_WHITE;
                 }else if(isdigit(current_character)){
