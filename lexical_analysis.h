@@ -2,14 +2,14 @@
  * 
  * Project : Implementace překladače imperativního jazyka IFJ21.
  * 
- * @file scanner.h 
+ * @file lexical_analysis.h 
  * @author Kristián Kičinka (xkicin02)
  * @brief  Lexikálna analýza (rozhranie)
  * 
  */
 
-#ifndef SCANNER_H
-#define SCANNER_H 
+#ifndef LEXICAL_ANALYSIS_H
+#define LEXICAL_ANALYSIS_H 
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -145,7 +145,7 @@ int process_integer_value(Custom_string *string, Token *token);
 int generate_token(Token *token, Custom_string *string);
 
 
-#endif // !SCANNER_H
+#endif // !LEXICAL_ANALYSIS_H
 
  
 

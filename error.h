@@ -12,8 +12,8 @@
 #define ERROR_H
 
 typedef enum {
-    SCANNER_ANALYSIS_FAIL,                                                     // 1
-    SCANNER_ANALYSIS_SUCCESS,                                                  // 0
+    LEXICAL_ANALYSIS_FAIL,                                                     // 1
+    LEXICAL_ANALYSIS_SUCCESS,                                                  // 0
     SYNTAX_ANALYSIS_FAIL,                                                      // 2
     SYNTAX_ANALYSIS_SUCCESS,                                                   // 0
     SEMANTIC_ANALYSIS_UNDEF_VAR,                                               // 3

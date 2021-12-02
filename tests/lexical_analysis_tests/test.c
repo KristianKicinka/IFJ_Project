@@ -9,7 +9,7 @@
  */
 
 
-#include "../../scanner.h"
+#include "../../lexical_analysis.h"
 #include <stdio.h>
 #include <stdlib.h>
 

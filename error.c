@@ -15,7 +15,7 @@
 
 int process_error(Error_type err_type){
 
-    if(err_type == SCANNER_ANALYSIS_FAIL){
+    if(err_type == LEXICAL_ANALYSIS_FAIL){
         return 1;
     }else if (err_type == SYNTAX_ANALYSIS_FAIL){
         return 2;

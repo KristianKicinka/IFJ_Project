@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -std=c11 -pedantic -lm  -ggdb3
-FILES=test.c ../../custom_string.c ../../error.c ../../scanner.c ../../function_data_list.c
+FILES=test.c ../../custom_string.c ../../error.c ../../lexical_analysis.c ../../function_data_list.c
 
 .PHONY: test-data-list clean
 

@@ -6,7 +6,8 @@
         "stack.h": "c",
         "stdlib.h": "c",
         "scanner.h": "c",
-        "funct_params_list.h": "c"
+        "funct_params_list.h": "c",
+        "lexical_analysis.h": "c"
     },
     "C_Cpp.dimInactiveRegions": false
 }

@@ -11,7 +11,7 @@
 #ifndef FUNCT_PARAMS_LIST_H
 #define FUNCT_PARAMS_LIST_H
 
-#include "scanner.h"
+#include "lexical_analysis.h"
 #include <stdlib.h>
 #include <stdio.h>
 

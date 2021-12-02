@@ -1,7 +1,7 @@
 // tests for list of parameters in function
 
 
-#include "../../scanner.h"
+#include "../../lexical_analysis.h"
 #include "../../function_data_list.h"
 #include <stdio.h>
 #include <stdlib.h>

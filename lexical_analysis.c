@@ -2,7 +2,7 @@
  * 
  * Project : Implementace překladače imperativního jazyka IFJ21.
  * 
- * @file scanner.c 
+ * @file lexical_analysis.c 
  * @author Kristián Kičinka (xkicin02)
  * @brief  Lexikálna analýza (implementácia)
  * 
@@ -14,7 +14,7 @@
 #include <ctype.h>
 
 #include "error.h"
-#include "scanner.h"
+#include "lexical_analysis.h"
 
 char *keywords_array[COUNT_OF_KEYWORDS] = {
    "do","else","end","function",
@@ -58,11 +58,11 @@ int process_identificator(Custom_string *string, Token *token, char character){
 
     if(error == false){
         custom_string_free_memory(string);
-        return process_error(SCANNER_ANALYSIS_FAIL);
+        return process_error(LEXICAL_ANALYSIS_FAIL);
     } 
 
     custom_string_free_memory(string);
-    return process_error(SCANNER_ANALYSIS_SUCCESS);
+    return process_error(LEXICAL_ANALYSIS_SUCCESS);
 
 }
 
@@ -79,7 +79,7 @@ int process_double_value(Custom_string *string, Token *token){
     token->token_info.double_value = double_value;
 
     custom_string_free_memory(string);
-    return process_error(SCANNER_ANALYSIS_SUCCESS);
+    return process_error(LEXICAL_ANALYSIS_SUCCESS);
 }
 
 int process_integer_value(Custom_string *string, Token *token){
@@ -95,7 +95,7 @@ int process_integer_value(Custom_string *string, Token *token){
     token->token_info.integer_value = integer_value;
 
     custom_string_free_memory(string);
-    return process_error(SCANNER_ANALYSIS_SUCCESS);
+    return process_error(LEXICAL_ANALYSIS_SUCCESS);
 
 }
 
@@ -178,39 +178,39 @@ int generate_token(Token *token, Custom_string *string){
                 }else if (current_character == '{'){
                     token->type_of_token = TYPE_LEFT_CURLY_BRACKET;
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_SUCCESS);
+                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
                 }else if (current_character == '}'){
                     token->type_of_token = TYPE_RIGHT_CURLY_BRACKET;
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_SUCCESS);
+                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
                 }else if (current_character == '('){
                     token->type_of_token = TYPE_LEFT_ROUND_BRACKET;
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_SUCCESS);
+                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
                 }else if (current_character == ')'){
                     token->type_of_token = TYPE_RIGHT_ROUND_BRACKET;
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_SUCCESS);
+                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
                 }else if (current_character == '*'){
                     token->type_of_token = TYPE_MULTIPLICATE;
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_SUCCESS);
+                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
                 }else if (current_character == '#'){
                     token->type_of_token = TYPE_HASHTAG;
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_SUCCESS);
+                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
                 }else if (current_character == '+'){
                     token->type_of_token = TYPE_PLUS;
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_SUCCESS);
+                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
                 }else if (current_character == ':'){
                     token->type_of_token = TYPE_COLON;
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_SUCCESS);
+                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
                 }else if (current_character == ','){
                     token->type_of_token = TYPE_COMMA;
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_SUCCESS);
+                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
                 }
 
                 break;
@@ -244,7 +244,7 @@ int generate_token(Token *token, Custom_string *string){
                 }
 
                 custom_string_free_memory(tmp_str);
-                return process_error(SCANNER_ANALYSIS_SUCCESS);
+                return process_error(LEXICAL_ANALYSIS_SUCCESS);
 
                 break;
 
@@ -258,7 +258,7 @@ int generate_token(Token *token, Custom_string *string){
                 }
 
                 custom_string_free_memory(tmp_str);
-                return process_error(SCANNER_ANALYSIS_SUCCESS);
+                return process_error(LEXICAL_ANALYSIS_SUCCESS);
 
                 break;
 
@@ -272,7 +272,7 @@ int generate_token(Token *token, Custom_string *string){
                 }
                 
                 custom_string_free_memory(tmp_str);
-                return process_error(SCANNER_ANALYSIS_SUCCESS);
+                return process_error(LEXICAL_ANALYSIS_SUCCESS);
 
                 break;
 
@@ -283,11 +283,11 @@ int generate_token(Token *token, Custom_string *string){
                 }else{
                     ungetc(current_character,stdin);
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_FAIL);
+                    return process_error(LEXICAL_ANALYSIS_FAIL);
                 }
 
                 custom_string_free_memory(tmp_str);
-                return process_error(SCANNER_ANALYSIS_SUCCESS);
+                return process_error(LEXICAL_ANALYSIS_SUCCESS);
 
                 break;
 
@@ -298,11 +298,11 @@ int generate_token(Token *token, Custom_string *string){
                 }else{
                     ungetc(current_character,stdin);
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_FAIL);
+                    return process_error(LEXICAL_ANALYSIS_FAIL);
                 }
 
                 custom_string_free_memory(tmp_str);
-                return process_error(SCANNER_ANALYSIS_SUCCESS);
+                return process_error(LEXICAL_ANALYSIS_SUCCESS);
 
                 break;
 
@@ -316,7 +316,7 @@ int generate_token(Token *token, Custom_string *string){
                 }
 
                 custom_string_free_memory(tmp_str);
-                return process_error(SCANNER_ANALYSIS_SUCCESS);
+                return process_error(LEXICAL_ANALYSIS_SUCCESS);
 
                 break;
 
@@ -382,7 +382,7 @@ int generate_token(Token *token, Custom_string *string){
                 }else{
                     ungetc(current_character,stdin);
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_FAIL);
+                    return process_error(LEXICAL_ANALYSIS_FAIL);
                 }
                 break;
             
@@ -412,7 +412,7 @@ int generate_token(Token *token, Custom_string *string){
                 }else{
                     ungetc(current_character,stdin);
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_FAIL);
+                    return process_error(LEXICAL_ANALYSIS_FAIL);
                 }
                 break;
 
@@ -432,7 +432,7 @@ int generate_token(Token *token, Custom_string *string){
                 }else{
                     ungetc(current_character,stdin);
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_FAIL);
+                    return process_error(LEXICAL_ANALYSIS_FAIL);
                 }
                 break;
 
@@ -464,7 +464,7 @@ int generate_token(Token *token, Custom_string *string){
                 }else if(current_character < 32 || current_character == '#' || current_character == EOF){
                     ungetc(current_character,stdin);
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_FAIL);
+                    return process_error(LEXICAL_ANALYSIS_FAIL);
                 }else{
 
                     bool error = custom_string_add_character(tmp_str,(char) current_character);
@@ -522,7 +522,7 @@ int generate_token(Token *token, Custom_string *string){
                 }else{
                     ungetc(current_character,stdin);
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_FAIL);
+                    return process_error(LEXICAL_ANALYSIS_FAIL);
                 }
 
                 if(error == false){
@@ -548,7 +548,7 @@ int generate_token(Token *token, Custom_string *string){
                 }else{
                     ungetc(current_character,stdin);
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_FAIL);
+                    return process_error(LEXICAL_ANALYSIS_FAIL);
                 }
                 break;
 
@@ -577,7 +577,7 @@ int generate_token(Token *token, Custom_string *string){
                 }else{
                     ungetc(current_character,stdin);
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_FAIL);
+                    return process_error(LEXICAL_ANALYSIS_FAIL);
                 }
                 break;
 
@@ -592,7 +592,7 @@ int generate_token(Token *token, Custom_string *string){
                 token->type_of_token = TYPE_STRING;
                 token->has_str_val = true;
                 custom_string_free_memory(tmp_str);
-                return process_error(SCANNER_ANALYSIS_SUCCESS);
+                return process_error(LEXICAL_ANALYSIS_SUCCESS);
 
                 break;
             }
@@ -605,7 +605,7 @@ int generate_token(Token *token, Custom_string *string){
                     token->type_of_token = TYPE_MINUS;
                     ungetc(current_character,stdin);
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_SUCCESS);
+                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
                 }
                 break;
 
@@ -629,7 +629,7 @@ int generate_token(Token *token, Custom_string *string){
                 }else if(current_character == EOF){
 
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_SUCCESS);
+                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
 
                 }else if(current_character == '\n'){
                     token->row_number++;
@@ -646,7 +646,7 @@ int generate_token(Token *token, Custom_string *string){
                 }else if(current_character == EOF){
 
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_FAIL);
+                    return process_error(LEXICAL_ANALYSIS_FAIL);
 
                 }else{
                     current_state = STATE_BLOCK_COMMENT_F;
@@ -660,7 +660,7 @@ int generate_token(Token *token, Custom_string *string){
                 }else if(current_character == EOF){
 
                     custom_string_free_memory(tmp_str);
-                    return process_error(SCANNER_ANALYSIS_FAIL);
+                    return process_error(LEXICAL_ANALYSIS_FAIL);
 
                 }else{
                     current_state = STATE_BLOCK_COMMENT_F;
@@ -672,7 +672,7 @@ int generate_token(Token *token, Custom_string *string){
                 token->type_of_token = TYPE_KW_EOF;
                 ungetc(current_character,stdin);
                 custom_string_free_memory(tmp_str);
-                return process_error(SCANNER_ANALYSIS_SUCCESS);
+                return process_error(LEXICAL_ANALYSIS_SUCCESS);
 
                 break;
         }
