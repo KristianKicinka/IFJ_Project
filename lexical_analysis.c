@@ -615,6 +615,8 @@ int generate_token(Token *token, Custom_string *string){
 
                 token->type_of_token = TYPE_STRING;
                 token->has_str_val = true;
+                
+                ungetc(current_character,stdin);
                 custom_string_free_memory(tmp_str);
                 return process_error(LEXICAL_ANALYSIS_SUCCESS);
 
