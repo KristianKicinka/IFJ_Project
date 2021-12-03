@@ -49,7 +49,7 @@ table_item_t *search_item(symbol_table_t *table, char *key){
   return NULL;
 }
 
-void insert_symbol_variable(symbol_table_t *table, char *key){
+table_item_t *insert_symbol_variable(symbol_table_t *table, char *key){
 
   table_item_t *new_item = malloc(sizeof(table_item_t));
   if(new_item == NULL)
@@ -80,15 +80,19 @@ void insert_symbol_variable(symbol_table_t *table, char *key){
     free(new_item->data.identificator);
     free(new_item->key);
     free(new_item);
-    return;
+
+    return new_item;
 
   }else{
     new_item->next = (*table)[new_index];
     (*table)[new_index] = new_item;
   }
+
+  return new_item;
+
 }
 
-void insert_symbol_function(symbol_table_t *table, char *key){
+table_item_t *insert_symbol_function(symbol_table_t *table, char *key){
 
   table_item_t *new_item = malloc(sizeof(table_item_t));
   if(new_item == NULL)
@@ -109,7 +113,6 @@ void insert_symbol_function(symbol_table_t *table, char *key){
   strcpy(new_item->data.identificator,key);
 
   new_item->data.symbol_info = IS_UNSET;
-  //new_item->data.type_of_symbol = TYPE_UNSET;         nepoužíva sa 
   new_item->data.symbol_type = TYPE_FUNCTION;
 
   new_item->data.list_of_parameters = (Data_list*) malloc(sizeof(Data_list));
@@ -130,51 +133,45 @@ void insert_symbol_function(symbol_table_t *table, char *key){
     free(new_item->data.identificator);
     free(new_item->key);
     free(new_item);
-    return;
+    return new_item;
 
   }else{
     new_item->next = (*table)[new_index];
     (*table)[new_index] = new_item;
   }
 
+  return new_item;
+
 }
 
-void insert_function_parameter(symbol_table_t *table, char *key, Token_type parameter){
+void insert_function_parameter(symbol_table_t *table, table_item_t *item, Token_type parameter){
 
-  table_item_t *found_item = search_item(table,key);
-
-  if(found_item != NULL){
-    function_data_list_insert(found_item->data.list_of_parameters,parameter);
+  if(item != NULL){
+    function_data_list_insert(item->data.list_of_parameters,parameter);
   }
 
 }
 
-void insert_function_return_type(symbol_table_t *table, char *key, Token_type return_type){
+void insert_function_return_type(symbol_table_t *table, table_item_t *item, Token_type return_type){
 
-  table_item_t *found_item = search_item(table,key);
-
-  if(found_item != NULL){
-    function_data_list_insert(found_item->data.list_of_return_types,return_type);
+  if(item != NULL){
+    function_data_list_insert(item->data.list_of_return_types,return_type);
   }
 
 }
 
-void set_symbol_variable_type(symbol_table_t *table, char *key, Token_type type){
+void set_symbol_variable_type(symbol_table_t *table, table_item_t *item, Token_type type){
 
-  table_item_t *found_item = search_item(table,key);
-
-  if(found_item != NULL){
-    found_item->data.symbol_variable_type = type;
+  if(item != NULL){
+    item->data.symbol_variable_type = type;
   }
   
 }
 
-void set_additional_info(symbol_table_t *table, char *key, Additional_info info){
+void set_additional_info(symbol_table_t *table, table_item_t *item, Additional_info info){
 
-  table_item_t *found_item = search_item(table,key);
-
-  if(found_item != NULL){
-    found_item->data.symbol_info = info;
+  if(item != NULL){
+    item->data.symbol_info = info;
   }
 
 }

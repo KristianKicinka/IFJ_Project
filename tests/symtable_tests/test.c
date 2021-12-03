@@ -14,21 +14,27 @@ int main(int argc, char const *argv[]){
     char *variable_key = "andrej";
     char *function_key = "andrej_function";
 
+    table_item_t current_function;
+    table_item_t *curr_function = &current_function;
+
+    table_item_t current_variable;
+    table_item_t *curr_variable = &current_variable;
+
     table_init(my_table);
 
     // Working with variable
-    insert_symbol_variable(my_table,variable_key);
-    set_symbol_variable_type(my_table,variable_key,TYPE_INT_NUMBER);
-    set_additional_info(my_table,variable_key,IS_LOCAL);
+    curr_variable = insert_symbol_variable(my_table,variable_key);
+    set_symbol_variable_type(my_table,curr_variable,TYPE_INT_NUMBER);
+    set_additional_info(my_table,curr_variable,IS_LOCAL);
     print_symtable_items(my_table,variable_key);
 
     // Working with function
 
-    insert_symbol_function(my_table,function_key);
-    set_additional_info(my_table,function_key,IS_DEFINED);
-    insert_function_parameter(my_table,function_key,TYPE_INT_NUMBER);
-    insert_function_parameter(my_table,function_key,TYPE_INT_NUMBER);
-    insert_function_return_type(my_table,function_key,TYPE_STRING);
+    curr_function = insert_symbol_function(my_table,function_key);
+    set_additional_info(my_table,curr_function,IS_DEFINED);
+    insert_function_parameter(my_table,curr_function,TYPE_INT_NUMBER);
+    insert_function_parameter(my_table,curr_function,TYPE_INT_NUMBER);
+    insert_function_return_type(my_table,curr_function,TYPE_STRING);
     print_symtable_items(my_table,function_key);
 
     table_dispose(my_table);
