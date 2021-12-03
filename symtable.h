@@ -83,10 +83,4 @@ void set_symbol_variable_type(symbol_table_t *table, char *key, Token_type type)
 void set_additional_info(symbol_table_t *table, char *key, Additional_info info);
 
 
-
-
-
-
-
-
 #endif // !SYMBOL_TABLE_H
