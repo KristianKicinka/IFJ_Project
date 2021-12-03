@@ -1,7 +1,5 @@
-test-string
-exp-test-stack
-test-expression
-test-datalist
-test-lex-analysis
+*
+!/**/
+!*.*
 
 *.dsYM
