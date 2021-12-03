@@ -29,10 +29,13 @@ int main(int argc, char const *argv[]){
         Custom_string *my_str = &my_string;
 
         custom_string_init(my_str);
-
+        //printf("hahahah\n");
         generate_token(my_tok,my_str);
             
+      
         print_token(my_tok,index);
+
+        //printf("hahahah\n");
 
         custom_string_free_memory(my_str);
         index++;       
@@ -55,7 +58,7 @@ void print_token(Token *token, int index){
     if(token->has_str_val == true)
         printf("Token value string : %s \n",token->token_info.custom_string->string_value);
 
-    printf("Token row number : %d \n",(int)token->row_number);
+    //printf("Token row number : %d \n",(int)token->row_number);
     printf("######################################################\n");
     
 }

@@ -68,6 +68,7 @@ void process_identificator(Custom_string *string, Token *token, char character){
     custom_string_copy_string(string,token->token_info.custom_string);
 
     token->has_str_val = true;
+    custom_string_free_memory(string);
     return;
 
 }
@@ -219,6 +220,7 @@ void generate_token(Token *token, Custom_string *string){
                 }else{
                     ungetc(current_character,stdin);
                     process_identificator(tmp_str,token,current_character);
+                    return;
                 }
                 break;
 
@@ -614,8 +616,7 @@ void generate_token(Token *token, Custom_string *string){
                 token->type_of_token = TYPE_KW_EOF;
                 ungetc(current_character,stdin);
                 custom_string_free_memory(tmp_str);
-                process_error(LEXICAL_ANALYSIS_SUCCESS);
-
+                return;
                 break;
         }
 
