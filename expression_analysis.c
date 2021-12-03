@@ -28,8 +28,20 @@ int PSA_table[TABLE][TABLE] =
 /*| $$ |*/     { PA, PA, PA, PA, PA , PA, PA , PA, PA , PA, PA , PA , PA , PA , PA, E , U }
 };
 
+static PSA_symbol symbol_from_token(Token* token)
+{
+    switch (token->type_of_token)
+    {
+    case TYPE_PLUS:
+        return PLUS;
+    
+    default: 
+        return DOLLAR;
+    }
 
-int precedence_analysis()  //TODO naplnit tokenom
+}
+
+int precedence_analysis(Token token)  //TODO naplnit tokenom
 {
     exp_stack_init(&stack);
 
@@ -37,6 +49,35 @@ int precedence_analysis()  //TODO naplnit tokenom
     {
         stack_free_return(INTERNAL_FAILATURE);
     }
+
+    bool success = false;
+
+    Exp_stack_item *stack_top_term;
+    PSA_symbol input_symbol;
+
+    do
+    {
+        stack_top_term = exp_stack_top(&stack);
+        input_symbol = symbol_from_token(&token);
+
+        if(stack_top_term == NULL)
+            stack_free_return(INTERNAL_FAILATURE);
+
+        /*
+        switch(PSA_table[get_prec_table_index(stack_top_terml->symbol)][get_prec_table_index(actual_symbol)])
+        {
+            case PA:
+            case R:
+            case P:
+            case E:
+            case U:
+        }
+
+        */
+
+    }while(success==false);
+
+
 
     return 0;
 }

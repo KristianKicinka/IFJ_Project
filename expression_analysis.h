@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "error.h"
+#include "lexical_analysis.h"
 
 #define TABLE 17 // Size of the table
 
@@ -62,6 +63,8 @@ typedef enum
     LBRAC_E_RBRAC, // E -> (E)
     INVALID        // Non existing rule
 } PSA_rules;
+
+int precedence_analysis(Token token);
 
 int stack_free_return(Error_type ret_val);
 
