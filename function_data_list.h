@@ -24,7 +24,7 @@ typedef struct function_data_list_t {
 
 void function_data_list_init(Data_list *list);
 
-bool function_data_list_insert(Data_list *list, Token_type token_type);
+void function_data_list_insert(Data_list *list, Token_type token_type);
 
 void function_data_list_free_memory(Data_list *list);
 

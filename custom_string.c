@@ -24,22 +24,20 @@
  * @return false 
  */
 
-bool custom_string_init(Custom_string *str){
+void custom_string_init(Custom_string *str){
 
     int length = 0;
     int memory = 1; 
     
     char *new_string = (char *) malloc(sizeof(char)*(memory));
     if(new_string == NULL){
-        return false;
+        process_error(INTERNAL_FAILATURE);
     }
         
     str->string_value = new_string;
     str->length = length;
     str->string_value[str->length] = '\0';
     str->size_of_allocated_memory = memory;
-
-    return true;
 }
 
 /**
@@ -51,7 +49,7 @@ bool custom_string_init(Custom_string *str){
  * @return false 
  */
 
-bool custom_string_add_character(Custom_string *str, char character){
+void custom_string_add_character(Custom_string *str, char character){
 
 
     if(str->size_of_allocated_memory <= str->length + 1){
@@ -60,7 +58,7 @@ bool custom_string_add_character(Custom_string *str, char character){
         str_tmp = (char *) realloc(str->string_value,(str->size_of_allocated_memory + 2) * sizeof(char));
 
         if(str_tmp == NULL){
-            return false;
+            process_error(INTERNAL_FAILATURE);
         }
 
         str->string_value = str_tmp;
@@ -71,8 +69,6 @@ bool custom_string_add_character(Custom_string *str, char character){
     str->length++;
     str->string_value[str->length] = '\0';
     
-
-    return true;
 }
 
 /**
@@ -84,7 +80,7 @@ bool custom_string_add_character(Custom_string *str, char character){
  * @return false 
  */
 
-bool custom_string_add_another_string(Custom_string *str, char *str_to_add){
+void custom_string_add_another_string(Custom_string *str, char *str_to_add){
 
     int to_add_length = strlen(str_to_add);
     int length_after_add_string = str->length + to_add_length;
@@ -96,7 +92,7 @@ bool custom_string_add_another_string(Custom_string *str, char *str_to_add){
         str_tmp = (char *) realloc(str->string_value,( memory_after_add_string ) * sizeof(char));
     
         if(str_tmp == NULL){
-            return false;
+            process_error(INTERNAL_FAILATURE);
         }
         str->string_value = str_tmp;
         str->size_of_allocated_memory = memory_after_add_string;
@@ -106,7 +102,6 @@ bool custom_string_add_another_string(Custom_string *str, char *str_to_add){
     str->length = length_after_add_string;
     str->string_value[str->length + 1] = '\0';
 
-    return true;
 }
 
 /**
@@ -118,7 +113,7 @@ bool custom_string_add_another_string(Custom_string *str, char *str_to_add){
  * @return false 
  */
 
-bool custom_string_copy_string(Custom_string *source, Custom_string *destination){
+void custom_string_copy_string(Custom_string *source, Custom_string *destination){
 
     int new_dest_length = source->length;
     int new_dest_memory = new_dest_length + 1;
@@ -129,7 +124,7 @@ bool custom_string_copy_string(Custom_string *source, Custom_string *destination
         str_tmp = (char *) realloc(destination->string_value,( new_dest_memory ) * sizeof(char));
 
         if(str_tmp == NULL){
-            return false;
+            process_error(INTERNAL_FAILATURE);
         }
         destination->string_value = str_tmp;
         destination->size_of_allocated_memory = new_dest_memory;
@@ -138,7 +133,6 @@ bool custom_string_copy_string(Custom_string *source, Custom_string *destination
     strcpy(destination->string_value,source->string_value);
     destination->length = new_dest_length;
 
-    return true;
 }
 
 /**

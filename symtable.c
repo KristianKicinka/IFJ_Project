@@ -53,15 +53,15 @@ void insert_symbol_variable(symbol_table_t *table, char *key){
 
   table_item_t *new_item = malloc(sizeof(table_item_t));
   if(new_item == NULL)
-    return;
+    process_error(INTERNAL_FAILATURE);
 
   new_item->key = malloc(sizeof(char)*(strlen(key)+1));
   if(new_item->key == NULL)
-    return;
+    process_error(INTERNAL_FAILATURE);
   
   new_item->data.identificator = malloc(sizeof(char)*(strlen(key)+1));
   if(new_item->data.identificator == NULL)
-    return;
+    process_error(INTERNAL_FAILATURE);
   
   int new_index = get_hash(key);
   table_item_t *found_item = search_item(table,key);
@@ -92,15 +92,15 @@ void insert_symbol_function(symbol_table_t *table, char *key){
 
   table_item_t *new_item = malloc(sizeof(table_item_t));
   if(new_item == NULL)
-    return;
+    process_error(INTERNAL_FAILATURE);
 
   new_item->key = malloc(sizeof(char)*(strlen(key)+1));
   if(new_item->key == NULL)
-    return;
+    process_error(INTERNAL_FAILATURE);
 
   new_item->data.identificator = malloc(sizeof(char)*(strlen(key)+1));
   if(new_item->data.identificator == NULL)
-    return;
+    process_error(INTERNAL_FAILATURE);
   
   int new_index = get_hash(key);
   table_item_t *found_item = search_item(table,key);
@@ -114,13 +114,13 @@ void insert_symbol_function(symbol_table_t *table, char *key){
 
   new_item->data.list_of_parameters = (Data_list*) malloc(sizeof(Data_list));
   if(new_item->data.list_of_parameters == NULL)
-    return;
+    process_error(INTERNAL_FAILATURE);
 
   function_data_list_init(new_item->data.list_of_parameters);       // hadze segfault
 
   new_item->data.list_of_return_types = (Data_list*) malloc(sizeof(Data_list));
   if(new_item->data.list_of_return_types == NULL)
-    return;
+    process_error(INTERNAL_FAILATURE);
 
   function_data_list_init(new_item->data.list_of_return_types);
   

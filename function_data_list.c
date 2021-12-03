@@ -19,7 +19,7 @@ void function_data_list_init(Data_list *list){
 
     Token_type *new_item = (Token_type *) malloc(sizeof(Token_type)*(list->allocated_memory));
     if(new_item == NULL){
-        return;
+        process_error(INTERNAL_FAILATURE);
     }
 
     list->items = new_item;
@@ -27,20 +27,18 @@ void function_data_list_init(Data_list *list){
 
 }
 
-bool function_data_list_insert(Data_list *list, Token_type parameter){
+void function_data_list_insert(Data_list *list, Token_type parameter){
     Token_type *new_item;
     new_item = (Token_type *) realloc(list->items,(list->allocated_memory + 1) * sizeof(Token_type));
 
         if(new_item == NULL){
-            return false;
+            process_error(INTERNAL_FAILATURE);
         }
 
     list->items = new_item;
     list->items[list->items_count] = parameter;
     list->items_count++;
     list->allocated_memory++;
-
-    return true;
 
 }
 

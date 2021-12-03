@@ -12,7 +12,7 @@
 #define CUSTOM_STRING_H
 
 #include <stdbool.h>
-
+#include "error.h"
 
 typedef struct custom_string_t
 {
@@ -31,7 +31,7 @@ typedef struct custom_string_t
  * @return false 
  */
 
-bool custom_string_init(Custom_string *str);
+void custom_string_init(Custom_string *str);
 
 /**
  * @brief 
@@ -42,7 +42,7 @@ bool custom_string_init(Custom_string *str);
  * @return false 
  */
 
-bool custom_string_add_character(Custom_string *str, char character);
+void custom_string_add_character(Custom_string *str, char character);
 
 /**
  * @brief 
@@ -53,7 +53,7 @@ bool custom_string_add_character(Custom_string *str, char character);
  * @return false 
  */
 
-bool custom_string_add_another_string(Custom_string *str, char *str_to_add);
+void custom_string_add_another_string(Custom_string *str, char *str_to_add);
 
 /**
  * @brief 
@@ -64,7 +64,7 @@ bool custom_string_add_another_string(Custom_string *str, char *str_to_add);
  * @return false 
  */
 
-bool custom_string_copy_string(Custom_string *source, Custom_string *destination);
+void custom_string_copy_string(Custom_string *source, Custom_string *destination);
 
 /**
  * @brief 

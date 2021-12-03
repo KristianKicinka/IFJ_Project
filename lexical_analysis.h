@@ -137,15 +137,15 @@ typedef struct token_t {
 
 
 
-int process_identificator(Custom_string *string, Token *token, char character);
+void process_identificator(Custom_string *string, Token *token, char character);
 
-int process_double_value(Custom_string *string, Token *token);
+void process_double_value(Custom_string *string, Token *token);
 
-int process_integer_value(Custom_string *string, Token *token);
+void process_integer_value(Custom_string *string, Token *token);
 
-int generate_token(Token *token, Custom_string *string);
+void generate_token(Token *token, Custom_string *string);
 
-int call_lex_error(char character,Error_type error);
+void call_lex_error(char character,Error_type error);
 
 
 #endif // !LEXICAL_ANALYSIS_H
