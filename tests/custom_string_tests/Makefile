@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -std=c11 -pedantic -lm  -ggdb3
-FILES=test.c ../../custom_string.c
+FILES=test.c ../../custom_string.c ../../error.c
 
 .PHONY: test-string clean
 

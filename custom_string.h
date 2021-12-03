@@ -86,3 +86,4 @@ int custom_string_compare_with_basic_string(Custom_string *str, char *str_to_add
 void custom_string_free_memory(Custom_string *str);
 
 #endif // !CUSTOM_STRING_H
+

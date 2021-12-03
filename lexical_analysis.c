@@ -44,7 +44,7 @@ Token_type keywords_enum_array[COUNT_OF_KEYWORDS] = {
 };
 
 
-int process_identificator(Custom_string *string, Token *token, char character){
+void process_identificator(Custom_string *string, Token *token, char character){
 
     bool keyword_is_set = false;
 
@@ -65,58 +65,48 @@ int process_identificator(Custom_string *string, Token *token, char character){
     }
     
 
-    bool error = custom_string_copy_string(string,token->token_info.custom_string);
+    custom_string_copy_string(string,token->token_info.custom_string);
 
     token->has_str_val = true;
 
-    if(error == false){
-        custom_string_free_memory(string);
-        return process_error(LEXICAL_ANALYSIS_FAIL);
-    } 
-
-    custom_string_free_memory(string);
-    return process_error(LEXICAL_ANALYSIS_SUCCESS);
-
 }
 
-int process_double_value(Custom_string *string, Token *token){
+void process_double_value(Custom_string *string, Token *token){
     char *ptr;
     double double_value = (double) strtod(string->string_value, &ptr);
 
     if(*ptr){
         custom_string_free_memory(string);
-        return process_error(INTERNAL_FAILATURE);
+        process_error(INTERNAL_FAILATURE);
     }
 
     token->type_of_token = TYPE_DOUBLE_NUMBER;
     token->token_info.double_value = double_value;
 
     custom_string_free_memory(string);
-    return process_error(LEXICAL_ANALYSIS_SUCCESS);
 }
 
-int process_integer_value(Custom_string *string, Token *token){
+void process_integer_value(Custom_string *string, Token *token){
     char *ptr;
     int integer_value = (int) strtol(string->string_value, &ptr, 10);
 
     if(*ptr){
         custom_string_free_memory(string);
-        return process_error(INTERNAL_FAILATURE);
+        process_error(INTERNAL_FAILATURE);
     }
 
     token->type_of_token = TYPE_INT_NUMBER;
     token->token_info.integer_value = integer_value;
 
     custom_string_free_memory(string);
-    return process_error(LEXICAL_ANALYSIS_SUCCESS);
 
 }
 
 
-int generate_token(Token *token, Custom_string *string){
+void generate_token(Token *token, Custom_string *string){
 
     if(string == NULL){
-        return process_error(INTERNAL_FAILATURE);
+        process_error(INTERNAL_FAILATURE);
     }
 
     token->token_info.custom_string = string;
@@ -130,10 +120,7 @@ int generate_token(Token *token, Custom_string *string){
     bool is_double = false;
     char escape_numbers[4] = {0,0,0};
 
-    if(custom_string_init(tmp_str) == false){
-        custom_string_free_memory(tmp_str);
-        return process_error(INTERNAL_FAILATURE);
-    }
+    custom_string_init(tmp_str);
 
     while (1){
 
@@ -167,64 +154,54 @@ int generate_token(Token *token, Custom_string *string){
                     current_state = STATE_EOF_F;
                 }else if (isalpha(current_character) || current_character == '_'){
 
-                    bool error = custom_string_add_character(tmp_str,(char) tolower(current_character));
-
-                    if(error == false){
-                        custom_string_free_memory(tmp_str);
-                        return process_error(INTERNAL_FAILATURE);
-                    }
+                    custom_string_add_character(tmp_str,(char) tolower(current_character));
 
                     current_state = STATE_IDENT_OR_KW;
 
                 }else if (isdigit(current_character)){
 
-                    bool error = custom_string_add_character(tmp_str,current_character);
+                    custom_string_add_character(tmp_str,current_character);
 
                     is_double = false;
-
-                    if(error == false){
-                        custom_string_free_memory(tmp_str);
-                        return process_error(INTERNAL_FAILATURE);
-                    }
 
                     current_state = STATE_NUMBER_F;
                     
                 }else if (current_character == '{'){
                     token->type_of_token = TYPE_LEFT_CURLY_BRACKET;
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
+                    return;
                 }else if (current_character == '}'){
                     token->type_of_token = TYPE_RIGHT_CURLY_BRACKET;
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
+                    return;
                 }else if (current_character == '('){
                     token->type_of_token = TYPE_LEFT_ROUND_BRACKET;
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
+                    return;
                 }else if (current_character == ')'){
                     token->type_of_token = TYPE_RIGHT_ROUND_BRACKET;
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
+                    return;
                 }else if (current_character == '*'){
                     token->type_of_token = TYPE_MULTIPLICATE;
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
+                    return;
                 }else if (current_character == '#'){
                     token->type_of_token = TYPE_HASHTAG;
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
+                    return;
                 }else if (current_character == '+'){
                     token->type_of_token = TYPE_PLUS;
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
+                    return;
                 }else if (current_character == ':'){
                     token->type_of_token = TYPE_COLON;
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
+                    return;
                 }else if (current_character == ','){
                     token->type_of_token = TYPE_COMMA;
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
+                    return;
                 }
 
                 break;
@@ -233,12 +210,7 @@ int generate_token(Token *token, Custom_string *string){
 
                 if (isalpha(current_character) || current_character == '_'){
 
-                    bool error = custom_string_add_character(tmp_str,(char) tolower(current_character));
-
-                    if(error == false){
-                        custom_string_free_memory(tmp_str);
-                        return process_error(INTERNAL_FAILATURE);
-                    }
+                    custom_string_add_character(tmp_str,(char) tolower(current_character));
 
                     current_state = STATE_IDENT_OR_KW;
 
@@ -258,7 +230,7 @@ int generate_token(Token *token, Custom_string *string){
                 }
 
                 custom_string_free_memory(tmp_str);
-                return process_error(LEXICAL_ANALYSIS_SUCCESS);
+                return;
 
                 break;
 
@@ -272,7 +244,7 @@ int generate_token(Token *token, Custom_string *string){
                 }
 
                 custom_string_free_memory(tmp_str);
-                return process_error(LEXICAL_ANALYSIS_SUCCESS);
+                return;
 
                 break;
 
@@ -286,7 +258,7 @@ int generate_token(Token *token, Custom_string *string){
                 }
                 
                 custom_string_free_memory(tmp_str);
-                return process_error(LEXICAL_ANALYSIS_SUCCESS);
+                return;
 
                 break;
 
@@ -297,11 +269,11 @@ int generate_token(Token *token, Custom_string *string){
                 }else{
                     ungetc(current_character,stdin);
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_FAIL);
+                    process_error(LEXICAL_ANALYSIS_FAIL);
                 }
 
                 custom_string_free_memory(tmp_str);
-                return process_error(LEXICAL_ANALYSIS_SUCCESS);
+                return;
 
                 break;
 
@@ -312,11 +284,11 @@ int generate_token(Token *token, Custom_string *string){
                 }else{
                     ungetc(current_character,stdin);
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_FAIL);
+                    process_error(LEXICAL_ANALYSIS_FAIL);
                 }
 
                 custom_string_free_memory(tmp_str);
-                return process_error(LEXICAL_ANALYSIS_SUCCESS);
+                return;
 
                 break;
 
@@ -330,7 +302,7 @@ int generate_token(Token *token, Custom_string *string){
                 }
 
                 custom_string_free_memory(tmp_str);
-                return process_error(LEXICAL_ANALYSIS_SUCCESS);
+                return;
 
                 break;
 
@@ -338,33 +310,19 @@ int generate_token(Token *token, Custom_string *string){
 
                 if(isdigit(current_character)){
                     
-                    bool error = custom_string_add_character(tmp_str,(char) current_character);
-
-                    if(error == false){
-                        custom_string_free_memory(tmp_str);
-                        return process_error(INTERNAL_FAILATURE);
-                    }
+                    custom_string_add_character(tmp_str,(char) current_character);
 
                     current_state = STATE_NUMBER_F;
 
                 }else if (tolower(current_character) == 'e'){
 
-                    bool error = custom_string_add_character(tmp_str,current_character);
-
-                    if(error == false){
-                        custom_string_free_memory(tmp_str);
-                        return process_error(INTERNAL_FAILATURE);
-                    }
+                    custom_string_add_character(tmp_str,current_character);
 
                     current_state = STATE_NUMBER_EXPONENT_N;
 
                 }else if (current_character == '.'){
-                    bool error = custom_string_add_character(tmp_str,current_character);
 
-                    if(error == false){
-                        custom_string_free_memory(tmp_str);
-                        return process_error(INTERNAL_FAILATURE);
-                    }
+                    custom_string_add_character(tmp_str,current_character);
 
                     current_state = STATE_NUMBER_DOT_N;
 
@@ -384,49 +342,34 @@ int generate_token(Token *token, Custom_string *string){
 
                     is_double = true;
 
-                    bool error = custom_string_add_character(tmp_str,current_character);
-
-                    if(error == false){
-                        custom_string_free_memory(tmp_str);
-                        return process_error(INTERNAL_FAILATURE);
-                    }
+                    custom_string_add_character(tmp_str,current_character);
 
                     current_state = STATE_NUMBER_F;
 
                 }else{
                     ungetc(current_character,stdin);
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_FAIL);
+                    process_error(LEXICAL_ANALYSIS_FAIL);
                 }
                 break;
             
             case STATE_NUMBER_EXPONENT_N:
                 if(current_character == '+' || current_character == '-'){
 
-                    bool error = custom_string_add_character(tmp_str,current_character);
-
-                    if(error == false){
-                        custom_string_free_memory(tmp_str);
-                        return process_error(INTERNAL_FAILATURE);
-                    }
+                    custom_string_add_character(tmp_str,current_character);
 
                     current_state = STATE_NUMBER_EXPONENT_SIGN_N;
 
                 }else if(isdigit(current_character)){
 
-                    bool error = custom_string_add_character(tmp_str,current_character);
-
-                    if(error == false){
-                        custom_string_free_memory(tmp_str);
-                        return process_error(INTERNAL_FAILATURE);
-                    }
+                    custom_string_add_character(tmp_str,current_character);
 
                     current_state = STATE_NUMBER_EXPONENT_NUMBER_F;
 
                 }else{
                     ungetc(current_character,stdin);
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_FAIL);
+                    process_error(LEXICAL_ANALYSIS_FAIL);
                 }
                 break;
 
@@ -434,19 +377,14 @@ int generate_token(Token *token, Custom_string *string){
 
                 if(isdigit(current_character)){
 
-                    bool error = custom_string_add_character(tmp_str,current_character);
-
-                    if(error == false){
-                        custom_string_free_memory(tmp_str);
-                        return process_error(INTERNAL_FAILATURE);
-                    }
+                    custom_string_add_character(tmp_str,current_character);
 
                     current_state = STATE_NUMBER_EXPONENT_NUMBER_F;
 
                 }else{
                     ungetc(current_character,stdin);
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_FAIL);
+                    process_error(LEXICAL_ANALYSIS_FAIL);
                 }
                 break;
 
@@ -454,12 +392,7 @@ int generate_token(Token *token, Custom_string *string){
 
                 if(isdigit(current_character)){
 
-                    bool error = custom_string_add_character(tmp_str,current_character);
-
-                    if(error == false){
-                        custom_string_free_memory(tmp_str);
-                        return process_error(INTERNAL_FAILATURE);
-                    }
+                    custom_string_add_character(tmp_str,current_character);
 
                     current_state = STATE_NUMBER_EXPONENT_NUMBER_F;
 
@@ -478,59 +411,52 @@ int generate_token(Token *token, Custom_string *string){
                 }else if(current_character < 32 || current_character == EOF){
                     ungetc(current_character,stdin);
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_FAIL);
+                    process_error(LEXICAL_ANALYSIS_FAIL);
                 }else{
 
-                    bool error = custom_string_add_character(tmp_str,(char) current_character);
-        
-                    if(error == false){
-                    custom_string_free_memory(tmp_str);
-                    return process_error(INTERNAL_FAILATURE);
-                    }
+                    custom_string_add_character(tmp_str,(char) current_character);
+
                     current_state = STATE_ESCAPE_SEQ_N;
                 }
                 break;
 
             case STATE_ESC_SEQ_SLASH_N:{
 
-                bool backslash_error = true;
-                bool sequence_error = true;
-
                 if(current_character == 'a' ){
-                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(SLASH_A_SEQUENCE));
+                    custom_string_add_character(tmp_str,(char) atoi(SLASH_A_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == 'b'){
-                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(SLASH_B_SEQUENCE));
+                    custom_string_add_character(tmp_str,(char) atoi(SLASH_B_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == 'f'){
-                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(SLASH_F_SEQUENCE));
+                    custom_string_add_character(tmp_str,(char) atoi(SLASH_F_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == 'r'){
-                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(SLASH_R_SEQUENCE));
+                    custom_string_add_character(tmp_str,(char) atoi(SLASH_R_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == 't'){
-                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(SLASH_T_SEQUENCE));
+                    custom_string_add_character(tmp_str,(char) atoi(SLASH_T_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == 'v'){
-                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(SLASH_V_SEQUENCE));
+                    custom_string_add_character(tmp_str,(char) atoi(SLASH_V_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == '\\'){
-                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(SLASH_SLASH_SEQUENCE));
+                    custom_string_add_character(tmp_str,(char) atoi(SLASH_SLASH_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == '"'){
-                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(QUOT_MARK_D_SEQUENCE));
+                    custom_string_add_character(tmp_str,(char) atoi(QUOT_MARK_D_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == '\''){
-                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(QUOT_MARK_S_SEQUENCE));
+                    custom_string_add_character(tmp_str,(char) atoi(QUOT_MARK_S_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == 'n'){
-                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(SLASH_N_SEQUENCE));
+                    custom_string_add_character(tmp_str,(char) atoi(SLASH_N_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == '\n'){
-                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(SLASH_N_SEQUENCE));
+                    custom_string_add_character(tmp_str,(char) atoi(SLASH_N_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == '#'){
-                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(HASH_SEQUENCE));
+                    custom_string_add_character(tmp_str,(char) atoi(HASH_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
 
                 }else if(current_character == 'z'){
@@ -541,12 +467,7 @@ int generate_token(Token *token, Custom_string *string){
                 }else{
                     ungetc(current_character,stdin);
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_FAIL);
-                }
-
-                if(backslash_error == false || sequence_error == false){
-                    custom_string_free_memory(tmp_str);
-                    return process_error(INTERNAL_FAILATURE);
+                    process_error(LEXICAL_ANALYSIS_FAIL);
                 }
 
                 break;
@@ -567,7 +488,7 @@ int generate_token(Token *token, Custom_string *string){
                 }else{
                     ungetc(current_character,stdin);
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_FAIL);
+                    process_error(LEXICAL_ANALYSIS_FAIL);
                 }
                 break;
 
@@ -583,45 +504,35 @@ int generate_token(Token *token, Custom_string *string){
                     if(*ptr && *ptr_int){
                         ungetc(current_character,stdin);
                         custom_string_free_memory(tmp_str);
-                        return process_error(INTERNAL_FAILATURE);
+                        process_error(INTERNAL_FAILATURE);
                     }else{
                         if(tmp_int >= 1 && tmp_int <= 255){
-                            bool error = custom_string_add_character(tmp_str,tmp_char);
-                            if(error == false){
-                                ungetc(current_character,stdin);
-                                custom_string_free_memory(tmp_str);
-                                return process_error(INTERNAL_FAILATURE);
-                            }else{
-                                current_state = STATE_ESCAPE_SEQ_N;
-                            }
+                            custom_string_add_character(tmp_str,tmp_char);
+                            current_state = STATE_ESCAPE_SEQ_N;
                         }else{
                             ungetc(current_character,stdin);
                             custom_string_free_memory(tmp_str);
-                            return process_error(INTERNAL_FAILATURE);
+                            process_error(LEXICAL_ANALYSIS_FAIL);
                         }
                     }
                     
                 }else{
                     ungetc(current_character,stdin);
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_FAIL);
+                    process_error(LEXICAL_ANALYSIS_FAIL);
                 }
                 break;
 
             case STATE_ESC_SEQ_FINAL:{
-                bool error = custom_string_copy_string(tmp_str,token->token_info.custom_string);
 
-                if(error == false){
-                    custom_string_free_memory(tmp_str);
-                    return process_error(INTERNAL_FAILATURE);
-                }
+                custom_string_copy_string(tmp_str,token->token_info.custom_string);
 
                 token->type_of_token = TYPE_STRING;
                 token->has_str_val = true;
 
                 ungetc(current_character,stdin);
                 custom_string_free_memory(tmp_str);
-                return process_error(LEXICAL_ANALYSIS_SUCCESS);
+                return;
 
                 break;
             }
@@ -634,7 +545,7 @@ int generate_token(Token *token, Custom_string *string){
                     token->type_of_token = TYPE_MINUS;
                     ungetc(current_character,stdin);
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
+                    return;
                 }
                 break;
 
@@ -658,7 +569,7 @@ int generate_token(Token *token, Custom_string *string){
                 }else if(current_character == EOF){
 
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_SUCCESS);
+                    return;
 
                 }else if(current_character == '\n'){
                     token->row_number++;
@@ -675,7 +586,7 @@ int generate_token(Token *token, Custom_string *string){
                 }else if(current_character == EOF){
 
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_FAIL);
+                    process_error(LEXICAL_ANALYSIS_FAIL);
 
                 }else{
                     current_state = STATE_BLOCK_COMMENT_F;
@@ -689,7 +600,7 @@ int generate_token(Token *token, Custom_string *string){
                 }else if(current_character == EOF){
 
                     custom_string_free_memory(tmp_str);
-                    return process_error(LEXICAL_ANALYSIS_FAIL);
+                    process_error(LEXICAL_ANALYSIS_FAIL);
 
                 }else{
                     current_state = STATE_BLOCK_COMMENT_F;
@@ -701,7 +612,7 @@ int generate_token(Token *token, Custom_string *string){
                 token->type_of_token = TYPE_KW_EOF;
                 ungetc(current_character,stdin);
                 custom_string_free_memory(tmp_str);
-                return process_error(LEXICAL_ANALYSIS_SUCCESS);
+                process_error(LEXICAL_ANALYSIS_SUCCESS);
 
                 break;
         }
