@@ -17,17 +17,9 @@ int main(int argc, char const *argv[]){
 
     print_list_params(my_list,0);
 
-    int error_1 = function_data_list_insert(my_list,TYPE_INT_NUMBER);
+    function_data_list_insert(my_list,TYPE_INT_NUMBER);
 
-    if (error_1 == false){
-        return 1;
-    }
-
-    int error_2 = function_data_list_insert(my_list,TYPE_STRING);
-
-    if (error_2 == false){
-        return 1;
-    }
+    function_data_list_insert(my_list,TYPE_STRING);
     
     //TODO
     print_list_params(my_list,0);
