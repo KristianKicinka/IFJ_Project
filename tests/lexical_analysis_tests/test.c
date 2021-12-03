@@ -58,7 +58,7 @@ void print_token(Token *token, int index){
     if(token->has_str_val == true)
         printf("Token value string : %s \n",token->token_info.custom_string->string_value);
 
-    //printf("Token row number : %d \n",(int)token->row_number);
+    printf("Token row number : %d \n",(int)token->row_number);
     printf("######################################################\n");
     
 }

@@ -28,6 +28,8 @@
 #define QUOT_MARK_S_SEQUENCE "039"
 #define QUOT_MARK_D_SEQUENCE "034"
 
+static int row_number = 0;
+
 
 char *keywords_array[COUNT_OF_KEYWORDS] = {
    "do","else","end","function",
@@ -114,6 +116,7 @@ void generate_token(Token *token, Custom_string *string){
 
     token->token_info.custom_string = string;
     token->has_str_val = false;
+    token->row_number = row_number;
 
     Custom_string tmp_string;
     Custom_string *tmp_str = &tmp_string;
@@ -135,7 +138,7 @@ void generate_token(Token *token, Custom_string *string){
                 if(isspace(current_character)){
                     current_state = STATE_START_F;
                 }else if (isspace(current_character) && current_character == '\n' ){
-                    token->row_number++ ;
+                    row_number++;
                     current_state = STATE_START_F;
                 }else if (current_character == '='){
                     current_state = STATE_EQUALS_F;
@@ -556,7 +559,7 @@ void generate_token(Token *token, Custom_string *string){
             case STATE_LINE_COMMENTARY_F:
 
                 if(current_character == '\n' || current_character == EOF){
-                    token->row_number++;
+                    row_number++;
                     current_state = STATE_START_F;
                     ungetc(current_character,stdin);
                 }else if (current_character == '['){
@@ -576,7 +579,7 @@ void generate_token(Token *token, Custom_string *string){
                     return;
 
                 }else if(current_character == '\n'){
-                    token->row_number++;
+                    row_number++;
                     current_state = STATE_START_F;
                 }else{
                     current_state = STATE_LINE_COMMENTARY_F;
