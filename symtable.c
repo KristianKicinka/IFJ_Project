@@ -144,10 +144,7 @@ void insert_function_parameter(symbol_table_t *table, char *key, Token_type para
   table_item_t *found_item = search_item(table,key);
 
   if(found_item != NULL){
-    bool err = function_data_list_insert(found_item->data.list_of_parameters,parameter);
-    if(err == false){
-      return;
-    }
+    function_data_list_insert(found_item->data.list_of_parameters,parameter);
   }
 
 }
@@ -157,10 +154,7 @@ void insert_function_return_type(symbol_table_t *table, char *key, Token_type re
   table_item_t *found_item = search_item(table,key);
 
   if(found_item != NULL){
-    bool err = function_data_list_insert(found_item->data.list_of_return_types,return_type);
-    if(err == false){
-      return;
-    }
+    function_data_list_insert(found_item->data.list_of_return_types,return_type);
   }
 
 }
