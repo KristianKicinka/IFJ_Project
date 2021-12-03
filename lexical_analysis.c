@@ -98,6 +98,7 @@ void process_integer_value(Custom_string *string, Token *token){
     if(*ptr){
         custom_string_free_memory(string);
         process_error(INTERNAL_FAILATURE);
+        return;
     }
 
     token->type_of_token = TYPE_INT_NUMBER;
@@ -337,8 +338,10 @@ void generate_token(Token *token, Custom_string *string){
                     ungetc(current_character,stdin);
                     if(is_double == true){
                         process_double_value(tmp_str,token);
+                        return;
                     }else{
                         process_integer_value(tmp_str,token);
+                        return;
                     }
                 }
                 break;
