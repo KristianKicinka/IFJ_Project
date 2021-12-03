@@ -68,6 +68,7 @@ void process_identificator(Custom_string *string, Token *token, char character){
     custom_string_copy_string(string,token->token_info.custom_string);
 
     token->has_str_val = true;
+    return;
 
 }
 
@@ -84,6 +85,7 @@ void process_double_value(Custom_string *string, Token *token){
     token->token_info.double_value = double_value;
 
     custom_string_free_memory(string);
+    return;
 }
 
 void process_integer_value(Custom_string *string, Token *token){
@@ -99,7 +101,7 @@ void process_integer_value(Custom_string *string, Token *token){
     token->token_info.integer_value = integer_value;
 
     custom_string_free_memory(string);
-
+    return;
 }
 
 
@@ -216,7 +218,7 @@ void generate_token(Token *token, Custom_string *string){
 
                 }else{
                     ungetc(current_character,stdin);
-                    return process_identificator(tmp_str,token,current_character);
+                    process_identificator(tmp_str,token,current_character);
                 }
                 break;
 
@@ -329,9 +331,9 @@ void generate_token(Token *token, Custom_string *string){
                 }else{
                     ungetc(current_character,stdin);
                     if(is_double == true){
-                        return process_double_value(tmp_str,token);
+                        process_double_value(tmp_str,token);
                     }else{
-                        return process_integer_value(tmp_str,token);
+                        process_integer_value(tmp_str,token);
                     }
                 }
                 break;
@@ -398,7 +400,7 @@ void generate_token(Token *token, Custom_string *string){
 
                 }else{
                     ungetc(current_character,stdin);
-                    return process_double_value(tmp_str,token);
+                    process_double_value(tmp_str,token);
                 }
                 break;
 
@@ -622,3 +624,4 @@ void generate_token(Token *token, Custom_string *string){
     
 
 }
+

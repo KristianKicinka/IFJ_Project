@@ -30,13 +30,7 @@ int main(int argc, char const *argv[]){
 
         custom_string_init(my_str);
 
-        int error = generate_token(my_tok,my_str);
-        printf("error : %d \n",error);
-
-        if(error != 0){
-            custom_string_free_memory(my_str);
-            return 1;
-        }
+        generate_token(my_tok,my_str);
             
         print_token(my_tok,index);
 
