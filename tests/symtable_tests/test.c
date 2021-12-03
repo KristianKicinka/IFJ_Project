@@ -62,13 +62,13 @@ void print_symtable_items(symbol_table_t *table, char *key){
     if((*symbol_type) == TYPE_FUNCTION){
         Data_list *parameters = get_parameters(table,key);
         Data_list *return_types = get_return_types(table,key);
-
+        printf("parameters : ");
         for (int i = 0; i < parameters->items_count; i++){
-            printf("parameters : %d ",parameters->items[i]);
+            printf("%d ",parameters->items[i]);
         }
-        printf("\n");
+        printf("\nreturn types : ");
         for (int i = 0; i < return_types->items_count; i++){
-            printf("return types : %d ",return_types->items[i]);
+            printf("%d ",return_types->items[i]);
         }
         printf("\n");
         
