@@ -15,7 +15,19 @@
 
 #include "lexical_analysis.h"
 
+// Definition of constant escape sequencies 
 #define HASH_SEQUENCE "035"
+#define SLASH_A_SEQUENCE "007"
+#define SLASH_B_SEQUENCE "008"
+#define SLASH_F_SEQUENCE "012"
+#define SLASH_R_SEQUENCE "013"
+#define SLASH_T_SEQUENCE "009"
+#define SLASH_N_SEQUENCE "010"
+#define SLASH_V_SEQUENCE "011"
+#define SLASH_SLASH_SEQUENCE "092"
+#define QUOT_MARK_S_SEQUENCE "039"
+#define QUOT_MARK_D_SEQUENCE "034"
+
 
 char *keywords_array[COUNT_OF_KEYWORDS] = {
    "do","else","end","function",
@@ -480,54 +492,45 @@ int generate_token(Token *token, Custom_string *string){
                 break;
 
             case STATE_ESC_SEQ_SLASH_N:{
-                bool error = true;
-                bool error_2 = true;
+
+                bool backslash_error = true;
+                bool sequence_error = true;
 
                 if(current_character == 'a' ){
-                    error = custom_string_add_character(tmp_str,'\a');
+                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(SLASH_A_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
-
                 }else if(current_character == 'b'){
-                    error = custom_string_add_character(tmp_str,'\b');
+                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(SLASH_B_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == 'f'){
-                    error = custom_string_add_character(tmp_str,'\f');
+                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(SLASH_F_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == 'r'){
-                    error = custom_string_add_character(tmp_str,'\r');
+                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(SLASH_R_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == 't'){
-                    error = custom_string_add_character(tmp_str,'\t');
+                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(SLASH_T_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == 'v'){
-                    error = custom_string_add_character(tmp_str,'\v');
+                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(SLASH_V_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == '\\'){
-                    error = custom_string_add_character(tmp_str,'\\');
+                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(SLASH_SLASH_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == '"'){
-                    error = custom_string_add_character(tmp_str,'\"');
+                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(QUOT_MARK_D_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == '\''){
-                    error = custom_string_add_character(tmp_str,'\'');
+                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(QUOT_MARK_S_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == 'n'){
-                    error = custom_string_add_character(tmp_str,'\n');
+                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(SLASH_N_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == '\n'){
-                    error = custom_string_add_character(tmp_str,'\n');
+                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(SLASH_N_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
                 }else if(current_character == '#'){
-
-                    error = custom_string_add_character(tmp_str,'\\');
-                    char *ptr;  char sequence = (char) strtol(HASH_SEQUENCE,&ptr,10);
-                    
-                    if(*ptr){
-                        error_2 = custom_string_add_character(tmp_str,sequence);
-                    }else{
-                        error_2 = true;
-                    }
-
+                    sequence_error = custom_string_add_character(tmp_str,(char) atoi(HASH_SEQUENCE));
                     current_state = STATE_ESCAPE_SEQ_N;
 
                 }else if(current_character == 'z'){
@@ -541,7 +544,7 @@ int generate_token(Token *token, Custom_string *string){
                     return process_error(LEXICAL_ANALYSIS_FAIL);
                 }
 
-                if(error == false || error_2 == false){
+                if(backslash_error == false || sequence_error == false){
                     custom_string_free_memory(tmp_str);
                     return process_error(INTERNAL_FAILATURE);
                 }
@@ -582,7 +585,7 @@ int generate_token(Token *token, Custom_string *string){
                         custom_string_free_memory(tmp_str);
                         return process_error(INTERNAL_FAILATURE);
                     }else{
-                        if(tmp_int >= 0 && tmp_int <= 255){
+                        if(tmp_int >= 1 && tmp_int <= 255){
                             bool error = custom_string_add_character(tmp_str,tmp_char);
                             if(error == false){
                                 ungetc(current_character,stdin);
@@ -615,7 +618,7 @@ int generate_token(Token *token, Custom_string *string){
 
                 token->type_of_token = TYPE_STRING;
                 token->has_str_val = true;
-                
+
                 ungetc(current_character,stdin);
                 custom_string_free_memory(tmp_str);
                 return process_error(LEXICAL_ANALYSIS_SUCCESS);

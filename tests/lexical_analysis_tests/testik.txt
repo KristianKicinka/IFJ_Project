@@ -1,4 +1,4 @@
-andrej = "Ahoj\010\"Sve'te # \\\034"
+andrej = "Ahoj\n\"Sve'te # \\\034"
 --if statement
 string
 =
