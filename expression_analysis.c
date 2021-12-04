@@ -3,9 +3,11 @@
 //#include "generator.h"
 #include "error.h"
 #include "expression_stack.h"
+#include "custom_string.h"
 
 Exp_stack_symbol stack;
 Exp_stack_symbol help_stack;
+Custom_string *cstring;
 
 int PSA_table[TABLE][TABLE] =
 {
@@ -110,7 +112,7 @@ void stack_insert_after_term(Exp_stack_symbol* stack, PSA_symbol symbol, Token_t
     }
 }
 
-bool reduce_by_rules(int pushes)
+bool reduce_by_rules(int pushes, Token token)
 {
     Exp_stack_item *stacksym = exp_stack_top(&help_stack);
 
@@ -157,7 +159,6 @@ bool reduce_by_rules(int pushes)
 
     }else if(pushes == 3)
     {
-        //TODO vsetko ostatne
 
         // E string
         if(stacksym->type == TYPE_STRING){              
@@ -245,8 +246,7 @@ bool reduce_by_rules(int pushes)
 
             if(stacksym->type == TYPE_LTHEN || stacksym->type == TYPE_LEKV  || stacksym->type == TYPE_GTHEN
             || stacksym->type == TYPE_GEKV  || stacksym->type == TYPE_NEKV  || stacksym->type == TYPE_EKV
-            || stacksym->type == TYPE_PLUS  || stacksym->type == TYPE_MINUS || stacksym->type == TYPE_MULTIPLICATE
-            || stacksym->type == TYPE_DIVIDE_INT){
+            || stacksym->type == TYPE_PLUS  || stacksym->type == TYPE_MINUS || stacksym->type == TYPE_MULTIPLICATE){
 
                 exp_stack_pop(&help_stack);
                 stacksym = exp_stack_top(&help_stack);
@@ -260,14 +260,38 @@ bool reduce_by_rules(int pushes)
                     stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
                 }
 
+            }else if(stacksym->type == TYPE_DIVIDE_INT){
+                exp_stack_pop(&help_stack);
+                stacksym = exp_stack_top(&help_stack);
+
+                if(stacksym->type == TYPE_INT_NUMBER){
+                    // zero division handling
+                    if(token.token_info.integer_value != 0){
+                        exp_stack_pop(&help_stack);
+                        exp_stack_push(&stack, EXPRESSION_I, TYPE_INT_NUMBER);
+                        return true;
+                    }else{
+                        stack_free_return(RUNTIME_ERROR_DIVIDING_BY_ZERO);
+                    }
+
+                }else{
+                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
+                }
+
             }else if(stacksym->type == TYPE_DIVIDE){
                 exp_stack_pop(&help_stack);
                 stacksym = exp_stack_top(&help_stack);
 
                 if(stacksym->type == TYPE_INT_NUMBER){
-                    exp_stack_pop(&help_stack);
-                    exp_stack_push(&stack, EXPRESSION_N, TYPE_DOUBLE_NUMBER);
-                    return true;
+                    // zero division handling
+                    if(token.token_info.integer_value != 0){
+                        exp_stack_pop(&help_stack);
+                        exp_stack_push(&stack, EXPRESSION_N, TYPE_DOUBLE_NUMBER);
+                        return true;
+
+                    }else{
+                        stack_free_return(RUNTIME_ERROR_DIVIDING_BY_ZERO);
+                    }
 
                 }else{
                     stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
@@ -284,8 +308,7 @@ bool reduce_by_rules(int pushes)
 
             if(stacksym->type == TYPE_LTHEN || stacksym->type == TYPE_LEKV  || stacksym->type == TYPE_GTHEN
             || stacksym->type == TYPE_GEKV  || stacksym->type == TYPE_NEKV  || stacksym->type == TYPE_EKV
-            || stacksym->type == TYPE_PLUS  || stacksym->type == TYPE_MINUS || stacksym->type == TYPE_MULTIPLICATE
-            || stacksym->type == TYPE_DIVIDE){
+            || stacksym->type == TYPE_PLUS  || stacksym->type == TYPE_MINUS || stacksym->type == TYPE_MULTIPLICATE){
 
                 exp_stack_pop(&help_stack);
                 stacksym = exp_stack_top(&help_stack);
@@ -299,14 +322,40 @@ bool reduce_by_rules(int pushes)
                     stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
                 }
 
+            }else if(stacksym->type == TYPE_DIVIDE){
+
+                exp_stack_pop(&help_stack);
+                stacksym = exp_stack_top(&help_stack);
+
+                if(stacksym->type == TYPE_DOUBLE_NUMBER){
+                    // zero division handling
+                    if(token.token_info.double_value != 0.0){
+                        exp_stack_pop(&help_stack);
+                        exp_stack_push(&stack, EXPRESSION_N, TYPE_DOUBLE_NUMBER);
+                        return true;
+
+                    }else{
+                        stack_free_return(RUNTIME_ERROR_DIVIDING_BY_ZERO);
+                    }
+
+                }else{
+                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
+                }
+
             }else if(stacksym->type == TYPE_DIVIDE_INT){
                 exp_stack_pop(&help_stack);
                 stacksym = exp_stack_top(&help_stack);
 
                 if(stacksym->type == TYPE_DOUBLE_NUMBER){
-                    exp_stack_pop(&help_stack);
-                    exp_stack_push(&stack, EXPRESSION_I, TYPE_INT_NUMBER);
-                    return true;
+                    // zero division handling
+                    if(token.token_info.double_value != 0.0){
+                        exp_stack_pop(&help_stack);
+                        exp_stack_push(&stack, EXPRESSION_I, TYPE_INT_NUMBER);
+                        return true;
+
+                    }else{
+                        stack_free_return(RUNTIME_ERROR_DIVIDING_BY_ZERO);
+                    }
 
                 }else{
                     stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
@@ -323,11 +372,11 @@ bool reduce_by_rules(int pushes)
     }else{
             stack_free_return(SYNTAX_ANALYSIS_FAIL);
     }
-    
+
     return false;
 }
 
-void stack_reduce(Exp_stack_symbol* stack)
+void stack_reduce(Exp_stack_symbol* stack, Token token)
 {   
     Exp_stack_item *top = exp_stack_top(stack);
     int number_of_pushes = 0;
@@ -343,7 +392,7 @@ void stack_reduce(Exp_stack_symbol* stack)
     if(top->symbol == PUSH_SYMBOL)
         exp_stack_pop(stack);
 
-    reduce_by_rules(number_of_pushes);
+    reduce_by_rules(number_of_pushes, token);
 
 }
 
@@ -374,28 +423,39 @@ int precedence_analysis(Token token)
         // TODO
         // ked dostanem ID tak overim ci je deklarovane a definovane. ak nie tak je to semanticka chyba v programe CHYBA 3
         // osetrenie prace s nil len ked je eq a not eq
-        //  osetrenie deleneie nulou
         
         switch(PSA_table[stack_top_term->symbol][input_symbol])
         {
             case PA:
                 stack_insert_after_term(&stack, input_symbol, token.type_of_token);
-                //TODO precitaj dalsi symbol zo vstupu
+                generate_token(&token, cstring);
                 break;
+
             case R:
-                stack_reduce(&stack);
+                stack_reduce(&stack, token);
                 break;
+
             case P:
                 exp_stack_push(&stack, input_symbol, token.type_of_token);
-                //TODO precitaj dalsi symbol zo vstupu
+                generate_token(&token, cstring);
                 break;
 
             case E:
-                stack_free_return(SYNTAX_ANALYSIS_FAIL);
-                //TODO overit ci dalsie nie je ID a ciarka
+                // TODO ulozit token do struktury pre Andyho
+                generate_token(&token, cstring);
+
+                if(token.type_of_token == TYPE_ASSIGN || token.type_of_token == TYPE_COMMA 
+                || token.type_of_token == TYPE_LEFT_ROUND_BRACKET){
+                    
+                    // TODO ulozit token do struktury pre Andyho
+
+                }else{
+                    stack_free_return(SYNTAX_ANALYSIS_FAIL);
+                }
                 break;
+
             case U:
-               if (stack_top_term->symbol == DOLLAR && input_symbol == DOLLAR)
+                if (stack_top_term->symbol == DOLLAR && input_symbol == DOLLAR)
 			    	success = true;
 			    else
 				    stack_free_return(SYNTAX_ANALYSIS_FAIL);
