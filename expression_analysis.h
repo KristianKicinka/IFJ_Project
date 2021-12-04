@@ -29,9 +29,9 @@ typedef enum
     DOLLAR = 16,     //  $$
 
     EXPRESSION,
-    EXPRESSION_S,
-    EXPRESSION_N,
-    EXPRESSION_I,
+    EXPRESSION_S,   // string
+    EXPRESSION_N,   // number
+    EXPRESSION_I,   // integer
     PUSH_SYMBOL
 } PSA_symbol;
 
@@ -46,21 +46,21 @@ typedef enum
 
 typedef enum
 {
-    LENG_E,        // E -> # E
-    E_MUL_E,       // E -> E * E
-    E_DIV_E,       // E -> E / E
-    E_DDIV_E,      // E -> E // E
-    E_PLUS_E,      // E -> E + E
-    E_MINUS_E,     // E -> E - E
-    E_CONC_E,      // E -> E .. E
-    E_LESS_E,      // E -> E < E
-    E_MORE_E,      // E -> E > E
-    E_LESSOE_E,    // E -> E <= E
-    E_MOREOE_E,    // E -> E >= E
-    E_EQ_E,        // E -> E = E
-    E_NOTEQ_E,     // E -> E ~= E
-    OPERAND,       // E -> i
-    LBRAC_E_RBRAC, // E -> (E)
+    LENG_E,        // E -> # E      string
+    E_MUL_E,       // E -> E * E    int, num
+    E_DIV_E,       // E -> E / E    int/int -> num, num
+    E_DDIV_E,      // E -> E // E   num//num -> int, int
+    E_PLUS_E,      // E -> E + E    int, num
+    E_MINUS_E,     // E -> E - E    int, num
+    E_CONC_E,      // E -> E .. E   string
+    E_LESS_E,      // E -> E < E    string, int, num
+    E_MORE_E,      // E -> E > E    string, int, num
+    E_LESSOE_E,    // E -> E <= E   string, int, num
+    E_MOREOE_E,    // E -> E >= E   string, int, num
+    E_EQ_E,        // E -> E = E    string, int, num
+    E_NOTEQ_E,     // E -> E ~= E   string, int, num
+    OPERAND,       // E -> i        string, int, num
+    LBRAC_E_RBRAC, // E -> (E)      string, int, num
     INVALID        // Non existing rule
 } PSA_rules;
 

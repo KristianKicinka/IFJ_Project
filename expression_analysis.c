@@ -110,27 +110,32 @@ void stack_insert_after_term(Exp_stack_symbol* stack, PSA_symbol symbol, Token_t
     }
 }
 
-void reduce_by_rules(int pushes)
+bool reduce_by_rules(int pushes)
 {
     Exp_stack_item *stacksym = exp_stack_top(&help_stack);
+
     if(pushes == 1)
     {
         if(stacksym->type == TYPE_STRING)
         {
             exp_stack_push(&stack, EXPRESSION_S, TYPE_STRING);
             exp_stack_pop(&help_stack);
+            return true;
 
         }else if(stacksym->type == TYPE_INT_NUMBER){
             exp_stack_push(&stack, EXPRESSION_I, TYPE_INT_NUMBER);
             exp_stack_pop(&help_stack);
+            return true;
 
         }else if(stacksym->type == TYPE_DOUBLE_NUMBER){
             exp_stack_push(&stack, EXPRESSION_N, TYPE_DOUBLE_NUMBER);
             exp_stack_pop(&help_stack);
+            return true;
 
         }else{
             exp_stack_push(&stack, EXPRESSION, TYPE_UNSET);
             exp_stack_pop(&help_stack);
+            return true;
         }
 
     }else if(pushes == 2){
@@ -141,18 +146,185 @@ void reduce_by_rules(int pushes)
             if(stacksym->type == TYPE_STRING && stacksym->symbol == EXPRESSION_S)
             {
                 exp_stack_push(&stack, EXPRESSION_I, TYPE_INT_NUMBER);
+                return true;
 
             }else{
-                stack_free_return(SYNTAX_ANALYSIS_FAIL);
+                stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
             }
         }else{
-             stack_free_return(SYNTAX_ANALYSIS_FAIL);
+             stack_free_return(SEMANTIC_ANALYSIS_FAIL_OTHERS);
         }
 
     }else if(pushes == 3)
     {
         //TODO vsetko ostatne
+
+        // E string
+        if(stacksym->type == TYPE_STRING){              
+            exp_stack_pop(&help_stack);
+            stacksym = exp_stack_top(&help_stack);
+
+            // ..
+            if(stacksym->type == TYPE_STRING_CONCAT){   
+                exp_stack_pop(&help_stack);
+                stacksym = exp_stack_top(&help_stack);
+
+                if(stacksym->type == TYPE_STRING){      // E string
+                    exp_stack_pop(&help_stack);
+                    exp_stack_push(&stack, EXPRESSION_S, TYPE_STRING);
+                    return true;
+
+                }else{
+                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
+                }
+            // <, <=, >, >=, ~=, ==
+            }else if(stacksym->type == TYPE_LTHEN || stacksym->type == TYPE_LEKV || stacksym->type == TYPE_GTHEN
+                  || stacksym->type == TYPE_GEKV  || stacksym->type == TYPE_NEKV || stacksym->type == TYPE_EKV){     
+                 exp_stack_pop(&help_stack);
+                stacksym = exp_stack_top(&help_stack);
+
+                if(stacksym->type == TYPE_STRING){      // E string
+                    exp_stack_pop(&help_stack);
+                    exp_stack_push(&stack, EXPRESSION_S, TYPE_STRING);
+                    return true;
+
+                }else{
+                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
+                }
+            }else{
+                stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
+            }
+
+        // (
+        }else if(stacksym->type == TYPE_LEFT_ROUND_BRACKET){
+            exp_stack_pop(&help_stack);
+            stacksym = exp_stack_top(&help_stack);
+
+            if(stacksym->type == TYPE_STRING){
+                exp_stack_pop(&help_stack);
+                stacksym = exp_stack_top(&help_stack);
+
+                if(stacksym->type == TYPE_RIGHT_ROUND_BRACKET){
+                    exp_stack_pop(&help_stack);
+                    exp_stack_push(&stack, EXPRESSION_S, TYPE_STRING);
+                    return true;
+
+                }else{
+                    stack_free_return(SYNTAX_ANALYSIS_FAIL);
+                }
+            }else if(stacksym->type == TYPE_INT_NUMBER){
+                exp_stack_pop(&help_stack);
+                stacksym = exp_stack_top(&help_stack);
+
+                if(stacksym->type == TYPE_RIGHT_ROUND_BRACKET){
+                    exp_stack_pop(&help_stack);
+                    exp_stack_push(&stack, EXPRESSION_I, TYPE_INT_NUMBER);
+                    return true;
+
+                }else{
+                    stack_free_return(SYNTAX_ANALYSIS_FAIL);
+                }
+            }else if(stacksym->type == TYPE_DOUBLE_NUMBER){
+                exp_stack_pop(&help_stack);
+                stacksym = exp_stack_top(&help_stack);
+
+                if(stacksym->type == TYPE_RIGHT_ROUND_BRACKET){
+                    exp_stack_pop(&help_stack);
+                    exp_stack_push(&stack, EXPRESSION_N, TYPE_DOUBLE_NUMBER);
+                    return true;
+
+                }else{
+                    stack_free_return(SYNTAX_ANALYSIS_FAIL);
+                }
+            } 
+
+        // E int    
+        }else if(stacksym->type == TYPE_INT_NUMBER){
+            exp_stack_pop(&help_stack);
+            stacksym = exp_stack_top(&help_stack);
+
+            if(stacksym->type == TYPE_LTHEN || stacksym->type == TYPE_LEKV  || stacksym->type == TYPE_GTHEN
+            || stacksym->type == TYPE_GEKV  || stacksym->type == TYPE_NEKV  || stacksym->type == TYPE_EKV
+            || stacksym->type == TYPE_PLUS  || stacksym->type == TYPE_MINUS || stacksym->type == TYPE_MULTIPLICATE
+            || stacksym->type == TYPE_DIVIDE_INT){
+
+                exp_stack_pop(&help_stack);
+                stacksym = exp_stack_top(&help_stack);
+
+                if(stacksym->type == TYPE_INT_NUMBER){
+                    exp_stack_pop(&help_stack);
+                    exp_stack_push(&stack, EXPRESSION_I, TYPE_INT_NUMBER);
+                    return true;
+
+                }else{
+                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
+                }
+
+            }else if(stacksym->type == TYPE_DIVIDE){
+                exp_stack_pop(&help_stack);
+                stacksym = exp_stack_top(&help_stack);
+
+                if(stacksym->type == TYPE_INT_NUMBER){
+                    exp_stack_pop(&help_stack);
+                    exp_stack_push(&stack, EXPRESSION_N, TYPE_DOUBLE_NUMBER);
+                    return true;
+
+                }else{
+                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
+                }
+
+            }else{
+                stack_free_return(SYNTAX_ANALYSIS_FAIL);
+            }
+
+        // E num    
+        }else if(stacksym->type == TYPE_DOUBLE_NUMBER){
+            exp_stack_pop(&help_stack);
+            stacksym = exp_stack_top(&help_stack);
+
+            if(stacksym->type == TYPE_LTHEN || stacksym->type == TYPE_LEKV  || stacksym->type == TYPE_GTHEN
+            || stacksym->type == TYPE_GEKV  || stacksym->type == TYPE_NEKV  || stacksym->type == TYPE_EKV
+            || stacksym->type == TYPE_PLUS  || stacksym->type == TYPE_MINUS || stacksym->type == TYPE_MULTIPLICATE
+            || stacksym->type == TYPE_DIVIDE){
+
+                exp_stack_pop(&help_stack);
+                stacksym = exp_stack_top(&help_stack);
+
+                if(stacksym->type == TYPE_DOUBLE_NUMBER){
+                    exp_stack_pop(&help_stack);
+                    exp_stack_push(&stack, EXPRESSION_N, TYPE_DOUBLE_NUMBER);
+                    return true;
+
+                }else{
+                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
+                }
+
+            }else if(stacksym->type == TYPE_DIVIDE_INT){
+                exp_stack_pop(&help_stack);
+                stacksym = exp_stack_top(&help_stack);
+
+                if(stacksym->type == TYPE_DOUBLE_NUMBER){
+                    exp_stack_pop(&help_stack);
+                    exp_stack_push(&stack, EXPRESSION_I, TYPE_INT_NUMBER);
+                    return true;
+
+                }else{
+                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
+                }
+
+            }else{
+                stack_free_return(SYNTAX_ANALYSIS_FAIL);
+            }
+
+        }else{
+            stack_free_return(SYNTAX_ANALYSIS_FAIL);
+        }
+
+    }else{
+            stack_free_return(SYNTAX_ANALYSIS_FAIL);
     }
+    
+    return false;
 }
 
 void stack_reduce(Exp_stack_symbol* stack)
@@ -173,7 +345,6 @@ void stack_reduce(Exp_stack_symbol* stack)
 
     reduce_by_rules(number_of_pushes);
 
-    
 }
 
 int precedence_analysis(Token token)
