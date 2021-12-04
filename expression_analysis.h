@@ -66,6 +66,6 @@ typedef enum
 
 int precedence_analysis(Token token);
 
-int stack_free_return(Error_type ret_val);
+void stack_free_return(Error_type error);
 
 #endif // !EXPRESSION_ANALYSIS
