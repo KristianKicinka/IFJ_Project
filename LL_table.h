@@ -6,6 +6,10 @@
 #include "nterms.h"
 #include "lexical_analysis.h"
 #include "error.h"
+#include "symtable.h"
+#include "expression_analysis.h"
+//#include "function_data_list.h"
+#include "semantic_analyze.h"
 
 #define SE -1
 #define EPS -2
@@ -79,6 +83,31 @@ typedef struct rules_t{
     struct symbol_t right_side_of_derivation[NUMBER_OF_DERIVATIONS];
 }rule_t;
 
+/*
+
+typedef struct syntactic_data_t{
+    symbol_table_t global_table;
+    symbol_table_t local_table;
+
+    Token token;
+
+    Additional_info info;
+    Symbol_type type_of_symbol;
+
+    //table_item_t *current_item;
+
+}syntactic_data_t;
+*/
+//struktura pre preposielanie tokenov medzi syntaktickou a precedencnou
+typedef struct prec_struct_t{
+     int number_of_prec_ret_tokens; //pocet vratenych tokenov od precedencnej
+     Token token[3];                //array tokenov vratenych od precedencnej
+}prec_struct_t;
+    
+
+//void InitSyntacticData(syntactic_data_t *);
+
 int CheckGrammar();
+
 
 #endif

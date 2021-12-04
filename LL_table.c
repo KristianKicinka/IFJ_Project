@@ -50,15 +50,19 @@ const rule_t RULES[NUMBER_OF_RULES]={
                                                         {.number_of_derivations=3, {{.isterminal=false, .nterm=NT_TO_ASSIGN},               {.isterminal=true, .term=TYPE_ASSIGN},                          {.isterminal=false, .nterm=NT_ASSIGN_VALUE}}},                                             
   /* 31 - to_assign_nt -> <id> to_assign2_nt */         {.number_of_derivations=2, {{.isterminal=true, .term=TYPE_IDENTIFICATOR_VARIABLE},  {.isterminal=false, .nterm=NT_TO_ASSIGN2}}},
   /* 32 - to_assign2_nt -> , <id> to_assign2_nt */      {.number_of_derivations=3, {{.isterminal=true, .term=TYPE_COMMA},                   {.isterminal=true, .term=TYPE_IDENTIFICATOR_VARIABLE},       {.isterminal=false, .nterm=NT_TO_ASSIGN2}}},
-  /* 33 - assign_value_nt -> value assign_values_nt */  {.number_of_derivations=2, {{.isterminal=false, .nterm=NT_VALUE},                   {.isterminal=false, .nterm=NT_ASSIGN_VALUES}}},  
+  /* 33 - assign_value_nt -> expression_nt assign_values_nt */  {.number_of_derivations=2, {{.isterminal=false, .nterm=NT_EXPRESSION},              {.isterminal=false, .nterm=NT_ASSIGN_VALUES}}},  
+  /*AAA   assign_value_nt -> value assign_values_nt REPLACED BY ABOVE */
   /* 34 - assign_value_nt -> func_call_nt assign_values_nt // a=foo(b) */
+ 
                                                         {.number_of_derivations=2, {{.isterminal=false, .nterm=NT_FUNC_CALL},               {.isterminal=false, .nterm=NT_ASSIGN_VALUE}}},
   /*F35 - assign_values_nt -> , assign_from*/           {.number_of_derivations=2, {{.isterminal=true, .term=TYPE_COMMA},                   {.isterminal=false, .nterm=NT_ASSIGN_FROM}}},                             
   /*F36 - assign_from -> value assign_values_nt */      {.number_of_derivations=2, {{.isterminal=false, .nterm=NT_VALUE},                    {.isterminal=false, .nterm=NT_ASSIGN_VALUES}}},                                                   
+  /*AAA   assign_from -> expression_nt assign_values_nt REPLACED BY ABOVE */
   /*F37 - assign_from -> func_call_nt assign_values_nt*/{.number_of_derivations=2, {{.isterminal=false, .nterm=NT_FUNC_CALL},               {.isterminal=false, .nterm=NT_ASSIGN_VALUES}}},
   /* 38 - assign_new_nt -> <kw_local> <id> <:> datatype optional_ekv_nt */
                                                         {.number_of_derivations=5, {{.isterminal=true, .term=TYPE_KW_LOCAL},                {.isterminal=true, .term=TYPE_IDENTIFICATOR_VARIABLE},       {.isterminal=true, .term=TYPE_COLON},                 {.isterminal=false, .nterm=NT_DATA_TYPE},                         {.isterminal=false, .nterm=NT_OPTIONAL_EKV}}}, 
-  /* 39 - assign_nt -> value */                         {.number_of_derivations=1, {{.isterminal=false, .nterm=NT_VALUE}}}, 
+  /* 39 - assign_nt -> expression_nt */                 {.number_of_derivations=1, {{.isterminal=false, .nterm=NT_EXPRESSION}}}, 
+  /*AA2 - assign_nt -> value MAYBE? REPLACED BY ABOVE*/
   /* 40 - assign_nt -> func_call_nt */                  {.number_of_derivations=1, {{.isterminal=false, .nterm=NT_FUNC_CALL}}},
   /* VALUES, DATATYPES, ASSIGNING VALUES */
   /* 41 - value-> <int_const> */                        {.number_of_derivations=1, {{.isterminal=true, .term=TYPE_INT_NUMBER}}},
@@ -106,7 +110,7 @@ const rule_t RULES[NUMBER_OF_RULES]={
  /* zatial iba pre RETURN, premysliet co doplnit */
  /* LAST ADDED 69 - check_eof_nt -> code_nt        */   {.number_of_derivations=1, {{.isterminal=false, .nterm=NT_CODE}}}, 
  /* LAST ADDED 70 - value -> <nil>                */    {.number_of_derivations=1, {{.isterminal=true, .term=TYPE_KW_NIL}}},
- /* 71 - optional_ekv_nt -> <=> assign_t */             {.number_of_derivations=2, {{.isterminal=true, .term=TYPE_ASSIGN},     {.isterminal=false, .nterm=NT_ASSIGN}}},
+ /* 71 - optional_ekv_nt -> <=> assign_nt */            {.number_of_derivations=2, {{.isterminal=true, .term=TYPE_ASSIGN},     {.isterminal=false, .nterm=NT_ASSIGN}}},   
  /* 72 - optional_ekv_nt -> code_nt */                  {.number_of_derivations=1, {{.isterminal=false, .nterm=NT_CODE}}},
 };
 
@@ -116,7 +120,7 @@ int LLtable[NUMBER_OF_NTERMS][NUMBER_OF_TERMS]={
 /*value_nt*/            { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   44,    SE,    SE,   SE,        43,          41,         42,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*assval_nt*/           { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   49,   46,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   48,    SE,    45,   47,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE}, 
 /*datatype_nt*/         { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   51,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    50,   52,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*expression_n*/        { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      54,       SE,      SE,      SE,   SE,   55,    SE,    SE,   SE,        55,          55,         55,          56,      57,       58,     59,    60,        61,     62,   63,     64,    65,     68,     67},
+/*expression_nt*/       { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      54,       SE,      SE,      SE,   SE,   55,    SE,    SE,   SE,        55,          55,         55,          56,      57,       58,     59,    60,        61,     62,   63,     64,    65,     68,     67},
 /*func_dec*/            { SE,    SE,  SE,   SE,    SE,      14,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*param_nt*/            { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   17,     SE,    SE,    SE,     SE,       EPS,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    17,   17,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE}, 
 /*params_nt*/           { SE,    SE,  SE,   SE,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,       EPS,      SE,       18,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
@@ -144,7 +148,7 @@ int LLtable[NUMBER_OF_NTERMS][NUMBER_OF_TERMS]={
 /*if_nt*/               { SE,    SE,  SE,   SE,    SE,      SE,   13,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*start*/               { SE,    SE,  SE,    4,     3,       2,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,    4,   SE,     1,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*double_dot_nt E*/     { SE,   EPS,  SE,   SE,   EPS,     EPS,   SE,  EPS,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      15,      SE,  EPS,  EPS,   EPS,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
-/*double_dots_nt*/      { SE,    SE,  SE,   SE,   EPS,     EPS,  EPS,  EPS,   SE,   SE,    EPS,    SE,    SE,     SE,        SE,      SE,       16,      SE,      SE,  EPS,   SE,   EPS,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
+/*double_dots_nt*/      { SE,    SE,  SE,   SE,   EPS,     EPS,  EPS,  EPS,   SE,   SE,    EPS,    SE,    SE,     SE,        SE,      SE,       16,      SE,      SE,  EPS,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*check_eof_nt*/        { SE,    SE,  69,   19,    20,      20,   69,   69,   SE,   SE,     69,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   53,   30,    20,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*code_if_nt E*/        { SE,    SE, EPS,   SE,    SE,      SE,   11,   11,   SE,   SE,     11,    SE,    11,     SE,        SE,      SE,       SE,      SE,      SE,   SE,   11,    11,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
 /*end_nt*/              { SE,    SE,  SE,  EPS,    SE,      SE,   SE,   SE,   SE,   SE,     SE,    SE,    SE,     SE,        SE,      SE,       SE,      SE,      SE,   53,   SE,    SE,    SE,   SE,        SE,          SE,         SE,          SE,      SE,       SE,     SE,    SE,        SE,     SE,   SE,     SE,    SE,     SE,     SE},
@@ -152,31 +156,84 @@ int LLtable[NUMBER_OF_NTERMS][NUMBER_OF_TERMS]={
 };
 
 int run=1;  
+/*
+void InitSyntacticData(syntactic_data_t *data){
+    table_init(&data->global_table);
+    table_init(&data->local_table);
+    //token sa nemusi initovat
+    data->type_of_symbol=TYPE_VARIABLE;
+    data->info=IS_UNSET;
+    //data->current_item=NULL;
+
+    //najskor naplnim tuto struct 
+    // if token==VARIABLE_ID 
+
+    data->token=actualterm;
+    data->type_of_symbol=TYPE_VARIABLE; //alebo type_function
+    data->info=IS_DEFINED; //rozlisujem varaibles a functions
+    //data->current_item=
+
+*/
+    /* POZNAMKY 
+       na zaklade neterminalu budem vediet, co sa s variable deje, 
+       pretoze potrebujem aj rozlisit, ci sa do premennej zapisuje, alebo z nej cita,
+       a ci datovy typ kam sa zapisuje alebo cita sedi s typom premennej. 
+    
+       narazim na token, nie je definovany, definujem ho. Pokial zapisujem alebo citam z tokenu,
+       pozrem sa ci bol definovany. Ak nie, chyba, ale pokracujem dalej.
+
+       Generator:
+       
+
+       Global symtable bude pre funkcie,
+       Lokal symtable bude pre premenne
+    */
+
+    //budem to volat takto ked mam celu struct naplnenu
+/*    
+    insert_symbol_variable(&data->local_table, &data->token.token_info.custom_string); //Prvotne vlozenie elementu
+    set_symbol_variable_type(&data->local_table, &data->token.token_info.custom_string, TYPE_INT_NUMBER); //poslednz davam nacitany token 
+    set_additional_info(&data->local_table, &data->token.token_info.custom_string, IS_LOCAL); 
+    //data->current_item=search_item(&data->local_table, &data->token.token_info.custom_string);
+*/
+    /*ak budem potrebovat skontrolovat definiciu, alebo deklaraciu*/
+    /*pristupujem cez getre*/
+//}
+
+void PrecStructInit(prec_struct_t *pointer_to_prec){
+    pointer_to_prec->number_of_prec_ret_tokens=0;
+    //token nema pointre, netreba initovat
+}
 
 int CheckGrammar(Stack_symbol_t stack){
     int can_get_token=1;
+    prec_struct_t pointer_to_prec; //TODO treba inicializovat este, nezabudnut na free
+    PrecStructInit(&pointer_to_prec);
+
     while(true){
         printf("##### RUN %d #####\n", run);
         run++;
         Token term;
-        Token *actualterm = &term;
+        Token *actualterm = &term; //mozno bute treba malloc pri predavani
 
         Custom_string my_string;
-        Custom_string *my_str = &my_string;
+        Custom_string *my_str = &my_string; //mozno bute treba malloc pri predavani
         
         custom_string_init(my_str);
 
         if(!Stack_Is_Empty(&stack)){
             if(stack.top->isterminal==false){ //na vrchu staku je neterminal
              if(can_get_token){
-                 int err=generate_token(actualterm, my_str);//zoberiem token
+                 if(pointer_to_prec.number_of_prec_ret_tokens==0){ //kontola konce prebratych tokenov od precedencnej
+                    generate_token(actualterm, my_str);//zoberiem token
+                 }else{
+                     pointer_to_prec.number_of_prec_ret_tokens--; //najskor treba odratat, aby som sa dostal na spravny index
+                     actualterm=&pointer_to_prec.token[pointer_to_prec.number_of_prec_ret_tokens]; //vyberiem token od precedencnej
+                     //moznost kolizie pri volani precedencnej pri druhom znaku pola
+                 }
+                 
                  printf("Prijaty terminal: %d \n", actualterm->type_of_token);  
-                  if(err==1){
-                    printf("UP error getting token\n");
-                    custom_string_free_memory(my_str);
-                    Stack_Free(&stack);
-                    return 1;
-               }  
+                 
              }
               can_get_token=1;
               printf("Na vrchole stacku je neterminal\n");
@@ -194,11 +251,24 @@ int CheckGrammar(Stack_symbol_t stack){
                        printf("Stack: %c\n", stack.top->nterm);
                    } 
                    custom_string_free_memory(my_str);
-                   return process_error(INTERNAL_FAILATURE);
+                   Stack_Free(&stack);
+                   process_error(SYNTAX_ANALYSIS_FAIL);
                }else{
-                    can_get_token=0;
+                   can_get_token=0;
                    printf("Cislo vybraneho pravidla %d \n",ruleNumber);
                    rule_t rule=RULES[ruleNumber]; //vybranie pravidla
+
+                   //VOLANIE PRECEDENCNEJ NA ZAKLADE NETERMINALU
+                   // expression_nt na stacku A ID na vstupe
+                   if(stack.top->isterminal==false && stack.top->nterm==NT_EXPRESSION){
+                      printf("---tu planujem volat precedencnu\n"); 
+                    /*precedence_analysis(actualterm, &pointer_to_prec); //posielam terminal a structu, kde mi bude zapisovat precedencna
+                      //funkcia mi vrati list tokenov s postfixom, musim ho vediet potom preposlat generatoru  
+                      Stack_Pop(&stack); //popnem expression, mozno bude treba DVA popy s podmienkou, lebo bude treba popovat aj value_nt, pripadne nepushovat value nt ale rovno ID
+                      continue;          //vratim sa na zaciatok whilu a idem kontrolovat od znova
+                     */ 
+                   }
+
                    Stack_Pop(&stack); //popnem neterminal z vrcholu stacku
                    for (int i=rule.number_of_derivations-1; i>=0; i--){  //rozvinute pravidla na stack pushujem reverzne
                        //printf("Pushujem na stack:  isterminal: %d rule term: %d rule nterm: %d\n",  rule.right_side_of_derivation[i].isterminal, rule.right_side_of_derivation[i].term, rule.right_side_of_derivation[i].nterm);
@@ -212,24 +282,23 @@ int CheckGrammar(Stack_symbol_t stack){
                 printf("DOLE stack: %d, input: %d\n", stack.top->term, actualterm->type_of_token);
                 if(actualterm->type_of_token==Stack_Top_Terminal(&stack)){ //na vrchole zasobika je terminal, na vstupe je rovnaky terminal
                     printf("na vstupe je rovnaky terminal ako na vrchole stacku, POP\n");
-                    Stack_Pop(&stack); //popujem stack
-                    int err=generate_token(actualterm, my_str);//zoberiem token
-                    can_get_token=0;
+                    //tu sa vola semanticka a generator a posiela sa mu token a struct nasa nova                   
+                    Stack_Pop(&stack); //popujem stack TODO tu mozno bude treba najskor overit ci mozem popovat 
+                        if(pointer_to_prec.number_of_prec_ret_tokens==0){ //kontola konca prebratych tokenov od precedencnej
+                            generate_token(actualterm, my_str);//zoberiem token
+                        }else{
+                            pointer_to_prec.number_of_prec_ret_tokens--; //najskor sa musim dostat na spravny index
+                            actualterm=&pointer_to_prec.token[pointer_to_prec.number_of_prec_ret_tokens]; //vyberiem token od precedencnej
+                            //moznost kolizie pri volani precedencnej pri druhom znaku pola
+                        }
                     printf("Prijaty terminal: %d \n", actualterm->type_of_token);
-                    if(err){
-                        printf("error getting token\n");
-                        custom_string_free_memory(my_str);
-                        Stack_Free(&stack);
-                        return process_error(INTERNAL_FAILATURE);
-                        return 1; //dead code
-                    }
+                    
                     //generate_token(actualterm, my_str);//zoberiem token
                 }else{
                     printf("Syntax error end\n");
                     custom_string_free_memory(my_str);
                     Stack_Free(&stack);
-                    return process_error(SYNTAX_ANALYSIS_FAIL);
-                    return 1; //dead code
+                    process_error(SYNTAX_ANALYSIS_FAIL);
                 }
             }    
         }else{
