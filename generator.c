@@ -52,167 +52,167 @@
 
 //Práca s rámci, volanie funkcií
 void print_move(char *var, char *symb){
-    printf("MOVE %s %s", var, par);
+    printf("\nMOVE %s %s", var, par);
 }
 
 void print_create_frame(){
-    printf("CREATEFRAME");
+    printf("\nCREATEFRAME");
 }
 
 void print_push_frame(){
-    printf("PUSHFRAME");
+    printf("\nPUSHFRAME");
 }
 
 void print_pop_frame(){
-    printf("POPFRAME");
+    printf("\nPOPFRAME");
 }
 
 void print_def_var(char*var){
-    printf("DEFVAR %s", var);
+    printf("\nDEFVAR %s", var);
 }
 
 void print_call(char *label){
-    printf("CALL %s", label);
+    printf("\nCALL %s", label);
 }
 
 void print_return(){
-    printf("RETURN");
+    printf("\nRETURN");
 }
 
 //Práca s dátovým zásobníkom
 void print_pushs(char*var){
-    printf("PUSHS %s", var);
+    printf("\nPUSHS %s", var);
 }
 
 void print_pops(char *var){
-    printf("POPS %s", var);
+    printf("\nPOPS %s", var);
 }
 
 void print_clears(){
-    printf("CLEARS");
+    printf("\nCLEARS");
 }
 
 //Aritmetické inštrukcie
 void print_add(char *var, char *number0, char *number1){
-    printf("ADD %s %s %s", var, number0, number1);
+    printf("\nADD %s %s %s", var, number0, number1);
 }
 
 void print_sub(char *var, char *number0, char *number1){
-    printf("SUB %s %s %s", var, number0, number1);
+    printf("\nSUB %s %s %s", var, number0, number1);
 }
 
 void print_mul(char *var, char *number0, char *number1){
-    printf("MUL %s %s %s", var, number0, number1);
+    printf("\nMUL %s %s %s", var, number0, number1);
 }
 
 void print_div(char *var, char *number0, char *number1){
-    printf("DIV %s %s %s", var, number0, number1);
+    printf("\nDIV %s %s %s", var, number0, number1);
 }
 
 void print_idiv(char *var, char *number0, char *number1){
-    printf("IDIV %s %s %s", var, number0, number1);
+    printf("\nIDIV %s %s %s", var, number0, number1);
 }
 
 //Relačné inštrukcie
 void print_lt(char *var, char *number0, char *number1){
-    printf("LT %s %s %s", var, number0, number1);
+    printf("\nLT %s %s %s", var, number0, number1);
 }
 
 void print_gt(char *var, char *number0, char *number1){
-    printf("GT %s %s %s", var, number0, number1);
+    printf("\nGT %s %s %s", var, number0, number1);
 }
 
 void print_eq(char *var, char *number0, char *number1){
-    printf("EQ %s %s %s", var, number0, number1);
+    printf("\nEQ %s %s %s", var, number0, number1);
 }
 
 //Boolovské inštrukcie
 void print_and(char *var, char *number0, char *number1){
-    printf("AND %s %s %s", var, number0, number1);
+    printf("\nAND %s %s %s", var, number0, number1);
 }
 
 void print_or(char *var, char *number0, char *number1){
-    printf("OR %s %s %s", var, number0, number1);
+    printf("\nOR %s %s %s", var, number0, number1);
 }
 
 void print_not(char *var, char *number0, char *number1){
-    printf("NOT %s %s %s", var, number0, number1);
+    printf("\nNOT %s %s %s", var, number0, number1);
 }
 
 //Konverzné inštrukcie
 void print_int_2_float(char *var, char *number){
-    printf("INT2FLOAT %s %s", var, number);
+    printf("\nINT2FLOAT %s %s", var, number);
 }
 
 void print_float_2_int(char *var, char *number){
-    printf("FLOAT2INT %s %s", var, number);
+    printf("\nFLOAT2INT %s %s", var, number);
 }
 
 void print_int_2_char(char *var, char *number){
-    printf("INT2CHAR %s %s", var, number);
+    printf("\nINT2CHAR %s %s", var, number);
 }
 
 void print_stri_2_int(char *var, char *number0, char *number1){
-    printf("STRI2INT %s %s %s", var, number0, number1);
+    printf("\nSTRI2INT %s %s %s", var, number0, number1);
 }
 
 //Vstupno-výstupné inštrukcie
 void print_read(char *var, char *type){
-    printf("READ %s %s", var, type);
+    printf("\nREAD %s %s", var, type);
 }
 
 void print_write(char *symb){
-    printf("WRITE %s", symb);
+    printf("\nWRITE %s", symb);
 }
 
 //Práca s reťazcami
 void print_concat(char *var, char *symb0, char *symb1){
-    printf("CONCAT %s %s %s", var, symb0, symb1);
+    printf("\nCONCAT %s %s %s", var, symb0, symb1);
 }
 
 void print_strlen(char *var, char *number){
-    printf("STRLEN %s %s", var, number);
+    printf("\nSTRLEN %s %s", var, number);
 }
 
 void print_get_char(char *var, char *string, char* index){
-    printf("GETCHAR %s %s %s", var, string, index);
+    printf("\nGETCHAR %s %s %s", var, string, index);
 }
 
 void print_set_char(char *var, char *index, char* string){
-    printf("SETCHAR %s %s %s", var, index, string);
+    printf("\nSETCHAR %s %s %s", var, index, string);
 }
 
 //Práca s typmi
 void print_type(char *var, char *type){
-    printf("TYPE %s %s", var, type);
+    printf("\nTYPE %s %s", var, type);
 }
 
 //Inštrukcie pre riadenie toku programu
 void print_label(char *label){
-    printf("LABEL %s", label);
+    printf("\nLABEL %s", label);
 }
 
 void print_jump(char *label){
-    printf("JUMP %s", label);
+    printf("\nJUMP %s", label);
 }
 
 void print_jumpifeq(char *label, char *symb0, char *symb1){
-    printf("JUMPIFEQ %s %s %s", label, symb0, symb1);
+    printf("\nJUMPIFEQ %s %s %s", label, symb0, symb1);
 }
 
 void print_jumpifneq(char *label, char *symb0, char *symb1){
-    printf("JUMPIFNEQ %s %s %s", label, symb0, symb1);
+    printf("\nJUMPIFNEQ %s %s %s", label, symb0, symb1);
 }
 
 void print_exit(char *number){
-    printf("EXIT %s", number);
+    printf("\nEXIT %s", number);
 }
 
 //Ladiace funkcie
 void print_break(){
-    printf("BREAK");
+    printf("\nBREAK");
 }
 
 void print_dprint(char *symb){
-    printf("DPRINT %s", symb);
+    printf("\nDPRINT %s", symb);
 }
