@@ -1,6 +1,15 @@
 #ifndef CODE_GENERATOR
 #define  CODE_GENERATOR
 
+//Funkcie generátora pre praklad
+void genertaor_start();
+void create_main();
+void create_function_label(char *label);
+void create_function_call(char *label);
+void create_function_return(int return_id, char *return_value);
+void create_function_end(char *label);
+void create_function_parameter(int param_id, char *parameter);
+
 //Práca s rámci, volanie funkcií
 void print_move(char *var, char *symb);
 void print_create_frame();
