@@ -10,10 +10,11 @@ typedef struct syntactic_data_t{
 
     table_item_t *current_item;
     
+    
 }Syntactic_data;
 
 
-void process_semantic(Token *token,Syntactic_data *data);
+void process_semantic(Token *token, Syntactic_data *data);
 
 
 
