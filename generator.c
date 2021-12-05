@@ -114,6 +114,10 @@ void create_write(int var_type, Token *token){
     }
 }
 
+void create_declaration_variable(char *var){
+    print_def_var(DEF_VAR_LF,var);
+}
+
 
 
 //Práca s rámci, volanie funkcií
