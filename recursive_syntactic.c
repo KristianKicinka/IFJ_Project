@@ -64,116 +64,174 @@ void if_nt(){
         //TODO vratene tokeny
     }
 }
+*/
 
-void double_dosts_nt(){
-    if(get_token()==TYPE_COMMA){
-         if(token.type_of_token==TYPE_KW_INTEGER || token.type_of_token==TYPE_KW_NUMBER || token.type_of_token==TYPE_KW_STRING){
-             double_dosts_nt();
+void double_dots_nt(syntactic_data_t *parser_data){
+    //printf("tokenik is : %d \n",parser_data->token.type_of_token);
+    generate_token(&parser_data->token, &parser_data->my_string);
+   // printf("tokenik is : %d \n",parser_data->token.type_of_token);
+    if(parser_data->token.type_of_token==TYPE_COMMA){
+        generate_token(&parser_data->token, &parser_data->my_string);
+         if(parser_data->token.type_of_token==TYPE_KW_INTEGER || parser_data->token.type_of_token==TYPE_KW_NUMBER || parser_data->token.type_of_token==TYPE_KW_STRING){
+             printf("Daco\n");
+             double_dots_nt(parser_data);
+         }else{
+             process_error(SYNTAX_ANALYSIS_FAIL);
          }    
-    }
+    }else if(parser_data->token.type_of_token==TYPE_KW_FUNCTION){
+        start(parser_data);
+    }else if(parser_data->token.type_of_token==TYPE_KW_GLOBAL){
+        start(parser_data);
+    }else if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION){
+        printf("Tu by som sa mal vracat\n");
+        start(parser_data);
+    }else if(parser_data->token.type_of_token==TYPE_KW_EOF){
+        start(parser_data);
+        return;
+    }    
     //epsilon pravidla
-    if(token==TYPE_KW_FUNCTION){
-
-    }
-    if(token==IS_GLOBAL){
-
-    }
-    if(token==TYPE_KW_IF){
-
-    }
-    if(token==TYPE_KW_LOCAL){
-
-    }
-    if(token==TYPE_KW_RETURN){
-
-    }
-    if(token==TYPE_KW_EOF){
-
-    }
-    pirnf("Syntax error\n");
-    exit;
+    printf("mam tuna token: %d\n", parser_data->token.type_of_token);
+    printf("tu som spadol\n");
+    process_error(SYNTAX_ANALYSIS_FAIL);
 }
 
-void double_dot_nt(){
-    Token token;
-    token=get_token();
-    if(token.type_of_token==TYPE_COLON){
-        token=get_token();
-        if(token.type_of_token==TYPE_KW_INTEGER || token.type_of_token==TYPE_KW_NUMBER || token.type_of_token==TYPE_KW_STRING){
-            double_dots_nt();
+
+void double_dot_nt(syntactic_data_t *parser_data){
+    generate_token(&parser_data->token, &parser_data->my_string);
+    if(parser_data->token.type_of_token==TYPE_COLON){
+        generate_token(&parser_data->token, &parser_data->my_string);
+        if(parser_data->token.type_of_token==TYPE_KW_INTEGER || parser_data->token.type_of_token==TYPE_KW_NUMBER || parser_data->token.type_of_token==TYPE_KW_STRING){
+            double_dots_nt(parser_data);
         }
     }else{
-        start(token);
+        start(parser_data);
+        return;
     }
     //epsilon pravidla
-    
-    printf("Syntax error\n");
-    exit;
+    process_error(SYNTAX_ANALYSIS_FAIL);
 }
+
 
 void params_nt(syntactic_data_t *parser_data){
     //semantic kontrola
-    Token token;
-    token=get_token();
-    if(token.type_of_token==TYPE_COMMA){
-        token=get_token();
-         if(token.type_of_token==TYPE_KW_INTEGER || token.type_of_token==TYPE_KW_NUMBER || token.type_of_token==TYPE_KW_STRING){
-            params_nt(&parser_data);
+    generate_token(&parser_data->token, &parser_data->my_string);
+    if(parser_data->token.type_of_token==TYPE_COMMA){
+         generate_token(&parser_data->token, &parser_data->my_string);
+         if(parser_data->token.type_of_token==TYPE_KW_INTEGER || parser_data->token.type_of_token==TYPE_KW_NUMBER || parser_data->token.type_of_token==TYPE_KW_STRING){
+            params_nt(parser_data);
         }
-    }else if(token.type_of_token==TYPE_RIGHT_ROUND_BRACKET){
+    }else if(parser_data->token.type_of_token==TYPE_RIGHT_ROUND_BRACKET){
+        printf("\njedna\n");
         return; //koniec parametrov funkcie
     }
     printf("Syntax error\n");
-    exit;
 }
 
-void param_nt(){
-    Token token;
-    token=get_token();
-     if(token.type_of_token==TYPE_KW_INTEGER || token.type_of_token==TYPE_KW_NUMBER || token.type_of_token==TYPE_KW_STRING){
-         params_nt(token);
-     }else if(token.type_of_token==TYPE_RIGHT_ROUND_BRACKET){
+
+void param_nt(syntactic_data_t *parser_data){
+    generate_token(&parser_data->token, &parser_data->my_string);
+     if(parser_data->token.type_of_token==TYPE_KW_INTEGER || parser_data->token.type_of_token==TYPE_KW_NUMBER || parser_data->token.type_of_token==TYPE_KW_STRING){
+         printf("\nidem do params nt\n");
+         params_nt(parser_data);
+     }else if(parser_data->token.type_of_token==TYPE_RIGHT_ROUND_BRACKET){
+         printf("\nfunkcia nema parametre\n");
          return; //funkcia ziadne paramterne nema
+     }else{
+         process_error(SYNTAX_ANALYSIS_FAIL);
      }
 }
 
-void function_declaration(){
-    Token token;
-    token=get_token();
-    if(token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION){
-        //zapis do TS
-        if(get_token().type_of_token==TYPE_COLON){
-            if(get_token().type_of_token==TYPE_KW_FUNCTION){
-                if(get_token().type_of_token==TYPE_LEFT_ROUND_BRACKET){
-                    param_nt(); //parametre funkcie
-                    double_dot_nt(); //navratove hodnoty funkcie
 
+void function_declaration(syntactic_data_t *parser_data){
+    generate_token(&parser_data->token, &parser_data->my_string);
+    if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE){
+        generate_token(&parser_data->token, &parser_data->my_string);
+        if(parser_data->token.type_of_token==TYPE_COLON){
+            generate_token(&parser_data->token, &parser_data->my_string);
+            if(parser_data->token.type_of_token==TYPE_KW_FUNCTION){
+                generate_token(&parser_data->token, &parser_data->my_string);
+                if(parser_data->token.type_of_token==TYPE_LEFT_ROUND_BRACKET){
+                    param_nt(parser_data); //parametre funkcie
                     
+                    printf("\nostal mi token: %d\n", parser_data->token.type_of_token);
+                    printf("\nVynoril som sa\n");
+
+                    double_dot_nt(parser_data); //navratove hodnoty funkcie
                 }
             }
         }
     }
-    printf("Syntax error\n");
-    exit;
+    process_error(SYNTAX_ANALYSIS_FAIL);
 }
 
-void function_call(Token *token){
+void call_params(syntactic_data_t *parser_data){
+    generate_token(&parser_data->token, &parser_data->my_string);
+    if(parser_data->token.type_of_token==TYPE_COMMA){
+        generate_token(&parser_data->token, &parser_data->my_string);
+        if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE || 
+        parser_data->token.type_of_token==TYPE_INT_NUMBER ||
+        parser_data->token.type_of_token==TYPE_DOUBLE_NUMBER || 
+        parser_data->token.type_of_token==TYPE_STRING)
+        {
+            call_params(parser_data);
+        }else{
+            process_error(SYNTAX_ANALYSIS_FAIL); 
+        }
+    }else if(parser_data->token.type_of_token==TYPE_RIGHT_ROUND_BRACKET){
+        generate_token(&parser_data->token, &parser_data->my_string);
+        start(parser_data);
+    }else{
+        process_error(SYNTAX_ANALYSIS_FAIL); 
+    }
+}
 
+void call_param(syntactic_data_t *parser_data){
+    generate_token(&parser_data->token, &parser_data->my_string);
+    printf("tokenik is : %d \n",parser_data->token.type_of_token);
+    if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE || 
+    parser_data->token.type_of_token==TYPE_INT_NUMBER ||
+    parser_data->token.type_of_token==TYPE_DOUBLE_NUMBER || 
+    parser_data->token.type_of_token==TYPE_STRING)
+    {
+        call_params(parser_data);
+    }else if(parser_data->token.type_of_token==TYPE_RIGHT_ROUND_BRACKET){ //funkcia nema parametre
+       printf("Sem by som mal prist \n");
+       generate_token(&parser_data->token, &parser_data->my_string);
+       start(parser_data); 
+    }else{
+        process_error(SYNTAX_ANALYSIS_FAIL);
+    }
+}
+
+
+void function_call(syntactic_data_t *parser_data){
+    //generate_token(&parser_data->token, &parser_data->my_string);
+    //printf("tokenik is : %d \n",parser_data->token.type_of_token);
+    if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION){
+        generate_token(&parser_data->token, &parser_data->my_string);
+        if(parser_data->token.type_of_token==TYPE_LEFT_ROUND_BRACKET){
+            call_param(parser_data);
+            //start(parser_data);
+        }   
+    }
 }
 
 
 
-void function(Token *token){
+void function(syntactic_data_t *parser_data){
     
 }
-*/
-void start(syntactic_data_t *parser_data){
 
+void start(syntactic_data_t *parser_data){
+    if(parser_data->token.type_of_token==TYPE_STRING){
+        generate_token(&parser_data->token, &parser_data->my_string);
+    }  
+    printf("prijaty token %d\n", parser_data->token.type_of_token);
     if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION){ //volanie funkcie
-        //function_call(&parser_data);
+        function_call(parser_data);
     }
     if(parser_data->token.type_of_token==TYPE_KW_GLOBAL){              //deklaracia funkcie
-        //function_declaration();
+        function_declaration(parser_data);
     }
     if(parser_data->token.type_of_token==TYPE_KW_FUNCTION){           //definicia funkcie
        // generate_token(&parser_data.token, &parser_data.my_string);
@@ -183,8 +241,9 @@ void start(syntactic_data_t *parser_data){
     }
     if(parser_data->token.type_of_token==TYPE_KW_EOF){
         printf("Syntax ok\n");
+        exit(0);
     }
-    printf("Syntax error\n");
+    process_error(SYNTAX_ANALYSIS_FAIL);
 }
 /*
 void init_parser_data(syntactic_data_t *parser_data){

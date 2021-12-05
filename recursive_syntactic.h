@@ -17,7 +17,7 @@ typedef struct syntactic_data_t{
     Token token;
 
     Custom_string my_string;
-    
+
 
     Additional_info info;
     Symbol_type type_of_symbol;
@@ -29,5 +29,17 @@ typedef struct syntactic_data_t{
 
 
 void analyze();
+
+void start(syntactic_data_t *parser_data);
+
+void double_dot_nt(syntactic_data_t *parser_data);
+
+void double_dots_nt(syntactic_data_t *parser_data);
+
+void function_call(syntactic_data_t *parser_data);
+
+void call_param(syntactic_data_t *parser_data);
+
+void call_params(syntactic_data_t *parser_data);
 
 #endif
