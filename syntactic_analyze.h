@@ -2,7 +2,7 @@
 #define _SYNTACTIC_ANALYZE_H
 
 #include "error.h"
-#include "scanner.h"
+#include "lexical_analysis.h"
 #include "stack.h"
 #include "LL_table.h"
 //#include "scanner.c"

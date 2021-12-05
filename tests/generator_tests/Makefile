@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -std=c11 -pedantic -lm  -ggdb3
-FILES=test.c ../../generator.c
+FILES=test.c ../../generator.c ../../LL_table.c ../../lexical_analysis.c ../../custom_string.c ../../stack.c ../../error.c
 
 .PHONY: test-generator clean
 

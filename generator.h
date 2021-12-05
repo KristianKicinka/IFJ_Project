@@ -1,7 +1,7 @@
 #ifndef CODE_GENERATOR
 #define  CODE_GENERATOR
 
-#include "syntactic_analyze.h"
+#include "LL_table.h"
 
 void genertaor_start();
 
