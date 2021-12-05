@@ -9,7 +9,9 @@
         "funct_params_list.h": "c",
         "lexical_analysis.h": "c",
         "expression_analysis.h": "c",
-        "custom_string.h": "c"
+        "custom_string.h": "c",
+        "semantic_analyze.h": "c",
+        "ll_table.h": "c"
     },
     "C_Cpp.dimInactiveRegions": false
 }

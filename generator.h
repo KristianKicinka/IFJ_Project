@@ -1,7 +1,7 @@
 #ifndef CODE_GENERATOR
 #define  CODE_GENERATOR
 
-#include "LL_table.h"
+#include "recursive_syntactic.h"
 
 void genertaor_start();
 
