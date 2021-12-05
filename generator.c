@@ -50,7 +50,10 @@
 -    DPRINT ⟨symb⟩
 */
 
-#define MAIN_LABEL "$$main" 
+#define MAIN_LABEL "$$main"
+#define DEF_VAR_LF "LF"
+#define DEF_VAR_GF "GF"
+#define DEF_VAR_TF "TF"    
 
 void genertaor_start(){
     printf (".IFJcode21");
@@ -68,13 +71,32 @@ void create_function_label(char *label){
     print_push_frame();
 }
 
+void create_function_call(char *label){
+    print_call(label);
+}
+
+void create_function_return(int return_id, char *return_value){
+    printf("\nDEFVAR LF@\%retva%d",return_id);
+    printf("\nMOVE LF@\%retval%d",return_id);
+}
+
+void create_function_end(char *label){
+    print_pop_frame();
+    print_return();
+}
+
+void create_function_parameter(int param_id, char *parameter){
+    print_def_var(DEF_VAR_LF,parameter);
+    printf("\nMOVE LF@\%param%d LF@\%%d",param_id,param_id);
+}
+
 
 
 
 
 //Práca s rámci, volanie funkcií
-void print_move(char *var, char *symb){
-    printf("\nMOVE %s %s", var, par);
+void print_move(char* var_type, char *var, char*symb_type, char *symb){
+    printf("\nMOVE %s@%s %s@%s", var_type,var,symb_type,symb);
 }
 
 void print_create_frame(){
@@ -89,8 +111,8 @@ void print_pop_frame(){
     printf("\nPOPFRAME");
 }
 
-void print_def_var(char*var){
-    printf("\nDEFVAR %s", var);
+void print_def_var(char *type,char*var){
+    printf("\nDEFVAR %S@ %s", type,var);
 }
 
 void print_call(char *label){
