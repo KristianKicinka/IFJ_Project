@@ -61,7 +61,7 @@ void genertaor_start(){
 }
 
 void create_main(){
-    print_jump(MAIN_LABEL);
+    print_label(MAIN_LABEL);
     print_create_frame();
     print_push_frame();
 }
@@ -76,8 +76,8 @@ void create_function_call(char *label){
 }
 
 void create_function_return(int return_id, char *return_value){
-    printf("\nDEFVAR LF@\%retva%d",return_id);
-    printf("\nMOVE LF@\%retval%d",return_id);
+    printf("\nDEFVAR LF@%cretva%d",'%',return_id);
+    printf("\nMOVE LF@%cretval%d",'%',return_id);
 }
 
 void create_function_end(char *label){
@@ -87,10 +87,32 @@ void create_function_end(char *label){
 
 void create_function_parameter(int param_id, char *parameter){
     print_def_var(DEF_VAR_LF,parameter);
-    printf("\nMOVE LF@\%param%d LF@\%%d",param_id,param_id);
+    printf("\nMOVE LF@%cparam%d LF@%c%d",'%',param_id,'%',param_id);
 }
 
+void create_write(int var_type, Token *token){
+    switch (var_type){
+        case TYPE_INT_NUMBER:
+        printf ("\nWRITE int@%d",token->token_info.integer_value);
+        break;
 
+        case TYPE_DOUBLE_NUMBER:
+        printf ("\nWRITE float@%lf", token->token_info.double_value);
+        break;
+
+        case TYPE_STRING:
+        printf ("\nWRITE string@%s",token->token_info.custom_string->string_value);
+        break;
+
+        case TYPE_IDENTIFICATOR_FUNCTION:
+        case TYPE_IDENTIFICATOR_VARIABLE:
+        printf ("\nWRITE LF@%s",token->token_info.custom_string->string_value);
+        break;
+
+        default:
+        break;
+    }
+}
 
 
 
@@ -112,7 +134,7 @@ void print_pop_frame(){
 }
 
 void print_def_var(char *type,char*var){
-    printf("\nDEFVAR %S@ %s", type,var);
+    printf("\nDEFVAR %s@ %s", type,var);
 }
 
 void print_call(char *label){

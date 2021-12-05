@@ -1,12 +1,25 @@
 #ifndef CODE_GENERATOR
 #define  CODE_GENERATOR
 
+#include "syntactic_analyze.h"
+
+void genertaor_start();
+
+// Create functions
+void create_main();
+void create_function_label(char *label);
+void create_function_call(char *label);
+void create_function_return(int return_id, char *return_value);
+void create_function_end(char *label);
+void create_function_parameter(int param_id, char *parameter);
+void create_write(int var_type, Token *token);
+
 //Práca s rámci, volanie funkcií
-void print_move(char *var, char *symb);
+void print_move(char* var_type, char *var, char*symb_type, char *symb);
 void print_create_frame();
 void print_push_frame();
 void print_pop_frame();
-void print_def_var(char*var);
+void print_def_var(char *type,char*var);
 void print_call(char *label);
 void print_return();
 
