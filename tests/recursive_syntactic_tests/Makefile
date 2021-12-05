@@ -5,6 +5,7 @@ FILES=recursive_test.c ../../lexical_analysis.c ../../custom_string.c ../../erro
 .PHONY: test-rec clean
 
 
+
 # List of tests
 
 test-rec: $(FILES)
