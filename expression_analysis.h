@@ -1,3 +1,13 @@
+/**
+ * 
+ * Project : Implementace překladače imperativního jazyka IFJ21.
+ * 
+ * @file lexical_analysis.h 
+ * @author Michal Majer (xmajer22)
+ * @brief  Precedenčná analýza
+ * 
+ */
+
 #ifndef EXPRESSION_ANALYSIS
 #define EXPRESSION_ANALYSIS
 

@@ -1,3 +1,13 @@
+/**
+ * 
+ * Project : Implementace překladače imperativního jazyka IFJ21.
+ * 
+ * @file expression_analysis.h 
+ * @author Michal Majer (xmajer22)
+ * @brief  Zásobník pre precedenčnú analýzu (implementácia)
+ * 
+ */
+
 #include "expression_stack.h"
 
 void exp_stack_init(Exp_stack_symbol *stack)

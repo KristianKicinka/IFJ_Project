@@ -11,7 +11,10 @@
         "expression_analysis.h": "c",
         "custom_string.h": "c",
         "semantic_analyze.h": "c",
-        "ll_table.h": "c"
+        "ll_table.h": "c",
+        "symtable.h": "c",
+        "token_list.h": "c",
+        "error.h": "c"
     },
     "C_Cpp.dimInactiveRegions": false
 }
