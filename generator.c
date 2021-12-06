@@ -129,26 +129,51 @@ void create_skip_else(int label){
 }
 
 void create_else(int label){
-    printf("\nJUMP $end_label%d", label);
+    printf("\nJUMP $if_end_label%d", label);
     printf("\nLABEL $else_label%d", label);
 }
 
 void create_if_end(int label){
-    printf("\nLABEL $end_label%d", label);
+    printf("\nLABEL $if_end_label%d", label);
 }
 
 void create_while_start(){
     printf("\nDEFVAR LF@*tmp%d", label);
-    printf("\nDEFVAR LF@%d", label);
-
+    printf("\nDEFVAR LF@*counter%d", label);
+    printf("\nMOVE LF@*counter%d ", label);
 }
 
-void create_while_jump_to_end(){
-
+void create_while_jump(){
+    printf("\nJUMP $while_label%d", label);
 }
 
 void create_while_end(int label){
-    printf("\nLABEL $end_label%d", label);
+    printf("\nLABEL $while_end_label%d", label);
+}
+
+void def_type_of_var(int var_type, Token *token){
+    switch (var_type)
+    {
+    case TYPE_INT_NUMBER:
+        printf ("int@%d",token->token_info.integer_value);
+        break;
+
+        case TYPE_DOUBLE_NUMBER:
+        printf ("float@%lf", token->token_info.double_value);
+        break;
+
+        case TYPE_STRING:
+        printf ("string@%s",token->token_info.custom_string->string_value);
+        break;
+
+        case TYPE_IDENTIFICATOR_FUNCTION:
+        case TYPE_IDENTIFICATOR_VARIABLE:
+        printf ("LF@%s",token->token_info.custom_string->string_value);
+        break;
+    
+    default:
+        break;
+    }
 }
 
 //Práca s rámci, volanie funkcií
