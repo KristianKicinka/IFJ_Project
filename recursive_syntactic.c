@@ -45,6 +45,7 @@ void double_dots_nt(syntactic_data_t *parser_data){
              printf("Daco\n");
              double_dots_nt(parser_data);
          }else{
+             custom_string_free_memory(&parser_data->my_string);
              process_error(SYNTAX_ANALYSIS_FAIL);
          }
     //navrat pre deklaraciu funkcie   
@@ -85,6 +86,7 @@ void double_dots_nt(syntactic_data_t *parser_data){
     //epsilon pravidla
     printf("mam tuna token: %d\n", parser_data->token.type_of_token);
     printf("tu som spadol\n");
+    custom_string_free_memory(&parser_data->my_string);
     process_error(SYNTAX_ANALYSIS_FAIL);
 }
 
@@ -105,6 +107,7 @@ void double_dot_nt(syntactic_data_t *parser_data){
         code(parser_data);
     }
     //epsilon pravidla
+    custom_string_free_memory(&parser_data->my_string);
     process_error(SYNTAX_ANALYSIS_FAIL);
 }
 
@@ -121,6 +124,8 @@ void params_nt(syntactic_data_t *parser_data){
         printf("\njedna\n");
         return; //koniec parametrov funkcie
     }
+    //custom_string_free_memory(&parser_data->my_string);
+    //process_error(SYNTAX_ANALYSIS_FAIL);
     printf("Syntax error\n");
 }
 
@@ -134,6 +139,7 @@ void param_nt(syntactic_data_t *parser_data){
          printf("\nfunkcia nema parametre\n");
          return; //funkcia ziadne paramterne nema
      }else{
+         custom_string_free_memory(&parser_data->my_string);
          process_error(SYNTAX_ANALYSIS_FAIL);
      }
 }
@@ -164,6 +170,7 @@ void function_declaration(syntactic_data_t *parser_data){
         }
     }
     printf("SE at function declaration \n");
+    custom_string_free_memory(&parser_data->my_string);
     process_error(SYNTAX_ANALYSIS_FAIL);
 }
 
@@ -181,6 +188,7 @@ void call_params(syntactic_data_t *parser_data){
             call_params(parser_data);
         }else{
             printf("SE AT call_params\n");
+            custom_string_free_memory(&parser_data->my_string);
             process_error(SYNTAX_ANALYSIS_FAIL); 
         }
     }else if(parser_data->token.type_of_token==TYPE_RIGHT_ROUND_BRACKET){
@@ -189,6 +197,7 @@ void call_params(syntactic_data_t *parser_data){
         start(parser_data);
     }else{
         printf("SE AT call_params DOWN\n");
+        custom_string_free_memory(&parser_data->my_string);
         process_error(SYNTAX_ANALYSIS_FAIL); 
     }
 }
@@ -206,6 +215,7 @@ void call_param(syntactic_data_t *parser_data){
        start(parser_data); 
     }else{
         printf("SE AT call_param\n");
+        custom_string_free_memory(&parser_data->my_string);
         process_error(SYNTAX_ANALYSIS_FAIL);
     }
 }
@@ -238,10 +248,12 @@ void argument(syntactic_data_t *parser_data){
                  }
              }else{
                 printf("SE argument\n");
+                custom_string_free_memory(&parser_data->my_string);
                 process_error(SYNTAX_ANALYSIS_FAIL);
              } 
          }else{
              printf("SE argument\n");
+             custom_string_free_memory(&parser_data->my_string);
              process_error(SYNTAX_ANALYSIS_FAIL);
          }
     }else if(parser_data->token.type_of_token==TYPE_RIGHT_ROUND_BRACKET){ //ziadny dalsi parameter nie je
@@ -250,6 +262,7 @@ void argument(syntactic_data_t *parser_data){
         double_dot_nt(parser_data); //idem kontrolovat navratove hodnoty
     }else{
         printf("SE argument dole\n");
+        custom_string_free_memory(&parser_data->my_string);
         process_error(SYNTAX_ANALYSIS_FAIL);
     }
 }
@@ -264,10 +277,12 @@ void arg(syntactic_data_t *parser_data){
             printf("arg: idem do argumentu\n");
             argument(parser_data);
         }else{
+            custom_string_free_memory(&parser_data->my_string);
             process_error(SYNTAX_ANALYSIS_FAIL);
         }
     }else{
         printf("SE at arg");
+        custom_string_free_memory(&parser_data->my_string);
         process_error(SYNTAX_ANALYSIS_FAIL);
     }
     printf("END arg\n");
@@ -323,6 +338,7 @@ void code(syntactic_data_t *parser_data){
     if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_function==true){
         parser_data->in_function=false;
         printf("\nSyntax ok code\n");
+        custom_string_free_memory(&parser_data->my_string);
         exit(0);
     }
 }
@@ -352,6 +368,7 @@ void start(syntactic_data_t *parser_data){
     } 
     if(parser_data->token.type_of_token==TYPE_KW_EOF){
         printf("\nSyntax ok\n");
+        custom_string_free_memory(&parser_data->my_string);
         exit(0);
     }
     printf("\nSE AT START\n");
