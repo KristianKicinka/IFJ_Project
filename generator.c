@@ -125,10 +125,11 @@ void create_if_start(int label){
 }
 
 void create_skip_else(int label){
-    printf("\nJUMP $end_label%d", label);
+    printf("\nJUMP $else_label%d", label);
 }
 
 void create_else(int label){
+    printf("\nJUMP $end_label%d", label);
     printf("\nLABEL $else_label%d", label);
 }
 
