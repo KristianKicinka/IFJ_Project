@@ -176,6 +176,7 @@ void def_type_of_var(int var_type, Token *token){
     }
 }
 
+
 //Práca s rámci, volanie funkcií
 void print_move(char* var_type, char *var, char*symb_type, char *symb){
     printf("\nMOVE %s@%s %s@%s", var_type,var,symb_type,symb);
@@ -209,10 +210,10 @@ void print_return(){
 void print_pushs(char*var){
     printf("\nPUSHS %s", var);
 }
-
+/*
 void print_pops(char *type, char *var){
     printf("\nPOPS %s@ %s", type, var);
-}
+}*/
 
 void print_clears(){
     printf("\nCLEARS");
