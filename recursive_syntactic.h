@@ -18,11 +18,12 @@ typedef struct syntactic_data_t{
 
     Custom_string my_string;
 
-
     Additional_info info;
     Symbol_type type_of_symbol;
 
     int parameter_index;
+
+    bool in_function;
     //table_item_t *current_item;
 
 }syntactic_data_t;
@@ -41,5 +42,9 @@ void function_call(syntactic_data_t *parser_data);
 void call_param(syntactic_data_t *parser_data);
 
 void call_params(syntactic_data_t *parser_data);
+
+void code(syntactic_data_t *parser_data);
+
+void code_if(syntactic_data_t *parser_data);
 
 #endif

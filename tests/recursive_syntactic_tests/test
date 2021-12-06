@@ -1,5 +1,9 @@
 require  "ifj21"
-
-global g : function (integer, integer) : integer , integer 
-global e : function (integer) : string
-main(x, 5)
+global g : function (integer) : integer
+global foo : function (integer, integer) : integer, integer
+function f(x : integer) : integer
+main()
+end
+function kiko()
+main()
+end
