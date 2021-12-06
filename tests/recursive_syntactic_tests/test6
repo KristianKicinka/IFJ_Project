@@ -1,0 +1,19 @@
+require "ifj21"
+function program()
+local y : integer = 20
+if 1 then
+y = 10
+write(y)
+else
+write(y)
+end
+write(y) -- vypise 10
+local i : integer = 1
+while i do
+local i : integer = i
+i,i =1,1
+write(i)
+end
+end
+program()
+
