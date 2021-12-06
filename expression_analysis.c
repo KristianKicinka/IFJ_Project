@@ -104,6 +104,14 @@ static PSA_symbol symbol_from_token(Token* token)
 
 }
 
+void free_everything()
+{
+    token_list_dispose(&infix);
+    token_list_dispose(&postfix);
+    exp_stack_free(&stack);
+    exp_stack_free(&help_stack);
+}
+
 void stack_insert_after_term(Exp_stack_symbol* stack, PSA_symbol symbol, Token_type type)
 {
     Exp_stack_item *top;
@@ -435,7 +443,6 @@ int precedence_analysis(Token token, Custom_string *cstring)
     exp_stack_init(&stack);
     exp_stack_init(&help_stack);  // inicializacia pomocneho zasobniku
 
-    //printf("Start 1\n");
     if(exp_stack_push(&stack, DOLLAR, TYPE_UNSET) == false)
     {
         stack_free_return(INTERNAL_FAILATURE);
@@ -445,8 +452,11 @@ int precedence_analysis(Token token, Custom_string *cstring)
 
     Exp_stack_item *stack_top_term;
     PSA_symbol input_symbol;
+    token_list_init(&infix);
+    token_list_init(&postfix);
+    
 
-    //printf("Start precedencna analyza\n");
+
     do
     {
         stack_top_term = exp_stack_top(&stack);
@@ -541,7 +551,7 @@ int precedence_analysis(Token token, Custom_string *cstring)
 
     }while(success==false);
 
-
+    free_everything();
 
     infix_to_postfix();
     printf("\n########################################\n\n");
