@@ -74,7 +74,7 @@ typedef enum
     INVALID        // Non existing rule
 } PSA_rules;
 
-int precedence_analysis(Token token);
+int precedence_analysis(Token token, Custom_string *cstring);
 
 void stack_free_return(Error_type error);
 

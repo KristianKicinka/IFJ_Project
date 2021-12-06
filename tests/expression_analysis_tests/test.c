@@ -8,19 +8,29 @@
 
 void test()
 {
+    syntactic_data_t data;
+    custom_string_init(&data.my_string);
+    generate_token(&data.token, &data.my_string);
+    precedence_analysis(data.token, &data.my_string);
 }
 
 int main()
 {
-    int err = 0;
-    int i = 0;
+    //int err = 0;
+    //int i = 0;
 
+    test();
+
+    /*
     while (!feof(stdin) && err == 0)
     {
-        i++;
-        printf("while cislo %d \n", i);
+        //i++;
+        //printf("while cislo %d \n", i);
 
         test();
     }
+
+    */
+
     return 0;
 }
