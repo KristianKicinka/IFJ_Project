@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -std=c11 -pedantic -lm  -ggdb3
-FILES=recursive_test.c ../../lexical_analysis.c ../../custom_string.c ../../error.c ../../recursive_syntactic.c ../../generator.c
+FILES=recursive_test.c ../../lexical_analysis.c ../../custom_string.c ../../error.c ../../recursive_syntactic.c ../../generator.c ../../symtable.c ../../function_data_list.c
 
 .PHONY: test-rec clean
 
