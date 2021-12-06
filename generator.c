@@ -118,6 +118,10 @@ void create_declaration_variable(char *var){
     print_def_var(DEF_VAR_LF,var);
 }
 
+void create_if_start(){
+    
+}
+
 
 
 //Práca s rámci, volanie funkcií
