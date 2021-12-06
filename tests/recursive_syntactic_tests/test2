@@ -2,7 +2,7 @@ require  "ifj21"
 global g : function (integer) : integer
 global foo : function (integer, integer) : integer, integer
 function f(x : integer) : integer
-bar()
+bar(x)
 if a then
 funkcia()
 funkcia()

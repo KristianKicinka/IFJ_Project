@@ -3,5 +3,6 @@ function program()
 local y : integer = 4 
 local x : integer
 x=20
+return a,b 
 end
 main()
