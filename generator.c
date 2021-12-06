@@ -121,7 +121,7 @@ void create_declaration_variable(char *var){
 void create_if_start(int label){
     printf("\nDEFVAR LF@%d", label);
     printf("\nPOPS LF@%d", label);
-    print_jumpifneq("$else_label", label, "bool@true");
+    printf("\nJUMPIFEQ $else_label LF@%d bool@true", label);
 }
 
 void create_skip_else(int label){
