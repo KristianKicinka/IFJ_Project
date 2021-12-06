@@ -118,11 +118,23 @@ void create_declaration_variable(char *var){
     print_def_var(DEF_VAR_LF,var);
 }
 
-void create_if_start(){
-    
+void create_if_start(int label){
+    print_def_var("\nDEFVAR LF@%d" label);
+    print_pops("POPS LF@%d", label);
+    print_jumpifneq("$else_label", label, "bool@true");
 }
 
+void create_skip_else(int label){
+    printf("\nJUMP $end_label%d", label);
+}
 
+void create_else(int label){
+    printf("\nLABEL $else_label%d", label);
+}
+
+void create_end_if(int label){
+    printf("\nLABEL $end_label%d", label);
+}
 
 //Práca s rámci, volanie funkcií
 void print_move(char* var_type, char *var, char*symb_type, char *symb){
@@ -141,8 +153,8 @@ void print_pop_frame(){
     printf("\nPOPFRAME");
 }
 
-void print_def_var(char *type,char*var){
-    printf("\nDEFVAR %s@ %s", type,var);
+void print_def_var(char *type, char *var){
+    printf("\nDEFVAR %s@ %s", type, var);
 }
 
 void print_call(char *label){
@@ -158,8 +170,8 @@ void print_pushs(char*var){
     printf("\nPUSHS %s", var);
 }
 
-void print_pops(char *var){
-    printf("\nPOPS %s", var);
+void print_pops(char *type, char *var){
+    printf("\nPOPS %s@ %s", type, var);
 }
 
 void print_clears(){
