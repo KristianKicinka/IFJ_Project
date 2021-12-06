@@ -119,8 +119,8 @@ void create_declaration_variable(char *var){
 }
 
 void create_if_start(int label){
-    print_def_var("\nDEFVAR LF@%d" label);
-    print_pops("POPS LF@%d", label);
+    printf("\nDEFVAR LF@%d", label);
+    printf("\nPOPS LF@%d", label);
     print_jumpifneq("$else_label", label, "bool@true");
 }
 
@@ -133,7 +133,21 @@ void create_else(int label){
     printf("\nLABEL $else_label%d", label);
 }
 
-void create_end_if(int label){
+void create_if_end(int label){
+    printf("\nLABEL $end_label%d", label);
+}
+
+void create_while_start(){
+    printf("\nDEFVAR LF@*tmp%d", label);
+    printf("\nDEFVAR LF@%d", label);
+
+}
+
+void create_while_jump_to_end(){
+
+}
+
+void create_while_end(int label){
     printf("\nLABEL $end_label%d", label);
 }
 
