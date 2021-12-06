@@ -29,7 +29,8 @@ typedef struct syntactic_data_t{
     bool in_while;
     bool in_if;
 
-    //table_item_t *current_item;
+    table_item_t *current_item;
+    table_item_t *current_item_var;
 
 }syntactic_data_t;
 

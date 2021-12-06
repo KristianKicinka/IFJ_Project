@@ -1,14 +1,14 @@
 require  "ifj21"
-global g : function (integer) : integer
-global foo : function (integer, integer) : integer, integer
-function f(x : integer) : integer
+
+global a : function()
+function f(x : integer) : string
 bar()
 while a do
 funkcia()
 end
 funkcia()
 end
-function kiko()
+--function kiko()
 main()
 end
 funkcia()

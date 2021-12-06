@@ -22,7 +22,7 @@ void process_error(Error_type err_type){
         fprintf(stderr,"SYNTAX ANALYSIS FAIL\n");
         exit(2);
     }else if (err_type == SEMANTIC_ANALYSIS_UNDEF_VAR){
-        fprintf(stderr,"SEMANTIC ANALYSIS FAIL ( Undefined variable )\n");
+        fprintf(stderr,"SEMANTIC ANALYSIS FAIL ( Undefined variable or redefinition )\n");
         exit(3);
     }else if (err_type == SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ASSIGN){
         fprintf(stderr,"SEMANTIC ANALYSIS FAIL ( Uncompatibile type )\n");

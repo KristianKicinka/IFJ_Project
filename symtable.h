@@ -21,10 +21,9 @@
 #define SYMBOL_TABLE_SIZE 30000
 
 typedef enum {
-    IS_GLOBAL,
-    IS_LOCAL,
-    IS_DEFINED,
+    IS_DECLARED,
     IS_NOT_DEFINED,
+    IS_DEFINED,
     IS_UNSET        // default
 }Additional_info;
 

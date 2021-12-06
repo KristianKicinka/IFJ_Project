@@ -25,7 +25,6 @@ int main(int argc, char const *argv[]){
     // Working with variable
     curr_variable = insert_symbol_variable(my_table,variable_key);
     set_symbol_variable_type(my_table,curr_variable,TYPE_INT_NUMBER);
-    set_additional_info(my_table,curr_variable,IS_LOCAL);
     print_symtable_items(my_table,variable_key);
 
     // Working with function

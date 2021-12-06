@@ -254,7 +254,7 @@ void create_not(int label){
     printf("\nNOT LF@*res LF@*a LF@*b");
 }
 
-void create_frame_version_inst(int frame_inst){
+/* void create_frame_version_inst(int frame_inst){
     switch (frame_inst)
     {
     case LTS:
@@ -294,7 +294,7 @@ void create_frame_version_inst(int frame_inst){
     default:
         break;
     }
-}
+} */
 
 //Práca s rámci, volanie funkcií
 void print_move(char* var_type, char *var, char*symb_type, char *symb){

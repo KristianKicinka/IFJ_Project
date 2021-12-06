@@ -27,6 +27,11 @@ typedef enum {
 
 }Error_type;
 
+/**
+ * @brief 
+ * 
+ * @param err_type 
+ */
 void process_error(Error_type err_type);
 
 #endif // !ERROR_H
