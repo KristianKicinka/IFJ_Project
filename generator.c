@@ -137,13 +137,13 @@ void create_if_end(int label){
     printf("\nLABEL $if_end_label%d", label);
 }
 
-void create_while_start(){
+void create_while_start(int label){
     printf("\nDEFVAR LF@*tmp%d", label);
     printf("\nDEFVAR LF@*counter%d", label);
     printf("\nMOVE LF@*counter%d ", label);
 }
 
-void create_while_jump(){
+void create_while_jump(int label){
     printf("\nJUMP $while_label%d", label);
 }
 
