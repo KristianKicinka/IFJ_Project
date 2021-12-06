@@ -8,7 +8,6 @@ int main(){
 
     int err=0;
     
-
     while(!feof(stdin) && err==0){
         analyze();
     }
