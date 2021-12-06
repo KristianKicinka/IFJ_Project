@@ -286,12 +286,11 @@ void double_dot_nt(syntactic_data_t *parser_data){
         generate_token(&parser_data->token, &parser_data->my_string);
         if(parser_data->token.type_of_token==TYPE_KW_INTEGER || parser_data->token.type_of_token==TYPE_KW_NUMBER || parser_data->token.type_of_token==TYPE_KW_STRING){
             parser_data->parameter_index=0; //funkcia ma prvy navratovy typ
-
             //semantic
-            printf("dadadadad\n");
+            //printf("dadadadad\n");
             insert_function_return_type(&parser_data->global_table,parser_data->current_item,parser_data->token.type_of_token);
             // Generate
-            printf("dadadadad\n");
+            //printf("dadadadad\n");
             double_dots_nt(parser_data);
         }
     }else if(!parser_data->in_function){
@@ -401,9 +400,9 @@ void function_declaration(syntactic_data_t *parser_data){
 
 void call_params(syntactic_data_t *parser_data){
     parser_data->parameter_index++; //funkcia ma dalsi paramter (ziadny parameter je -1, jeden paramter je 0, ...)
-    printf("CALL PARAMS\n");
+    //printf("CALL PARAMS\n");
     generate_token(&parser_data->token, &parser_data->my_string);
-    printf("Tokenik is : %d \n", parser_data->token.type_of_token);
+    //printf("Tokenik is : %d \n", parser_data->token.type_of_token);
     if(parser_data->token.type_of_token==TYPE_COMMA){
         generate_token(&parser_data->token, &parser_data->my_string);
         printf("dalsi tokenik is : %d \n", parser_data->token.type_of_token);
@@ -478,7 +477,7 @@ void argument(syntactic_data_t *parser_data){
     if(parser_data->token.type_of_token==TYPE_COMMA){ //funkcia ma viac parametrov
          generate_token(&parser_data->token, &parser_data->my_string);
          if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE){
-            printf("Anna_foj\n");
+            //printf("Anna_foj\n");
              //SEmantic
              char *identificator = parser_data->token.token_info.custom_string->string_value;
              if(search_item(&parser_data->local_table,identificator)!=NULL){
@@ -486,7 +485,7 @@ void argument(syntactic_data_t *parser_data){
              }
 
              parser_data->current_item_var = insert_symbol_variable(&parser_data->local_table,identificator);
-             printf("item name is :%s \n",parser_data->current_item_var->data.identificator);
+             //printf("item name is :%s \n",parser_data->current_item_var->data.identificator);
 
              generate_token(&parser_data->token, &parser_data->my_string);
              if(parser_data->token.type_of_token==TYPE_COLON){ //nasleduje dalsi parameter
@@ -530,7 +529,7 @@ void arg(syntactic_data_t *parser_data){
     }
 
     parser_data->current_item_var = insert_symbol_variable(&parser_data->local_table,identificator);
-    printf("item name is :%s \n",parser_data->current_item_var->data.identificator);
+    //printf("item name is :%s \n",parser_data->current_item_var->data.identificator);
 
     generate_token(&parser_data->token, &parser_data->my_string);
     //printf("Token v arg %d\n", parser_data->token.type_of_token);
@@ -541,9 +540,9 @@ void arg(syntactic_data_t *parser_data){
             parser_data->token.type_of_token==TYPE_KW_NUMBER || parser_data->token.type_of_token == TYPE_KW_STRING){
             //printf("arg: idem do argumentu\n");
             //Semantic
-            printf("BASHKA is here\n");
+            //printf("BASHKA is here\n");
             set_symbol_variable_type(&parser_data->local_table,parser_data->current_item_var,parser_data->token.type_of_token);
-            printf("data : %d\n",parser_data->current_item->data.symbol_variable_type);
+            //printf("data : %d\n",parser_data->current_item->data.symbol_variable_type);
            // printf("name : %s\n",parser_data->current_item->key);
 
             argument(parser_data);
@@ -552,7 +551,7 @@ void arg(syntactic_data_t *parser_data){
             process_error(SYNTAX_ANALYSIS_FAIL);
         }
     }else{
-        printf("SE at arg");
+        //printf("SE at arg");
         custom_string_free_memory(&parser_data->my_string);
         process_error(SYNTAX_ANALYSIS_FAIL);
     }
