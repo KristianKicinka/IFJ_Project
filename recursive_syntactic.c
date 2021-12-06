@@ -225,9 +225,11 @@ void double_dots_nt(syntactic_data_t *parser_data){
              //printf("Daco\n");
              parser_data->parameter_index++; //prijaty dalsi navratovy typ
 
-             // Semantic
+             // Semantic  
              insert_function_return_type(&parser_data->global_table,parser_data->current_item,parser_data->token.type_of_token);
-             
+//SAME ako v double_dot, ale kontrolujes dalsi parameter rekurzivne
+//global f : function (integer) : integer, INTEGER
+//function f(x : integer) : integer, INTEGER                       
              double_dots_nt(parser_data);
          }else{
              custom_string_free_memory(&parser_data->my_string);
@@ -288,7 +290,15 @@ void double_dot_nt(syntactic_data_t *parser_data){
             parser_data->parameter_index=0; //funkcia ma prvy navratovy typ
             //semantic
             //printf("dadadadad\n");
+
+            
             insert_function_return_type(&parser_data->global_table,parser_data->current_item,parser_data->token.type_of_token);
+
+//KONTROLA prvého return parametru funkcie
+//RETURN parameter deklarovanej funkcie musi byt zhondy s return parametrom definovanej funkcie
+//global f : function (integer) : INTEGER, integer
+//function f(x : integer) : INTEGER, integer
+
             // Generate
             //printf("dadadadad\n");
             double_dots_nt(parser_data);
@@ -493,7 +503,13 @@ void argument(syntactic_data_t *parser_data){
                  if(parser_data->token.type_of_token==TYPE_KW_INTEGER || 
                     parser_data->token.type_of_token==TYPE_KW_STRING || 
                     parser_data->token.type_of_token==TYPE_KW_NUMBER){
-                    
+//PARAMETRE DEKLAROVANEJ FUNKCIE MUSIA BYT ZHODNE S PARAMETRAMI DEFINOVANEJ FUNKCIE
+                    //v TS sa najde definovana funkcia podla ID
+                    //Postupne sa rekurzivne kontroluju jej parametre
+                    //prvy s prvym, druhy s druhym,...    
+                    //global f : function (INTEGER) : integer, integer 
+                    //function f(x : INTEGER) : integer, integer
+            
                     //Semantic
                     set_symbol_variable_type(&parser_data->local_table,parser_data->current_item_var,parser_data->token.type_of_token);
                     argument(parser_data); //prijal som cely parameter, idem kontrolovat, ci neprisiel dalsi
@@ -563,12 +579,13 @@ void function(syntactic_data_t *parser_data){
     //SEMANTIC
     char *identificator = parser_data->token.token_info.custom_string->string_value;
 
-    if(search_item(&parser_data->global_table,identificator)!=NULL){
-        if(*get_additional_info(&parser_data->global_table,identificator) == IS_DEFINED){
+//TEST DEKLARACIE FUNKCIE
+    if(search_item(&parser_data->global_table,identificator)!=NULL){ 
+        if(*get_additional_info(&parser_data->global_table,identificator) == IS_DEFINED){ //test redefinicie
             process_error(SEMANTIC_ANALYSIS_UNDEF_VAR);
         }
     }
-    
+
     parser_data->current_item = insert_symbol_function(&parser_data->global_table,identificator);
     set_additional_info(&parser_data->global_table, parser_data->current_item, IS_DEFINED);
     set_symbol_variable_type(&parser_data->global_table, parser_data->current_item,TYPE_IDENTIFICATOR_FUNCTION);
