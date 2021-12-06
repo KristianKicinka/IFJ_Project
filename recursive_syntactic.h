@@ -22,8 +22,13 @@ typedef struct syntactic_data_t{
     Symbol_type type_of_symbol;
 
     int parameter_index;
+    int label_index;
 
     bool in_function;
+    bool in_statement;
+    bool in_while;
+    bool in_if;
+
     //table_item_t *current_item;
 
 }syntactic_data_t;

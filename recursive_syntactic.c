@@ -14,26 +14,68 @@ Custom_string get_custom_string(){
     return custom_string_init(my_str);
 }
 */
-/*
 
-void while_nt(){
-    Token token;
-    token=get_token();
-    if(token.type_of_token==TYPE_KW_INTEGER || token.type_of_token==TYPE_KW_NUMBER || token.type_of_token==TYPE_KW_STRING){
+
+
+void while_nt(syntactic_data_t *parser_data){
+    generate_token(&parser_data->token, &parser_data->my_string);
+    printf("Token vo while %d\n", parser_data->token.type_of_token);
+    if(parser_data->token.type_of_token==TYPE_KW_INTEGER || 
+    parser_data->token.type_of_token==TYPE_KW_NUMBER || 
+    parser_data->token.type_of_token==TYPE_KW_STRING || 
+    parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE){ //vchadzam do statemenetu
         //volat BOOTOM-UP a poslat jej token
         //TODO vratene tokeny
+        //IF BOTOOM UP OK
+        generate_token(&parser_data->token, &parser_data->my_string);
+        if(parser_data->token.type_of_token==TYPE_KW_DO){
+            parser_data->in_while=true;
+            printf("Z while idem do code\n");
+            generate_token(&parser_data->token, &parser_data->my_string);
+            code(parser_data);
+        }else{
+            printf("Syntax error in while\n");
+            custom_string_free_memory(&parser_data->my_string);
+            process_error(SYNTAX_ANALYSIS_FAIL);
+        }
+    }else{
+        printf("Syntax error in while\n");
+        custom_string_free_memory(&parser_data->my_string);
+        process_error(SYNTAX_ANALYSIS_FAIL);
     }
-    printf("Syntax error\n");
-    exit;
 }
 
-void if_nt(){
-     if(token.type_of_token==TYPE_KW_INTEGER || token.type_of_token==TYPE_KW_NUMBER || token.type_of_token==TYPE_KW_STRING){
-        //volat BOOTOM-UP a poslat jej token
-        //TODO vratene tokeny
+void code_if_nt(syntactic_data_t *parser_data){
+    printf("Do code_if_nt som prisiel s tokenom %d\n", parser_data->token.type_of_token);
+    if(parser_data->token.type_of_token==TYPE_KW_ELSE){ //if statement je prazdny, po else nasleduju dalsie prikazy
+        generate_token(&parser_data->token, &parser_data->my_string);
+        code(parser_data);
+    }else{ //vo vetve if sa nachadza kod
+        //generate_token(&parser_data->token, &parser_data->my_string);
+        code(parser_data);
     }
 }
-*/
+
+void if_nt(syntactic_data_t *parser_data){
+     generate_token(&parser_data->token, &parser_data->my_string);
+     printf("Token v if_nt %d\n", parser_data->token.type_of_token);
+     if(parser_data->token.type_of_token==TYPE_KW_INTEGER || 
+        parser_data->token.type_of_token==TYPE_KW_NUMBER ||
+        parser_data->token.type_of_token==TYPE_KW_STRING ||
+        parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE){
+        //volat BOOTOM-UP a poslat jej token
+        //TODO vratene tokeny
+        //IF BOTTOM UP OK
+        generate_token(&parser_data->token, &parser_data->my_string);
+        printf("Token v if_nt %d\n", parser_data->token.type_of_token);
+        if(parser_data->token.type_of_token==TYPE_KW_THEN){
+            parser_data->in_if=true;
+            generate_token(&parser_data->token, &parser_data->my_string);
+            code_if_nt(parser_data);
+        }
+    }
+}
+
 
 void double_dots_nt(syntactic_data_t *parser_data){
     //printf("tokenik is : %d \n",parser_data->token.type_of_token);
@@ -82,12 +124,13 @@ void double_dots_nt(syntactic_data_t *parser_data){
     }else if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_function){ //funkcia bez navratovych hodnot
         generate_token(&parser_data->token, &parser_data->my_string);
         start(parser_data);
-    }    
-    //epsilon pravidla
-    printf("mam tuna token: %d\n", parser_data->token.type_of_token);
-    printf("tu som spadol\n");
-    custom_string_free_memory(&parser_data->my_string);
-    process_error(SYNTAX_ANALYSIS_FAIL);
+    }else{
+        //epsilon pravidla
+        printf("mam tuna token: %d\n", parser_data->token.type_of_token);
+        printf("tu som spadol\n");
+        custom_string_free_memory(&parser_data->my_string);
+        process_error(SYNTAX_ANALYSIS_FAIL);
+    }     
 }
 
 
@@ -123,10 +166,11 @@ void params_nt(syntactic_data_t *parser_data){
     }else if(parser_data->token.type_of_token==TYPE_RIGHT_ROUND_BRACKET){
         printf("\njedna\n");
         return; //koniec parametrov funkcie
+    }else{
+        custom_string_free_memory(&parser_data->my_string);
+        process_error(SYNTAX_ANALYSIS_FAIL);
     }
-    //custom_string_free_memory(&parser_data->my_string);
-    //process_error(SYNTAX_ANALYSIS_FAIL);
-    printf("Syntax error\n");
+    //printf("Syntax error\n");
 }
 
 
@@ -212,7 +256,11 @@ void call_param(syntactic_data_t *parser_data){
     }else if(parser_data->token.type_of_token==TYPE_RIGHT_ROUND_BRACKET){ //funkcia nema parametre
        printf("Sem by som mal prist \n");
        generate_token(&parser_data->token, &parser_data->my_string);
-       start(parser_data); 
+       if(parser_data->in_while==true){
+           code(parser_data);
+       }else{
+           start(parser_data); 
+       }
     }else{
         printf("SE AT call_param\n");
         custom_string_free_memory(&parser_data->my_string);
@@ -310,17 +358,16 @@ void function(syntactic_data_t *parser_data){
      printf("END function\n");
 }
 
-void code_if(syntactic_data_t *parser_data){
-
-}
 
 void code(syntactic_data_t *parser_data){
-    printf("dostal som sa do code\n");
+    printf("dostal som sa do code s tokenom %d\n", parser_data->token.type_of_token);
     if(parser_data->token.type_of_token==TYPE_KW_WHILE){
-        
+        printf("z code sa vola while\n");
+        while_nt(parser_data);
     }
     if(parser_data->token.type_of_token==TYPE_KW_IF){
-
+        printf("z code sa vola if_nt\n");
+        if_nt(parser_data);
     }
     if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION){
         printf("z code sa vola functioncall\n");
@@ -335,12 +382,30 @@ void code(syntactic_data_t *parser_data){
     if(parser_data->token.type_of_token==TYPE_KW_LOCAL){
 
     }
+    if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_while==true && parser_data->in_function==true){
+        parser_data->in_while=false;
+        generate_token(&parser_data->token, &parser_data->my_string);
+        code(parser_data);
+        //printf("\nSyntax ok code\n");
+        //custom_string_free_memory(&parser_data->my_string);
+        // exit(0);
+    }
+    if(parser_data->token.type_of_token==TYPE_KW_ELSE && parser_data->in_if==true){
+        //EPS
+        generate_token(&parser_data->token, &parser_data->my_string);
+        code(parser_data);
+    }
+    if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_if==true){
+        parser_data->in_if=false;
+        generate_token(&parser_data->token, &parser_data->my_string);
+        code(parser_data);
+    }
     if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_function==true){
         parser_data->in_function=false;
         printf("\nSyntax ok code\n");
         custom_string_free_memory(&parser_data->my_string);
         exit(0);
-    }
+    }  
 }
 
 
@@ -386,6 +451,8 @@ void init_parser_data(syntactic_data_t *parser_data){
 void analyze(){
     syntactic_data_t parser_data;
     parser_data.in_function=false;
+    parser_data.in_if=false;
+    //parser_data.in_while=false; toto by tu malo byt ale ked to tam je tak sa to rozdrbe tak radsej nak to tam nie je xD
     //Token term;
     //Token *actualterm = &term; 
 

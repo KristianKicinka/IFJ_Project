@@ -3,7 +3,9 @@ global g : function (integer) : integer
 global foo : function (integer, integer) : integer, integer
 function f(x : integer) : integer
 bar()
-while a do
+if a then
+funkcia()
+else
 funkcia()
 end
 funkcia()
