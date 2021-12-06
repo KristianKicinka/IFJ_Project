@@ -179,6 +179,28 @@ void def_type_of_var(int var_type, Token *token){
 }
 */
 
+//compare
+void create_lt(int label){
+    printf("\nDEFVAR LF@*a%d", label);
+    printf("\nDEFVAR LF@*b%d", label);
+    printf("\nDEFVAR LF@*res%d", label);
+    printf("\nLT LF@*res LF@*a LF@*b");
+}
+
+void create_gt(int label){
+    printf("\nDEFVAR LF@*a%d", label);
+    printf("\nDEFVAR LF@*b%d", label);
+    printf("\nDEFVAR LF@*res%d", label);
+    printf("\nGT LF@*res LF@*a LF@*b");
+}
+
+void create_EQ(int label){
+    printf("\nDEFVAR LF@*a%d", label);
+    printf("\nDEFVAR LF@*b%d", label);
+    printf("\nDEFVAR LF@*res%d", label);
+    printf("\nEQ LF@*res LF@*a LF@*b");
+}
+
 //Práca s rámci, volanie funkcií
 void print_move(char* var_type, char *var, char*symb_type, char *symb){
     printf("\nMOVE %s@%s %s@%s", var_type,var,symb_type,symb);

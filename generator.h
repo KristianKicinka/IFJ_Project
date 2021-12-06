@@ -26,6 +26,11 @@ void create_while_start(int label);
 void create_while_jump(int label);
 void create_while_end(int label);
 
+//compare
+void create_lt(int label);
+void create_gt(int label);
+void create_EQ(int label);
+
 //Práca s rámci, volanie funkcií
 void print_move(char* var_type, char *var, char*symb_type, char *symb);
 void print_create_frame();
