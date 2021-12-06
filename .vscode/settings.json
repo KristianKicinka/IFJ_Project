@@ -11,7 +11,8 @@
         "expression_analysis.h": "c",
         "custom_string.h": "c",
         "semantic_analyze.h": "c",
-        "ll_table.h": "c"
+        "ll_table.h": "c",
+        "recursive_syntactic.h": "c"
     },
     "C_Cpp.dimInactiveRegions": false
 }

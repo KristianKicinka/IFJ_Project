@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -std=c11 -pedantic -lm  -ggdb3
-FILES= custom_string.c error.c expression_analysis.c funct_params_list.c scanner.c  #symtable.c syntactic_analyze.c LL_table.c stack.c generator.c 
+FILES= ifjcode21_compiler.c custom_string.c error.c function_data_list.c lexical_analysis.c  symtable.c recursive_syntactic.c generator.c #expression_analysis.c
 
 .PHONY: build clean
 
