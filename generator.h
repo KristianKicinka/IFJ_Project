@@ -13,6 +13,18 @@ void create_function_return(int return_id, char *return_value);
 void create_function_end(char *label);
 void create_function_parameter(int param_id, char *parameter);
 void create_write(int var_type, Token *token);
+void create_declaration_variable(char *var);
+
+//if 
+void create_if_start(int label);
+void create_skip_else(int label);
+void create_else(int label);
+void create_if_end(int label);
+
+//while
+void create_while_start(int label);
+void create_while_jump(int label);
+void create_while_end(int label);
 
 //Práca s rámci, volanie funkcií
 void print_move(char* var_type, char *var, char*symb_type, char *symb);
