@@ -15,7 +15,150 @@ Custom_string get_custom_string(){
 }
 */
 
+void assign_nt(syntactic_data_t *parser_data){
+    //sem pridem s KW_ASSIGN <=>
+    generate_token(&parser_data->token, &parser_data->my_string);
 
+}
+
+void optional_ekv(syntactic_data_t *parser_data){
+    //sem pridem s KW_ASSIGN <=>
+    generate_token(&parser_data->token, &parser_data->my_string);
+    printf("po generovani tokenu v optional_ekv: %d\n", parser_data->token.type_of_token);
+    if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION){      //LOCAL A : = foo()
+        function_call(parser_data);
+        //alebo code????? oba by mali fungovat
+    }else if(parser_data->token.type_of_token==TYPE_LEFT_ROUND_BRACKET || 
+             parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE ||
+             parser_data->token.type_of_token==TYPE_INT_NUMBER ||
+             parser_data->token.type_of_token==TYPE_DOUBLE_NUMBER){          //LOCAL A : = a||2
+             //TODO volat BOTTOM-UP
+            
+             generate_token(&parser_data->token, &parser_data->my_string);
+             printf("optional_ekv vola code s tokenom %d\n", parser_data->token.type_of_token);
+             code(parser_data); //moze byt deklarovana a zaroven inicializovana iba jedna hodnota, po uspesnej precedencnej idem spat do kodu a cakam, co je dalsie
+    }else{
+        //code(parser_data); //toto je tu asi duplicitne ale Budis - ked ju raz zacnes pit uz neprestanes
+        printf("SE at optional_ekv\n");
+        custom_string_free_memory(&parser_data->my_string);
+        process_error(SYNTAX_ANALYSIS_FAIL);
+    }
+}
+void assign_new(syntactic_data_t *parser_data){
+    //sem pridem s KW_LOCAL
+    generate_token(&parser_data->token, &parser_data->my_string);
+    if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE){
+        generate_token(&parser_data->token, &parser_data->my_string);
+        if(parser_data->token.type_of_token==TYPE_COLON){               //<LOCAL> <ID> <:>
+            generate_token(&parser_data->token, &parser_data->my_string);
+            if(parser_data->token.type_of_token==TYPE_KW_INTEGER ||
+               parser_data->token.type_of_token==TYPE_KW_NUMBER ||
+               parser_data->token.type_of_token==TYPE_KW_STRING){       //<LOCAL> <ID> <:> <INT>
+                generate_token(&parser_data->token, &parser_data->my_string);
+                if(parser_data->token.type_of_token==TYPE_ASSIGN){         //<LOCAL> <ID> <:> <INT> <=>
+                    //assign_nt(parser_data);
+                    printf("assign_new volam optional_EKV s tokenom %d\n" ,parser_data->token.type_of_token);   
+                    optional_ekv(parser_data);
+                }else{                                              //iny vstup ako <=> znamena iba deklraraciu bez inicializacie
+                    printf("assign_new do code sa vraciam s tokenom %d\n" ,parser_data->token.type_of_token);
+                    code(parser_data);
+                }                
+               }
+        }
+    }
+}
+
+void assign_values(syntactic_data_t *parser_data){
+    if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION){ //a=foo()
+        code(parser_data);
+    }
+    generate_token(&parser_data->token, &parser_data->my_string);
+    printf("Token v assign_valueS %d\n", parser_data->token.type_of_token);
+    if(parser_data->token.type_of_token==TYPE_COMMA){
+        generate_token(&parser_data->token, &parser_data->my_string);
+        if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE || 
+           parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION ||
+           parser_data->token.type_of_token==TYPE_INT_NUMBER ||
+           parser_data->token.type_of_token==TYPE_DOUBLE_NUMBER){ // ...=a,b || ...=foo(), bar() || ...=2,3
+            //volat BOTTOM UP
+
+            assign_values(parser_data);
+        }else{
+            printf("SE at asssign_valueS\n");
+            custom_string_free_memory(&parser_data->my_string);
+            process_error(SYNTAX_ANALYSIS_FAIL);
+        }
+    }else{
+        code(parser_data);
+    }
+}
+
+void assign_value(syntactic_data_t *parser_data){
+    generate_token(&parser_data->token, &parser_data->my_string);
+    printf("Token v assign_value %d\n", parser_data->token.type_of_token);
+    if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE || 
+       parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION || 
+       parser_data->token.type_of_token==TYPE_INT_NUMBER ||
+       parser_data->token.type_of_token==TYPE_DOUBLE_NUMBER){ // ...=a || ...=foo() || ...=2
+        //volat BOOTOM UP
+
+        assign_values(parser_data);
+    }else{
+        printf("SE at asssign_value\n");
+        custom_string_free_memory(&parser_data->my_string);
+        process_error(SYNTAX_ANALYSIS_FAIL);
+    }
+}
+
+void to_assign2(syntactic_data_t *parser_data){
+    //tu mi pride a,a 
+    //a loopujem kym nenarazim na =
+    generate_token(&parser_data->token, &parser_data->my_string);
+    printf("token v to assing2 %d\n", parser_data->token.type_of_token);
+    if(parser_data->token.type_of_token==TYPE_ASSIGN){
+        assign_value(parser_data); // a,a=
+    }else if(parser_data->token.type_of_token==TYPE_COMMA){ //a,a,
+        generate_token(&parser_data->token, &parser_data->my_string);
+        if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE){ //a,a,a
+            to_assign2(parser_data);
+        }else{
+            printf("SE at to_assign2\n");
+            custom_string_free_memory(&parser_data->my_string);
+            process_error(SYNTAX_ANALYSIS_FAIL);
+        }
+    }else{
+        printf("SE at to_assign\n");
+        custom_string_free_memory(&parser_data->my_string);
+        process_error(SYNTAX_ANALYSIS_FAIL);
+    }
+}
+
+void to_assign(syntactic_data_t *parser_data){
+    generate_token(&parser_data->token, &parser_data->my_string);
+    printf("token v to assing %d\n", parser_data->token.type_of_token);
+    if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE || parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION){ //a,a
+        to_assign2(parser_data);
+    }else{
+        printf("SE at to_assign\n");
+        custom_string_free_memory(&parser_data->my_string);
+        process_error(SYNTAX_ANALYSIS_FAIL);
+    }
+}
+
+void assign_existing(syntactic_data_t *parser_data){
+    //sem uz prislo IDcko, som pred = 
+    generate_token(&parser_data->token, &parser_data->my_string);
+    printf("token v assign_existing %d\n", parser_data->token.type_of_token);
+    if(parser_data->token.type_of_token==TYPE_COMMA){   // a,  
+        to_assign(parser_data);       
+    }else if(parser_data->token.type_of_token==TYPE_ASSIGN){ // a=
+        assign_value(parser_data);  
+    }else{
+        printf("SE at assign_existing\n");
+        custom_string_free_memory(&parser_data->my_string);
+        process_error(SYNTAX_ANALYSIS_FAIL);
+    }
+}
 
 void while_nt(syntactic_data_t *parser_data){
     generate_token(&parser_data->token, &parser_data->my_string);
@@ -374,13 +517,16 @@ void code(syntactic_data_t *parser_data){
         function_call(parser_data);
     }  
     if(parser_data->token.type_of_token==TYPE_KW_RETURN){
-
+        //if in function and function has parameters
+        //generate and call start 
     }
     if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE){
-
+        printf("z code sa vola assign_existing\n");
+        assign_existing(parser_data);
     }
     if(parser_data->token.type_of_token==TYPE_KW_LOCAL){
-
+        printf("z code sa vola assign_new\n");
+        assign_new(parser_data);
     }
     if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_while==true && parser_data->in_function==true){
         parser_data->in_while=false;

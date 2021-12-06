@@ -44,12 +44,34 @@ void double_dots_nt(syntactic_data_t *parser_data);
 
 void function_call(syntactic_data_t *parser_data);
 
+void function_declaration(syntactic_data_t *parser_data);
+
 void call_param(syntactic_data_t *parser_data);
 
 void call_params(syntactic_data_t *parser_data);
 
+void param_nt(syntactic_data_t *parser_data);
+
+void params_nt(syntactic_data_t *parser_data);
+
+void if_nt(syntactic_data_t *parser_data);
+
 void code(syntactic_data_t *parser_data);
 
 void code_if(syntactic_data_t *parser_data);
+
+void code_if_nt(syntactic_data_t *parser_data);
+
+void while_nt(syntactic_data_t *parser_data);
+
+void assign_existing(syntactic_data_t *parser_data);
+
+void to_assign(syntactic_data_t *parser_data);
+
+void to_assign2(syntactic_data_t *parser_data);
+
+void assign_value(syntactic_data_t *parser_data);
+
+void assign_values(syntactic_data_t *parser_data);
 
 #endif

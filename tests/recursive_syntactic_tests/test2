@@ -5,6 +5,7 @@ function f(x : integer) : integer
 bar()
 if a then
 funkcia()
+funkcia()
 else
 funkcia()
 end

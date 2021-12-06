@@ -1,0 +1,7 @@
+require "ifj21"
+function program()
+local y : integer = 4 
+local x : integer
+x=20
+end
+main()

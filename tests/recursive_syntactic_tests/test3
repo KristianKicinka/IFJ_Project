@@ -1,0 +1,10 @@
+require "ifj21"
+function program()
+a,b,c,d=a,2,foo(),bar()
+if a then
+else
+a=2
+end
+main()
+end
+program()
