@@ -201,6 +201,101 @@ void create_EQ(int label){
     printf("\nEQ LF@*res LF@*a LF@*b");
 }
 
+//aritmetic instructions
+void create_add(int label){
+    printf("\nDEFVAR LF@*a%d", label);
+    printf("\nDEFVAR LF@*b%d", label);
+    printf("\nADD TF@*a LF@*a LF@*b");
+}
+
+void create_sub(int label){
+    printf("\nDEFVAR LF@*a%d", label);
+    printf("\nDEFVAR LF@*b%d", label);
+    printf("\nSUB TF@*a LF@*a LF@*b");
+}
+
+void create_mul(int label){
+    printf("\nDEFVAR LF@*a%d", label);
+    printf("\nDEFVAR LF@*b%d", label);
+    printf("\nMUL TF@*a LF@*a LF@*b");
+}
+
+void create_div(int label){
+    printf("\nDEFVAR LF@*a%d", label);
+    printf("\nDEFVAR LF@*b%d", label);
+    printf("\nDIV TF@*a LF@*a LF@*b");
+}
+
+void create_idiv(int label){
+    printf("\nDEFVAR LF@*a%d", label);
+    printf("\nDEFVAR LF@*b%d", label);
+    printf("\nIDIV TF@*a LF@*a LF@*b");
+}
+
+//logical instructions
+void create_and(int label){
+    printf("\nDEFVAR LF@*a%d", label);
+    printf("\nDEFVAR LF@*b%d", label);
+    printf("\nDEFVAR LF@*res%d", label);
+    printf("\nAND LF@*res LF@*a LF@*b");
+}
+
+void create_or(int label){
+    printf("\nDEFVAR LF@*a%d", label);
+    printf("\nDEFVAR LF@*b%d", label);
+    printf("\nDEFVAR LF@*res%d", label);
+    printf("\nOR LF@*res LF@*a LF@*b");
+}
+
+void create_not(int label){
+    printf("\nDEFVAR LF@*a%d", label);
+    printf("\nDEFVAR LF@*b%d", label);
+    printf("\nDEFVAR LF@*res%d", label);
+    printf("\nNOT LF@*res LF@*a LF@*b");
+}
+
+void create_frame_version_inst(int frame_inst){
+    switch (frame_inst)
+    {
+    case LTS:
+        printf("\nLTS");
+        break;
+    case GTS:
+        printf("\nGTS");
+        break;
+    case EQS:
+        printf("\nEQS");
+        break;
+    case ADDS:
+        printf("\nADDS");
+        break;
+    case SUBSS:
+        printf("\nSUBS");
+        break;
+    case MULS:
+        printf("\nMULS");
+        break;
+    case DIVS:
+        printf("\nDIVS");
+        break;
+    case IDIVS:
+        printf("\nIDIVS");
+        break;
+    case ANDS:
+        printf("\nANDS");
+        break;
+    case ORS:
+        printf("\nORS");
+        break;
+    case NOTS:
+        printf("\nNOTS");
+        break;
+    
+    default:
+        break;
+    }
+}
+
 //Práca s rámci, volanie funkcií
 void print_move(char* var_type, char *var, char*symb_type, char *symb){
     printf("\nMOVE %s@%s %s@%s", var_type,var,symb_type,symb);

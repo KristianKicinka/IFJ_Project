@@ -14,13 +14,13 @@ Custom_string get_custom_string(){
     return custom_string_init(my_str);
 }
 */
-
+/*
 void assign_nt(syntactic_data_t *parser_data){
     //sem pridem s KW_ASSIGN <=>
     generate_token(&parser_data->token, &parser_data->my_string);
 
 }
-
+*/
 void optional_ekv(syntactic_data_t *parser_data){
     //sem pridem s KW_ASSIGN <=>
     generate_token(&parser_data->token, &parser_data->my_string);
@@ -65,7 +65,7 @@ void assign_new(syntactic_data_t *parser_data){
                     printf("assign_new do code sa vraciam s tokenom %d\n" ,parser_data->token.type_of_token);
                     code(parser_data);
                 }                
-               }
+            }
         }
     }
 }
@@ -232,6 +232,7 @@ void double_dots_nt(syntactic_data_t *parser_data){
          printf("dalsi tokenik is : %d \n",parser_data->token.type_of_token);
          if(parser_data->token.type_of_token==TYPE_KW_INTEGER || parser_data->token.type_of_token==TYPE_KW_NUMBER || parser_data->token.type_of_token==TYPE_KW_STRING){
              printf("Daco\n");
+             parser_data->parameter_index++; //prijaty dalsi navratovy typ
              double_dots_nt(parser_data);
          }else{
              custom_string_free_memory(&parser_data->my_string);
@@ -282,11 +283,13 @@ void double_dots_nt(syntactic_data_t *parser_data){
 
 
 void double_dot_nt(syntactic_data_t *parser_data){
+    parser_data->parameter_index=-1; //zatial funkcia nema ziadne navratove tyzy
     generate_token(&parser_data->token, &parser_data->my_string);
     printf("\ndouble dot nt token %d\n", parser_data->token.type_of_token);
     if(parser_data->token.type_of_token==TYPE_COLON){
         generate_token(&parser_data->token, &parser_data->my_string);
         if(parser_data->token.type_of_token==TYPE_KW_INTEGER || parser_data->token.type_of_token==TYPE_KW_NUMBER || parser_data->token.type_of_token==TYPE_KW_STRING){
+           parser_data->parameter_index=0; //funkcia ma prvy navratovy typ
             double_dots_nt(parser_data);
         }
     }else if(!parser_data->in_function){
@@ -308,6 +311,7 @@ void params_nt(syntactic_data_t *parser_data){
     if(parser_data->token.type_of_token==TYPE_COMMA){
          generate_token(&parser_data->token, &parser_data->my_string);
          if(parser_data->token.type_of_token==TYPE_KW_INTEGER || parser_data->token.type_of_token==TYPE_KW_NUMBER || parser_data->token.type_of_token==TYPE_KW_STRING){
+            parser_data->parameter_index++;
             params_nt(parser_data);
         }
     }else if(parser_data->token.type_of_token==TYPE_RIGHT_ROUND_BRACKET){
@@ -322,8 +326,10 @@ void params_nt(syntactic_data_t *parser_data){
 
 
 void param_nt(syntactic_data_t *parser_data){
+    parser_data->parameter_index=-1; //ked vchadzam do parametrov funkcie, prvotne predpokladam ze ziadny parameter nema
     generate_token(&parser_data->token, &parser_data->my_string);
      if(parser_data->token.type_of_token==TYPE_KW_INTEGER || parser_data->token.type_of_token==TYPE_KW_NUMBER || parser_data->token.type_of_token==TYPE_KW_STRING){
+         parser_data->parameter_index=0; //funkcia ma jeden parameter
          printf("\nidem do params nt\n");
          params_nt(parser_data);
      }else if(parser_data->token.type_of_token==TYPE_RIGHT_ROUND_BRACKET){
@@ -352,8 +358,9 @@ void function_declaration(syntactic_data_t *parser_data){
                     printf("function_declaration: idem do param_nt\n");
                     param_nt(parser_data); //parametre funkcie
                     
-                    printf("\nostal mi token: %d\n", parser_data->token.type_of_token);
-                    printf("\nVynoril som sa\n");
+                   // printf("\nostal mi token: %d\n", parser_data->token.type_of_token);
+                   // printf("\nVynoril som sa\n");
+                    printf("FUNKCIA MA %d parametrov +1\n",parser_data->parameter_index);
 
                     double_dot_nt(parser_data); //navratove hodnoty funkcie
                 }
@@ -366,6 +373,7 @@ void function_declaration(syntactic_data_t *parser_data){
 }
 
 void call_params(syntactic_data_t *parser_data){
+    parser_data->parameter_index++; //funkcia ma dalsi paramter (ziadny parameter je -1, jeden paramter je 0, ...)
     printf("CALL PARAMS\n");
     generate_token(&parser_data->token, &parser_data->my_string);
     printf("Tokenik is : %d \n", parser_data->token.type_of_token);
@@ -425,9 +433,11 @@ void call_param(syntactic_data_t *parser_data){
 void function_call(syntactic_data_t *parser_data){
     //generate_token(&parser_data->token, &parser_data->my_string);
     //printf("tokenik is : %d \n",parser_data->token.type_of_token);
+   
     if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION){
         generate_token(&parser_data->token, &parser_data->my_string);
         if(parser_data->token.type_of_token==TYPE_LEFT_ROUND_BRACKET){
+            parser_data->parameter_index=-1; //na zaciatku nema funkcia ziadny parameter
             call_param(parser_data);
             //start(parser_data);
         }   
@@ -515,6 +525,7 @@ void function(syntactic_data_t *parser_data){
 
 void check_ret_prarams(syntactic_data_t *parser_data){
     //sem mi pride ID, ktore je v returne
+    parser_data->parameter_index++; //kazdy dalsi prijaty parameter
     generate_token(&parser_data->token, &parser_data->my_string);
     if(parser_data->token.type_of_token==TYPE_COMMA){ //funkcia ma viacero navratovych hodnot
        generate_token(&parser_data->token, &parser_data->my_string);  
@@ -534,6 +545,7 @@ void check_ret_prarams(syntactic_data_t *parser_data){
 
 void return_nt(syntactic_data_t *parser_data){
     //sem mi pride <KW_RETRUN>
+    parser_data->parameter_index=-1; //zatial je funkcia bez parametrov
     generate_token(&parser_data->token, &parser_data->my_string);
     if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE){
         check_ret_prarams(parser_data);
@@ -554,10 +566,7 @@ void code(syntactic_data_t *parser_data){
            code(parser_data);
        }
     }
-    if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_function==false){
-        generate_token(&parser_data->token, &parser_data->my_string);
-        start(parser_data);
-    }
+    
     if(parser_data->token.type_of_token==TYPE_KW_WHILE){
         printf("z code sa vola while\n");
         while_nt(parser_data);
@@ -600,6 +609,10 @@ void code(syntactic_data_t *parser_data){
         parser_data->in_if=false;
         generate_token(&parser_data->token, &parser_data->my_string);
         code(parser_data);
+    }
+    if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_function==false){
+        generate_token(&parser_data->token, &parser_data->my_string);
+        start(parser_data);
     }
     if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_function==true){
         //start(parser_data);
@@ -650,18 +663,19 @@ void init_parser_data(syntactic_data_t *parser_data){
     
 }
 */
+
 void analyze(){
     syntactic_data_t parser_data;
     parser_data.in_function=false;
     parser_data.in_if=false;
+    parser_data.parameter_index=-1; //defaultne je parameter index na -1
     //parser_data.in_while=false; toto by tu malo byt ale ked to tam je tak sa to rozdrbe tak radsej nak to tam nie je xD
-    //Token term;
-    //Token *actualterm = &term; 
-
-    //Custom_string my_string;
-    //Custom_string *my_str = &my_string;
 
     custom_string_init(&parser_data.my_string); 
+
+    //inicializacia tabulky symbolov
+    table_init(&parser_data.global_table);
+    table_init(&parser_data.local_table);
 
     generate_token(&parser_data.token, &parser_data.my_string);
     printf("prvy vygenervany token %d \n", parser_data.token.type_of_token);

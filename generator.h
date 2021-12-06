@@ -31,6 +31,18 @@ void create_lt(int label);
 void create_gt(int label);
 void create_EQ(int label);
 
+//aritmeric instrucions
+void create_add(int label);
+void create_sub(int label);
+void create_mul(int label);
+void create_div(int label);
+void create_idiv(int label);
+
+//logical instructions
+void create_and(int label);
+void create_or(int label);
+void create_not(int label);
+
 //Práca s rámci, volanie funkcií
 void print_move(char* var_type, char *var, char*symb_type, char *symb);
 void print_create_frame();
@@ -39,6 +51,9 @@ void print_pop_frame();
 void print_def_var(char *type,char*var);
 void print_call(char *label);
 void print_return();
+
+//instructions frame version
+void create_frame_version_inst(int frame_inst);
 
 //Práca s dátovým zásobníkom
 void print_pushs(char*var);
