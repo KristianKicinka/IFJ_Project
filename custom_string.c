@@ -131,7 +131,7 @@ void custom_string_copy_string(Custom_string *source, Custom_string *destination
  * 
  * @param str Ukazateľ na štruktúru custom string
  * @param str_to_add Reťazec s ktorým sa porovnáva
- * @return int Vráti 0 ak sú zhodné
+ * @return int Vráti 0 ak sú zhodné, inak vráti 1
  */
 
 int custom_string_compare_with_basic_string(Custom_string *str, char *str_to_compare){
@@ -140,9 +140,7 @@ int custom_string_compare_with_basic_string(Custom_string *str, char *str_to_com
 
    if(ret_value == 0){
        return 0;
-   }else if (ret_value < 0){
-       return -1;
-   }else{
+   }else {
        return 1;
    }
 
