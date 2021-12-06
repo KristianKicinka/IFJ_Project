@@ -118,6 +118,7 @@ void create_declaration_variable(char *var){
     print_def_var(DEF_VAR_LF,var);
 }
 
+//if
 void create_if_start(int label){
     printf("\nDEFVAR LF@%d", label);
     printf("\nPOPS LF@%d", label);
@@ -137,6 +138,7 @@ void create_if_end(int label){
     printf("\nLABEL $if_end_label%d", label);
 }
 
+//while
 void create_while_start(int label){
     printf("\nDEFVAR LF@*tmp%d", label);
     printf("\nDEFVAR LF@*counter%d", label);
@@ -150,7 +152,7 @@ void create_while_jump(int label){
 void create_while_end(int label){
     printf("\nLABEL $while_end_label%d", label);
 }
-
+/*
 void def_type_of_var(int var_type, Token *token){
     switch (var_type)
     {
@@ -175,7 +177,7 @@ void def_type_of_var(int var_type, Token *token){
         break;
     }
 }
-
+*/
 
 //Práca s rámci, volanie funkcií
 void print_move(char* var_type, char *var, char*symb_type, char *symb){
