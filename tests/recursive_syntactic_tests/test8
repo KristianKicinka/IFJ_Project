@@ -1,0 +1,8 @@
+require "ifj21"
+function foo(x : integer, y : integer) : integer, integer
+z=z
+end
+function g()
+main()
+end
+g()

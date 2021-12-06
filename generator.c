@@ -118,11 +118,88 @@ void create_declaration_variable(char *var){
     print_def_var(DEF_VAR_LF,var);
 }
 
-void create_if_start(){
-    
+//if
+void create_if_start(int label){
+    printf("\nDEFVAR LF@%d", label);
+    printf("\nPOPS LF@%d", label);
+    printf("\nJUMPIFEQ $else_label LF@%d bool@true", label);
 }
 
+void create_skip_else(int label){
+    printf("\nJUMP $else_label%d", label);
+}
 
+void create_else(int label){
+    printf("\nJUMP $if_end_label%d", label);
+    printf("\nLABEL $else_label%d", label);
+}
+
+void create_if_end(int label){
+    printf("\nLABEL $if_end_label%d", label);
+}
+
+//while
+void create_while_start(int label){
+    printf("\nDEFVAR LF@*tmp%d", label);
+    printf("\nDEFVAR LF@*counter%d", label);
+    printf("\nMOVE LF@*counter%d ", label);
+}
+
+void create_while_jump(int label){
+    printf("\nJUMP $while_label%d", label);
+}
+
+void create_while_end(int label){
+    printf("\nLABEL $while_end_label%d", label);
+}
+/*
+void def_type_of_var(int var_type, Token *token){
+    switch (var_type)
+    {
+    case TYPE_INT_NUMBER:
+        printf ("int@%d",token->token_info.integer_value);
+        break;
+
+        case TYPE_DOUBLE_NUMBER:
+        printf ("float@%lf", token->token_info.double_value);
+        break;
+
+        case TYPE_STRING:
+        printf ("string@%s",token->token_info.custom_string->string_value);
+        break;
+
+        case TYPE_IDENTIFICATOR_FUNCTION:
+        case TYPE_IDENTIFICATOR_VARIABLE:
+        printf ("LF@%s",token->token_info.custom_string->string_value);
+        break;
+    
+    default:
+        break;
+    }
+}
+*/
+
+//compare
+void create_lt(int label){
+    printf("\nDEFVAR LF@*a%d", label);
+    printf("\nDEFVAR LF@*b%d", label);
+    printf("\nDEFVAR LF@*res%d", label);
+    printf("\nLT LF@*res LF@*a LF@*b");
+}
+
+void create_gt(int label){
+    printf("\nDEFVAR LF@*a%d", label);
+    printf("\nDEFVAR LF@*b%d", label);
+    printf("\nDEFVAR LF@*res%d", label);
+    printf("\nGT LF@*res LF@*a LF@*b");
+}
+
+void create_EQ(int label){
+    printf("\nDEFVAR LF@*a%d", label);
+    printf("\nDEFVAR LF@*b%d", label);
+    printf("\nDEFVAR LF@*res%d", label);
+    printf("\nEQ LF@*res LF@*a LF@*b");
+}
 
 //Práca s rámci, volanie funkcií
 void print_move(char* var_type, char *var, char*symb_type, char *symb){
@@ -141,8 +218,8 @@ void print_pop_frame(){
     printf("\nPOPFRAME");
 }
 
-void print_def_var(char *type,char*var){
-    printf("\nDEFVAR %s@ %s", type,var);
+void print_def_var(char *type, char *var){
+    printf("\nDEFVAR %s@ %s", type, var);
 }
 
 void print_call(char *label){
@@ -157,10 +234,10 @@ void print_return(){
 void print_pushs(char*var){
     printf("\nPUSHS %s", var);
 }
-
-void print_pops(char *var){
-    printf("\nPOPS %s", var);
-}
+/*
+void print_pops(char *type, char *var){
+    printf("\nPOPS %s@ %s", type, var);
+}*/
 
 void print_clears(){
     printf("\nCLEARS");
