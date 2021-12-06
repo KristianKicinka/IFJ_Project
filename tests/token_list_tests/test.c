@@ -1,7 +1,6 @@
 #include "../../token_list.h"
 #include "../../lexical_analysis.h"
 #include "../../recursive_syntactic.h"
-#include "../../token_list.h"
 #include "../../error.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,11 +16,13 @@ void anal(token_list *token_list)
 
     token_list_insertlast(token_list, data.token);
     // printf("%u\n", token_list->lastElement->token.type_of_token);
+
+    custom_string_free_memory(&data.my_string);
 }
 
 int main()
 {
-    token_list *token_list;
+    token_list *token_list = malloc(sizeof(*token_list));
 
     token_list_init(token_list);
 
@@ -40,7 +41,8 @@ int main()
 
     token_list_activefirst(token_list);
 
-    i=0;
+    i = 0;
+
     while (token_list->activeElement != NULL)
     {
         i++;
@@ -71,5 +73,6 @@ int main()
     }
     printf("\n");
 
+    free(token_list);
     return 0;
 }

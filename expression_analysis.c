@@ -17,7 +17,7 @@
 
 Exp_stack_symbol stack;
 Exp_stack_symbol help_stack;
-Custom_string *cstring;
+//Custom_string *cstring;
 token_list infix;
 token_list postfix;
 
@@ -89,6 +89,7 @@ static PSA_symbol symbol_from_token(Token* token)
     case TYPE_STRING:
     case TYPE_INT_NUMBER:
     case TYPE_DOUBLE_NUMBER:
+    case TYPE_IDENTIFICATOR_VARIABLE:
         return ID;
     
     case TYPE_LEFT_ROUND_BRACKET:
@@ -96,7 +97,7 @@ static PSA_symbol symbol_from_token(Token* token)
     
     case TYPE_RIGHT_ROUND_BRACKET:
         return RBRACKET;
-    
+
     default: 
         return DOLLAR;
     }
@@ -111,7 +112,7 @@ void stack_insert_after_term(Exp_stack_symbol* stack, PSA_symbol symbol, Token_t
     if(top->symbol == EXPRESSION || top->symbol == EXPRESSION_I 
     || top->symbol == EXPRESSION_N || top->symbol == EXPRESSION_S)
     {
-        exp_stack_push(&help_stack, top->symbol, top->type);    // na pomocnehy zasobnik si nahram tom zasobniku
+        exp_stack_push(&help_stack, top->symbol, top->type);    // na pomocnehy zasobnik si nahram top zasobniku
         exp_stack_pop(stack);                                   // odstranim vrch zasobniku
         exp_stack_push(stack, PUSH_SYMBOL, TYPE_UNSET);         // na zasobnik nahram <
         top = exp_stack_top(&help_stack);                       // top si naplnim hodnotou na pomocnom zasobniku
@@ -408,19 +409,34 @@ void stack_reduce(Exp_stack_symbol* stack, Token token)
 
 }
 
+Exp_stack_item *top_term(Exp_stack_symbol* stack)
+{
+    Exp_stack_item *top = exp_stack_top(stack);;
+    Exp_stack_item *temp;
+
+    exp_stack_push(&help_stack, top->symbol, top->type);    
+    exp_stack_pop(stack);                                   
+    top = exp_stack_top(stack);
+    temp = exp_stack_top(&help_stack);                      
+    exp_stack_push(stack, temp->symbol, temp->type);          
+    exp_stack_pop(&help_stack);                             
+
+    return top;
+}
+
 bool infix_to_postfix()
 {   
     //TODO
     return false;
 }
 
-int precedence_analysis(Token token)
+int precedence_analysis(Token token, Custom_string *cstring)
 {
     exp_stack_init(&stack);
     exp_stack_init(&help_stack);  // inicializacia pomocneho zasobniku
 
-
-    if(!exp_stack_push(&stack, DOLLAR, TYPE_UNSET))
+    //printf("Start 1\n");
+    if(exp_stack_push(&stack, DOLLAR, TYPE_UNSET) == false)
     {
         stack_free_return(INTERNAL_FAILATURE);
     }
@@ -430,6 +446,7 @@ int precedence_analysis(Token token)
     Exp_stack_item *stack_top_term;
     PSA_symbol input_symbol;
 
+    //printf("Start precedencna analyza\n");
     do
     {
         stack_top_term = exp_stack_top(&stack);
@@ -438,18 +455,32 @@ int precedence_analysis(Token token)
         if(stack_top_term == NULL)
             stack_free_return(INTERNAL_FAILATURE);
 
+        printf("-----------------------------------\n");
+        printf("Vrch stacku: %u\n", stack_top_term->symbol);
 
-        if(input_symbol != PLUS  || input_symbol != MINUS  || input_symbol != MUL
-        || input_symbol != DIV   || input_symbol != DDIV   || input_symbol != CONC
-        || input_symbol != LENG  || input_symbol != LESS   || input_symbol != LESSOE 
-        || input_symbol != MORE  || input_symbol != MOREOE || input_symbol != EQ
-        || input_symbol != NOTEQ || input_symbol != ID     || input_symbol != LBRACKET
-        || input_symbol != RBRACKET){
+        if(stack_top_term->symbol == EXPRESSION   || stack_top_term->symbol == EXPRESSION_I 
+        || stack_top_term->symbol == EXPRESSION_N || stack_top_term->symbol == EXPRESSION_S)
+        {
+                    stack_top_term = top_term(&stack);
+        }
 
+        printf("Neterminal: %u\n", stack_top_term->symbol);
+        printf("Vstup: %u\n", input_symbol);
+
+        if(input_symbol != PLUS  && input_symbol != MINUS  && input_symbol != MUL
+        && input_symbol != DIV   && input_symbol != DDIV   && input_symbol != CONC
+        && input_symbol != LENG  && input_symbol != LESS   && input_symbol != LESSOE 
+        && input_symbol != MORE  && input_symbol != MOREOE && input_symbol != EQ
+        && input_symbol != NOTEQ && input_symbol != ID     && input_symbol != LBRACKET
+        && input_symbol != RBRACKET){
+
+            printf("Neulozenie do linked listu\n");
+            
             //TODO ulozit si token pre andyho
             input_symbol = DOLLAR;
         }else{
 
+            //printf("Ulozenie do linked listu\n");
             //TODO ulozit si input symbol do linked listu
 
         }
@@ -460,27 +491,32 @@ int precedence_analysis(Token token)
         
         switch(PSA_table[stack_top_term->symbol][input_symbol])
         {
-            case PA:
+            case PA:          
+                printf("PA\n");
                 stack_insert_after_term(&stack, input_symbol, token.type_of_token);
                 generate_token(&token, cstring);
                 break;
 
             case R:
+                printf("R\n");
                 stack_reduce(&stack, token);
                 break;
 
             case P:
+                printf("P\n");
                 exp_stack_push(&stack, input_symbol, token.type_of_token);
                 generate_token(&token, cstring);
                 break;
 
             case E:
+                printf("E\n");
                 // TODO ulozit token do struktury pre Andyho
                 generate_token(&token, cstring);
 
                 if(token.type_of_token == TYPE_ASSIGN || token.type_of_token == TYPE_COMMA 
                 || token.type_of_token == TYPE_LEFT_ROUND_BRACKET){
-
+                    
+                    
                     // TODO ulozit token do struktury pre Andyho
                     input_symbol = DOLLAR;
 
@@ -490,19 +526,27 @@ int precedence_analysis(Token token)
                 break;
 
             case U:
+                printf("U\n");
                 if (stack_top_term->symbol == DOLLAR && input_symbol == DOLLAR)
 			    	success = true;
 			    else
 				    stack_free_return(SYNTAX_ANALYSIS_FAIL);
 			    break;
+            
+            default:
+                stack_free_return(SYNTAX_ANALYSIS_FAIL);
+
         }
 
 
     }while(success==false);
 
 
-    infix_to_postfix();
 
+    infix_to_postfix();
+    printf("\n########################################\n\n");
+    printf("#   Synatx analysis was succesfull !   #\n");
+    printf("\n########################################\n");
     return 0;
 }
 
