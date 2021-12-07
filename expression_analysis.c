@@ -128,7 +128,7 @@ void stack_insert_after_term(Exp_stack_symbol* stack, PSA_symbol symbol, Token_t
     }
 }
 
-bool reduce_by_rules(int pushes, Token token)
+bool reduce_by_rules(int pushes, Token token, syntactic_data_t *data)
 {
     Exp_stack_item *stacksym = exp_stack_top(&help_stack);
 
@@ -167,10 +167,10 @@ bool reduce_by_rules(int pushes, Token token)
                 return true;
 
             }else{
-                stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
+                stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC, data);
             }
         }else{
-             stack_free_return(SEMANTIC_ANALYSIS_FAIL_OTHERS);
+             stack_free_return(SEMANTIC_ANALYSIS_FAIL_OTHERS, data);
         }
 
     }else if(pushes == 3)
@@ -192,7 +192,7 @@ bool reduce_by_rules(int pushes, Token token)
                     return true;
 
                 }else{
-                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
+                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC, data);
                 }
             // <, <=, >, >=, ~=, ==
             }else if(stacksym->type == TYPE_LTHEN || stacksym->type == TYPE_LEKV || stacksym->type == TYPE_GTHEN
@@ -206,10 +206,10 @@ bool reduce_by_rules(int pushes, Token token)
                     return true;
 
                 }else{
-                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
+                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC, data);
                 }
             }else{
-                stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
+                stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC, data);
             }
 
         // (
@@ -227,7 +227,7 @@ bool reduce_by_rules(int pushes, Token token)
                     return true;
 
                 }else{
-                    stack_free_return(SYNTAX_ANALYSIS_FAIL);
+                    stack_free_return(SYNTAX_ANALYSIS_FAIL, data);
                 }
             }else if(stacksym->type == TYPE_INT_NUMBER){
                 exp_stack_pop(&help_stack);
@@ -239,7 +239,7 @@ bool reduce_by_rules(int pushes, Token token)
                     return true;
 
                 }else{
-                    stack_free_return(SYNTAX_ANALYSIS_FAIL);
+                    stack_free_return(SYNTAX_ANALYSIS_FAIL, data);
                 }
             }else if(stacksym->type == TYPE_DOUBLE_NUMBER){
                 exp_stack_pop(&help_stack);
@@ -251,7 +251,7 @@ bool reduce_by_rules(int pushes, Token token)
                     return true;
 
                 }else{
-                    stack_free_return(SYNTAX_ANALYSIS_FAIL);
+                    stack_free_return(SYNTAX_ANALYSIS_FAIL, data);
                 }
             } 
 
@@ -273,7 +273,7 @@ bool reduce_by_rules(int pushes, Token token)
                     return true;
 
                 }else{
-                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
+                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC, data);
                 }
 
             }else if(stacksym->type == TYPE_DIVIDE_INT){
@@ -287,11 +287,11 @@ bool reduce_by_rules(int pushes, Token token)
                         exp_stack_push(&stack, EXPRESSION_I, TYPE_INT_NUMBER);
                         return true;
                     }else{
-                        stack_free_return(RUNTIME_ERROR_DIVIDING_BY_ZERO);
+                        stack_free_return(RUNTIME_ERROR_DIVIDING_BY_ZERO, data);
                     }
 
                 }else{
-                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
+                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC, data);
                 }
 
             }else if(stacksym->type == TYPE_DIVIDE){
@@ -306,15 +306,15 @@ bool reduce_by_rules(int pushes, Token token)
                         return true;
 
                     }else{
-                        stack_free_return(RUNTIME_ERROR_DIVIDING_BY_ZERO);
+                        stack_free_return(RUNTIME_ERROR_DIVIDING_BY_ZERO, data);
                     }
 
                 }else{
-                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
+                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC, data);
                 }
 
             }else{
-                stack_free_return(SYNTAX_ANALYSIS_FAIL);
+                stack_free_return(SYNTAX_ANALYSIS_FAIL, data);
             }
 
         // E num    
@@ -335,7 +335,7 @@ bool reduce_by_rules(int pushes, Token token)
                     return true;
 
                 }else{
-                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
+                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC, data);
                 }
 
             }else if(stacksym->type == TYPE_DIVIDE){
@@ -351,11 +351,11 @@ bool reduce_by_rules(int pushes, Token token)
                         return true;
 
                     }else{
-                        stack_free_return(RUNTIME_ERROR_DIVIDING_BY_ZERO);
+                        stack_free_return(RUNTIME_ERROR_DIVIDING_BY_ZERO, data);
                     }
 
                 }else{
-                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
+                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC, data);
                 }
 
             }else if(stacksym->type == TYPE_DIVIDE_INT){
@@ -370,29 +370,29 @@ bool reduce_by_rules(int pushes, Token token)
                         return true;
 
                     }else{
-                        stack_free_return(RUNTIME_ERROR_DIVIDING_BY_ZERO);
+                        stack_free_return(RUNTIME_ERROR_DIVIDING_BY_ZERO, data);
                     }
 
                 }else{
-                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC);
+                    stack_free_return(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ARITMETIC, data);
                 }
 
             }else{
-                stack_free_return(SYNTAX_ANALYSIS_FAIL);
+                stack_free_return(SYNTAX_ANALYSIS_FAIL, data);
             }
 
         }else{
-            stack_free_return(SYNTAX_ANALYSIS_FAIL);
+            stack_free_return(SYNTAX_ANALYSIS_FAIL, data);
         }
 
     }else{
-            stack_free_return(SYNTAX_ANALYSIS_FAIL);
+            stack_free_return(SYNTAX_ANALYSIS_FAIL, data);
     }
 
     return false;
 }
 
-void stack_reduce(Exp_stack_symbol* stack, Token token)
+void stack_reduce(Exp_stack_symbol* stack, Token token, syntactic_data_t *data)
 {   
     Exp_stack_item *top = exp_stack_top(stack);
     int number_of_pushes = 0;
@@ -408,7 +408,7 @@ void stack_reduce(Exp_stack_symbol* stack, Token token)
     if(top->symbol == PUSH_SYMBOL)
         exp_stack_pop(stack);
 
-    reduce_by_rules(number_of_pushes, token);
+    reduce_by_rules(number_of_pushes, token, data);
 
 }
 
@@ -427,20 +427,15 @@ Exp_stack_item *top_term(Exp_stack_symbol* stack)
     return top;
 }
 
-bool infix_to_postfix()
-{   
-    //TODO
-    return false;
-}
 
-int precedence_analysis(syntactic_data_t *data)
+void precedence_analysis(syntactic_data_t *data)
 {
     exp_stack_init(&stack);
     exp_stack_init(&help_stack);  // inicializacia pomocneho zasobniku
 
     if(exp_stack_push(&stack, DOLLAR, TYPE_UNSET) == false)
     {
-        stack_free_return(INTERNAL_FAILATURE);
+        stack_free_return(INTERNAL_FAILATURE, data);
     }
 
     bool success = false;
@@ -458,7 +453,7 @@ int precedence_analysis(syntactic_data_t *data)
         input_symbol = symbol_from_token(&data->token);
 
         if(stack_top_term == NULL)
-            stack_free_return(INTERNAL_FAILATURE);
+            stack_free_return(INTERNAL_FAILATURE, data);
 
         printf("-----------------------------------\n");
         printf("Vrch stacku: %u\n", stack_top_term->symbol);
@@ -487,7 +482,7 @@ int precedence_analysis(syntactic_data_t *data)
 
             case R:
                 printf("R\n");
-                stack_reduce(&stack, data->token);
+                stack_reduce(&stack, data->token, data);
                 break;
 
             case P:
@@ -511,7 +506,7 @@ int precedence_analysis(syntactic_data_t *data)
                     input_symbol = DOLLAR;
 
                 }else{
-                    stack_free_return(SYNTAX_ANALYSIS_FAIL);
+                    stack_free_return(SYNTAX_ANALYSIS_FAIL, data);
                 }
                 break;
 
@@ -520,16 +515,17 @@ int precedence_analysis(syntactic_data_t *data)
                 if (stack_top_term->symbol == DOLLAR && input_symbol == DOLLAR)
 			    	success = true;
 			    else
-				    stack_free_return(SYNTAX_ANALYSIS_FAIL);
+				    stack_free_return(SYNTAX_ANALYSIS_FAIL, data);
 			    break;
             
             default:
-                stack_free_return(SYNTAX_ANALYSIS_FAIL);
+                stack_free_return(SYNTAX_ANALYSIS_FAIL, data);
 
         }
 
 
     }while(success==false);
+
     
     printf("\n-------------------------------------------------------\n");
     token_list_activefirst(&infix);
@@ -541,20 +537,28 @@ int precedence_analysis(syntactic_data_t *data)
     }
     printf("\n-------------------------------------------------------\n");
 
-    free_everything();
 
-    infix_to_postfix();
+    stack_top_term = exp_stack_top(&stack);
+
+    if(stack_top_term == NULL)
+        stack_free_return(INTERNAL_FAILATURE, data);
+    
+    if(!(stack_top_term->symbol == EXPRESSION_I || stack_top_term->symbol == EXPRESSION_N || stack_top_term->symbol == EXPRESSION_S))
+        stack_free_return(SYNTAX_ANALYSIS_FAIL, data);
+
+
+
+    free_everything();
 
     printf("\n########################################\n\n");
     printf("#   Synatx analysis was succesfull !   #\n");
     printf("\n########################################\n");
-    return 0;
 }
 
 
-void stack_free_return(Error_type error)
+void stack_free_return(Error_type error, syntactic_data_t *data)
 {
-        exp_stack_free(&stack);
-        exp_stack_free(&help_stack);
+        free_everything();
+        custom_string_free_memory(&data->my_string);
         process_error(error);
 }

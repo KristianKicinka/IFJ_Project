@@ -23,8 +23,8 @@
 
 #define TABLE 17 // Size of the table
 
-int precedence_analysis(syntactic_data_t *data);
+void precedence_analysis(syntactic_data_t *data);
 
-void stack_free_return(Error_type error);
+void stack_free_return(Error_type error, syntactic_data_t *data);
 
 #endif // !EXPRESSION_ANALYSIS
