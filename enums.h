@@ -82,6 +82,7 @@ typedef struct syntactic_data_t{
     bool in_statement;
     bool in_while;
     bool in_if;
+    bool in_declaration;
 
     table_item_t *current_item;
     table_item_t *current_item_var;

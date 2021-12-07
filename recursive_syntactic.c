@@ -10,8 +10,14 @@
  */
 
 #include "recursive_syntactic.h"
-
-
+/*
+void check_declaration(syntactic_data_t *parser_data){
+    if(parser_data->in_declaration==true){
+        set_is_declared(&parser_data->global_table, parser_data->current_item,true);
+        parser_data->in_declaration=false;
+    }
+}
+*/
 void optional_ekv(syntactic_data_t *parser_data){
     //sem pridem s KW_ASSIGN <=>
     check_retuned_tokens_from_expression_analysis(parser_data);
@@ -92,7 +98,8 @@ void assign_value(syntactic_data_t *parser_data){
     if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE || 
        parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION || 
        parser_data->token.type_of_token==TYPE_INT_NUMBER ||
-       parser_data->token.type_of_token==TYPE_DOUBLE_NUMBER){ // ...=a || ...=foo() || ...=2
+       parser_data->token.type_of_token==TYPE_DOUBLE_NUMBER ||
+       parser_data->token.type_of_token==TYPE_LEFT_ROUND_BRACKET){ // ...=a || ...=foo() || ...=2
         //volat BOTTOM UP
         //precedence_analysis(parser_data);
         assign_values(parser_data);
@@ -226,48 +233,71 @@ void double_dots_nt(syntactic_data_t *parser_data){
              //printf("Daco\n");
              parser_data->parameter_index++; //prijaty dalsi navratovy typ
 
-             // Semantic  
-             insert_function_return_type(&parser_data->global_table,parser_data->current_item,parser_data->token.type_of_token);
+             // Semantic
+             if(*get_is_declared(&parser_data->global_table, parser_data->current_item->key)==false && parser_data->in_declaration==true){
+                  insert_function_return_type(&parser_data->global_table,parser_data->current_item,parser_data->token.type_of_token);
+             }else{ //ak je doeklarovana
+                if(parser_data->token.type_of_token != parser_data->current_item->data.list_of_return_types->items[parser_data->parameter_index]){
+                    custom_string_free_memory(&parser_data->my_string);
+                    process_error(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ASSIGN);
+                }
+             }  
+            
 //SAME ako v double_dot, ale kontrolujes dalsi parameter rekurzivne
 //global f : function (integer) : integer, INTEGER
 //function f(x : integer) : integer, INTEGER                       
              double_dots_nt(parser_data);
+           
+
          }else{
              custom_string_free_memory(&parser_data->my_string);
              process_error(SYNTAX_ANALYSIS_FAIL);
          }
+        
+         
     //navrat pre deklaraciu funkcie   
     }else if(parser_data->token.type_of_token==TYPE_KW_FUNCTION && !parser_data->in_function){
+        //check_declaration(parser_data);
         start(parser_data);
     }else if(parser_data->token.type_of_token==TYPE_KW_GLOBAL && !parser_data->in_function){
+        //check_declaration(parser_data);
         start(parser_data);
     }else if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION && !parser_data->in_function){
         //printf("Tu by som sa mal vracat\n");
+        //check_declaration(parser_data);
         start(parser_data);    
     }else if(parser_data->token.type_of_token==TYPE_KW_EOF && !parser_data->in_function){
+        //check_declaration(parser_data);
         start(parser_data);
         return;
     //navrat pre definiciu funkcie
     }else if(parser_data->token.type_of_token==TYPE_KW_WHILE && parser_data->in_function){
         //parser_data->in_function=false;
+        //check_declaration(parser_data);
         code(parser_data);
     }else if(parser_data->token.type_of_token==TYPE_KW_IF && parser_data->in_function){
         //parser_data->in_function=false;
+        //check_declaration(parser_data);
         code(parser_data);
     }else if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION && parser_data->in_function){
         //parser_data->in_function=false;
         //printf("NAPATE\n");
+        //check_declaration(parser_data);
         code(parser_data);
     }else if(parser_data->token.type_of_token==TYPE_KW_RETURN && parser_data->in_function){
         //parser_data->in_function=false;
+        //check_declaration(parser_data);
         code(parser_data);
     }else if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE && parser_data->in_function){
         //parser_data->in_function=false;
+        //check_declaration(parser_data);
         code(parser_data);
     }else if(parser_data->token.type_of_token==TYPE_KW_LOCAL && parser_data->in_function){
         //parser_data->in_function=false;
+        //check_declaration(parser_data);
         code(parser_data);
     }else if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_function){ //funkcia bez navratovych hodnot
+        //check_declaration(parser_data);
         check_retuned_tokens_from_expression_analysis(parser_data);
         start(parser_data);
     }else{
@@ -292,16 +322,16 @@ void double_dot_nt(syntactic_data_t *parser_data){
             //semantic
             //printf("dadadadad\n");
 
-            
-            insert_function_return_type(&parser_data->global_table,parser_data->current_item,parser_data->token.type_of_token);
-
-
-            if(search_item(&parser_data->global_table,parser_data->current_item->key) != NULL){
+            if(*get_is_declared(&parser_data->global_table, parser_data->current_item->key)==false && parser_data->in_declaration==true){
+                 insert_function_return_type(&parser_data->global_table,parser_data->current_item,parser_data->token.type_of_token);
+            }else{  
                 if(parser_data->token.type_of_token != parser_data->current_item->data.list_of_return_types->items[parser_data->parameter_index]){
                     custom_string_free_memory(&parser_data->my_string);
+                    printf("TUZHADNUJE<");
                     process_error(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ASSIGN);
                 }
             }
+          
 //KONTROLA prvého return parametru funkcie //asi fix
 //RETURN parameter deklarovanej funkcie musi byt zhondy s return parametrom definovanej funkcie
 //global f : function (integer) : INTEGER, integer
@@ -385,7 +415,7 @@ void function_declaration(syntactic_data_t *parser_data){
         }
 
         parser_data->current_item = insert_symbol_function(&parser_data->global_table,identificator);
-        set_is_declared(&parser_data->global_table, parser_data->current_item,true);
+        
         //set_additional_info(&parser_data->global_table, parser_data->current_item, IS_DECLARED);
         //set_symbol_variable_type(&parser_data->global_table, parser_data->current_item,TYPE_IDENTIFICATOR_FUNCTION);
 
@@ -776,6 +806,7 @@ void start(syntactic_data_t *parser_data){
     }
     if(parser_data->token.type_of_token==TYPE_KW_GLOBAL){              //deklaracia funkcie
         printf("Start: idem do fucntion_declaration\n");
+        parser_data->in_declaration=true;
         function_declaration(parser_data);
     }
     if(parser_data->token.type_of_token==TYPE_KW_FUNCTION){           //definicia funkcie
@@ -874,6 +905,7 @@ void start(syntactic_data_t *parser_data){
 void parser_data_init(syntactic_data_t *data){
     data->in_function=false;
     data->in_if=false;
+    data->in_declaration=false;
     data->parameter_index=-1;
     token_list_init(&data->list_of_tokens);
 }
