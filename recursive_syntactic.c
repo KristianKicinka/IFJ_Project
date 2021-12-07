@@ -508,6 +508,12 @@ void argument(syntactic_data_t *parser_data){
                     parser_data->token.type_of_token==TYPE_KW_NUMBER){
 //PARAMETRE DEKLAROVANEJ FUNKCIE MUSIA BYT ZHODNE S PARAMETRAMI DEFINOVANEJ FUNKCIE
                     //v TS sa najde definovana funkcia podla ID
+                    if(parser_data->token.type_of_token != parser_data->current_item->data.list_of_parameters->items[parser_data->parameter_index]){
+                        custom_string_free_memory(&parser_data->my_string);
+                        process_error(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ASSIGN);
+                    }else{
+                        parser_data->parameter_index++;
+                    }
                     //Postupne sa rekurzivne kontroluju jej parametre
                     //prvy s prvym, druhy s druhym,...    
                     //global f : function (INTEGER) : integer, integer 
