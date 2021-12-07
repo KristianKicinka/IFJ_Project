@@ -20,7 +20,6 @@
  * 
  * @param str Ukazateľ na štruktúru custom string
  */
-
 void custom_string_init(Custom_string *str){
 
     int length = 0;
@@ -37,13 +36,13 @@ void custom_string_init(Custom_string *str){
     str->size_of_allocated_memory = memory;
 }
 
+
 /**
  * @brief Funkcia slúži na pridanie znaku do custom stringu
  * 
  * @param str Ukazateľ na štruktúru custom string
  * @param character Znak, ktorý sa pridá do stringu 
  */
-
 void custom_string_add_character(Custom_string *str, char character){
 
 
@@ -66,13 +65,13 @@ void custom_string_add_character(Custom_string *str, char character){
     
 }
 
+
 /**
  * @brief Funkcia slúži na pridanie reťazca znakov do custom stringu
  * 
  * @param str Ukazateľ na štruktúru custom string
  * @param str_to_add Reťazec, ktorý pridávame do custom stringu
  */
-
 void custom_string_add_another_string(Custom_string *str, char *str_to_add){
 
     int to_add_length = strlen(str_to_add);
@@ -97,13 +96,13 @@ void custom_string_add_another_string(Custom_string *str, char *str_to_add){
 
 }
 
+
 /**
  * @brief Funkcia slúži na kopírovanie custom stringu do iného custom stringu
  * 
  * @param source Ukazateľ na zdrojovú štruktúru custom string
  * @param destination Ukazateľ na cieľovú štruktúru custom string
  */
-
 void custom_string_copy_string(Custom_string *source, Custom_string *destination){
 
     int new_dest_length = source->length;
@@ -126,6 +125,7 @@ void custom_string_copy_string(Custom_string *source, Custom_string *destination
 
 }
 
+
 /**
  * @brief Funkcia slúži na porovnanie custom stringu s reťazcom
  * 
@@ -133,7 +133,6 @@ void custom_string_copy_string(Custom_string *source, Custom_string *destination
  * @param str_to_add Reťazec s ktorým sa porovnáva
  * @return int Vráti 0 ak sú zhodné, inak vráti 1
  */
-
 int custom_string_compare_with_basic_string(Custom_string *str, char *str_to_compare){
 
    int ret_value =  strcmp(str->string_value,str_to_compare);
@@ -146,12 +145,12 @@ int custom_string_compare_with_basic_string(Custom_string *str, char *str_to_com
 
 }
 
+
 /**
  * @brief Funkcia slúži na vyčistenie pamäti
  * 
  * @param str Ukazateľ na štruktúru custom string
  */
-
 void custom_string_free_memory(Custom_string *str){
     free(str->string_value);
 }
