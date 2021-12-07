@@ -430,6 +430,7 @@ Exp_stack_item *top_term(Exp_stack_symbol* stack)
 
 void precedence_analysis(syntactic_data_t *data)
 {
+    Token backup;
     exp_stack_init(&stack);
     exp_stack_init(&help_stack);  // inicializacia pomocneho zasobniku
 
@@ -445,7 +446,7 @@ void precedence_analysis(syntactic_data_t *data)
     token_list_init(&infix);
     token_list_init(&postfix);
 
-    char *identificator = data->token.token_info.custom_string->string_value;
+    char *identificator;
    
 
     do
@@ -458,6 +459,7 @@ void precedence_analysis(syntactic_data_t *data)
             if(search_item(&data->local_table, identificator)==NULL){      
                 stack_free_return(SEMANTIC_ANALYSIS_UNDEF_VAR, data);
             }else
+            backup.type_of_token = data->token.type_of_token;
             data->token.type_of_token = *get_symbol_variable_type(&data->local_table, identificator);
 
             printf("token value after %d\n", data->token.type_of_token);
@@ -519,7 +521,7 @@ void precedence_analysis(syntactic_data_t *data)
                 printf("E\n");
                 token_list_insertlast(&infix, data->token);
 
-                token_list_insertfirst(&data->list_of_tokens, data->token);
+                token_list_insertfirst(&data->list_of_tokens, backup);
                 data->list_of_tokens.lastElement = data->list_of_tokens.firstElement;
                 data->list_of_tokens.activeElement = data->list_of_tokens.firstElement;
                 printf("Toto je token ulozeny do listu: %d\n", data->list_of_tokens.activeElement->token.type_of_token);
