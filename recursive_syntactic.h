@@ -21,6 +21,8 @@
 //#include "function_data_list.h"
 
 void analyze();
+void check_retuned_tokens_from_expression_analysis(syntactic_data_t *parser_data);
+void parser_data_init(syntactic_data_t *data);
 void start(syntactic_data_t *parser_data);
 void double_dot_nt(syntactic_data_t *parser_data);
 void double_dots_nt(syntactic_data_t *parser_data);

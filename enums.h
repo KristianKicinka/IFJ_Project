@@ -66,6 +66,8 @@ typedef struct syntactic_data_t{
 
     Token token;
 
+    token_list list_of_tokens;
+
     Custom_string my_string;
 
     Additional_info info;

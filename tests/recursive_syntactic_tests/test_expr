@@ -1,0 +1,12 @@
+require "ifj21"
+global g : function (integer) : integer -- deklarace funkce
+
+function g(x : integer) : integer
+if 5 > 0then return 5
+else
+write("calling g with ", x)
+local res : integer = g(x)
+return res
+end
+end
+main()
