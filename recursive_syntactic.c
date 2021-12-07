@@ -467,15 +467,18 @@ void call_param(syntactic_data_t *parser_data){
 
 
 void function_call(syntactic_data_t *parser_data){
+//TODO vyhodit SE     
     //generate_token(&parser_data->token, &parser_data->my_string);
     //printf("tokenik is : %d \n",parser_data->token.type_of_token);
-   
     if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION){
         generate_token(&parser_data->token, &parser_data->my_string);
         if(parser_data->token.type_of_token==TYPE_LEFT_ROUND_BRACKET){
             parser_data->parameter_index=-1; //na zaciatku nema funkcia ziadny parameter
             call_param(parser_data);
             //start(parser_data);
+        }else{
+           custom_string_free_memory(&parser_data->my_string);
+           process_error(SYNTAX_ANALYSIS_FAIL);
         }   
     }
 }
@@ -599,6 +602,7 @@ void function(syntactic_data_t *parser_data){
             //printf("function: idem do arg\n");
             //Semantic
             arg(parser_data);
+//TODO bez argumentov podporuje len void!!!! opravit!!!!            
          }else if(parser_data->token.type_of_token==TYPE_RIGHT_ROUND_BRACKET){ //funkcia nema ziadne parametre
             parser_data->in_function=true;
             generate_token(&parser_data->token, &parser_data->my_string);
@@ -620,7 +624,10 @@ void check_ret_prarams(syntactic_data_t *parser_data){
     generate_token(&parser_data->token, &parser_data->my_string);
     if(parser_data->token.type_of_token==TYPE_COMMA){ //funkcia ma viacero navratovych hodnot
        generate_token(&parser_data->token, &parser_data->my_string);  
-       if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE){
+       if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE ||  //fixed variables
+         parser_data->token.type_of_token==TYPE_INT_NUMBER || 
+         parser_data->token.type_of_token==TYPE_DOUBLE_NUMBER ||
+         parser_data->token.type_of_token==TYPE_STRING){
            check_ret_prarams(parser_data);
        }
     }if(parser_data->token.type_of_token==TYPE_KW_END){
