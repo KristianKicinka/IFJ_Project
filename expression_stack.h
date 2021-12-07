@@ -11,10 +11,8 @@
 #ifndef EXPRESSION_STACK
 #define EXPRESSION_STACK
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "expression_analysis.h"
-#include "lexical_analysis.h"
+#include "enums.h"
 
 #define TRUE 1
 #define FALSE 0

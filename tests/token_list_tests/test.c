@@ -1,7 +1,4 @@
 #include "../../token_list.h"
-#include "../../lexical_analysis.h"
-#include "../../recursive_syntactic.h"
-#include "../../error.h"
 #include <stdio.h>
 #include <stdlib.h>
 

@@ -14,7 +14,9 @@
         "ll_table.h": "c",
         "symtable.h": "c",
         "token_list.h": "c",
-        "error.h": "c"
-    },
+        "error.h": "c",
+        "recursive_syntactic.h": "c",
+        "function_data_list.h": "c"
+},
     "C_Cpp.dimInactiveRegions": false
 }

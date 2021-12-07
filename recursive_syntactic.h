@@ -6,33 +6,9 @@
 #include "symtable.h"
 #include "expression_analysis.h"
 #include "generator.h"
+#include "enums.h"
 //#include "function_data_list.h"
 
-
-
-typedef struct syntactic_data_t{
-    symbol_table_t global_table;
-    symbol_table_t local_table;
-
-    Token token;
-
-    Custom_string my_string;
-
-    Additional_info info;
-    Symbol_type type_of_symbol;
-
-    int parameter_index; //index 0 je prvý parameter, index -1 je bez parametrov
-    int label_index;
-
-    bool in_function;
-    bool in_statement;
-    bool in_while;
-    bool in_if;
-
-    table_item_t *current_item;
-    table_item_t *current_item_var;
-
-}syntactic_data_t;
 
 void analyze();
 void start(syntactic_data_t *parser_data);

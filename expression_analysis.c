@@ -9,11 +9,6 @@
  */
 
 #include "expression_analysis.h"
-#include "lexical_analysis.h"
-#include "error.h"
-#include "expression_stack.h"
-#include "custom_string.h"
-#include "token_list.h"
 
 Exp_stack_symbol stack;
 Exp_stack_symbol help_stack;
@@ -438,7 +433,7 @@ bool infix_to_postfix()
     return false;
 }
 
-int precedence_analysis(Token token, Custom_string *cstring)
+int precedence_analysis(syntactic_data_t *data)
 {
     exp_stack_init(&stack);
     exp_stack_init(&help_stack);  // inicializacia pomocneho zasobniku
@@ -455,12 +450,12 @@ int precedence_analysis(Token token, Custom_string *cstring)
     token_list_init(&infix);
     token_list_init(&postfix);
     
-
+    
 
     do
     {
         stack_top_term = exp_stack_top(&stack);
-        input_symbol = symbol_from_token(&token);
+        input_symbol = symbol_from_token(&data->token);
 
         if(stack_top_term == NULL)
             stack_free_return(INTERNAL_FAILATURE);
@@ -477,24 +472,6 @@ int precedence_analysis(Token token, Custom_string *cstring)
         printf("Neterminal: %u\n", stack_top_term->symbol);
         printf("Vstup: %u\n", input_symbol);
 
-        if(input_symbol != PLUS  && input_symbol != MINUS  && input_symbol != MUL
-        && input_symbol != DIV   && input_symbol != DDIV   && input_symbol != CONC
-        && input_symbol != LENG  && input_symbol != LESS   && input_symbol != LESSOE 
-        && input_symbol != MORE  && input_symbol != MOREOE && input_symbol != EQ
-        && input_symbol != NOTEQ && input_symbol != ID     && input_symbol != LBRACKET
-        && input_symbol != RBRACKET){
-
-            printf("Neulozenie do linked listu\n");
-            
-            //TODO ulozit si token pre andyho
-            input_symbol = DOLLAR;
-        }else{
-
-            //printf("Ulozenie do linked listu\n");
-            //TODO ulozit si input symbol do linked listu
-
-        }
-
         // TODO
         // ked dostanem ID tak overim ci je deklarovane a definovane. ak nie tak je to semanticka chyba v programe CHYBA 3
         // osetrenie prace s nil len ked je eq a not eq
@@ -503,28 +480,31 @@ int precedence_analysis(Token token, Custom_string *cstring)
         {
             case PA:          
                 printf("PA\n");
-                stack_insert_after_term(&stack, input_symbol, token.type_of_token);
-                generate_token(&token, cstring);
+                token_list_insertlast(&infix, data->token);
+                stack_insert_after_term(&stack, input_symbol, data->token.type_of_token);
+                generate_token(&data->token, &data->my_string);
                 break;
 
             case R:
                 printf("R\n");
-                stack_reduce(&stack, token);
+                stack_reduce(&stack, data->token);
                 break;
 
             case P:
                 printf("P\n");
-                exp_stack_push(&stack, input_symbol, token.type_of_token);
-                generate_token(&token, cstring);
+                token_list_insertlast(&infix, data->token);
+                exp_stack_push(&stack, input_symbol, data->token.type_of_token);
+                generate_token(&data->token, &data->my_string);
                 break;
 
             case E:
                 printf("E\n");
                 // TODO ulozit token do struktury pre Andyho
-                generate_token(&token, cstring);
+                token_list_insertlast(&infix, data->token);
+                generate_token(&data->token, &data->my_string);
 
-                if(token.type_of_token == TYPE_ASSIGN || token.type_of_token == TYPE_COMMA 
-                || token.type_of_token == TYPE_LEFT_ROUND_BRACKET){
+                if(data->token.type_of_token == TYPE_ASSIGN || data->token.type_of_token == TYPE_COMMA 
+                || data->token.type_of_token == TYPE_LEFT_ROUND_BRACKET){
                     
                     
                     // TODO ulozit token do struktury pre Andyho
@@ -550,10 +530,21 @@ int precedence_analysis(Token token, Custom_string *cstring)
 
 
     }while(success==false);
+    
+    printf("\n-------------------------------------------------------\n");
+    token_list_activefirst(&infix);
+
+    while (infix.activeElement != NULL)
+    {
+        printf("%u ", infix.activeElement->token.type_of_token);
+        token_list_next(&infix);
+    }
+    printf("\n-------------------------------------------------------\n");
 
     free_everything();
 
     infix_to_postfix();
+
     printf("\n########################################\n\n");
     printf("#   Synatx analysis was succesfull !   #\n");
     printf("\n########################################\n");

@@ -12,6 +12,7 @@
 #define TOKEN_LIST_H
 
 #include "lexical_analysis.h"
+#include "error.h"
 
 #define FALSE 0
 #define TRUE 1

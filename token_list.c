@@ -9,7 +9,6 @@
  */
 
 #include "token_list.h"
-#include "error.h"
 
 void token_list_init(token_list *list)
 {

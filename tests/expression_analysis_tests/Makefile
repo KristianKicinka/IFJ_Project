@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -std=c11 -pedantic -lm  -ggdb3
-FILES=test.c ../../expression_analysis.c ../../lexical_analysis.c  ../../custom_string.c  ../../expression_stack.c  ../../error.c ../../stack.c  ../../token_list.c
+FILES=test.c ../../expression_analysis.c ../../lexical_analysis.c  ../../custom_string.c  ../../expression_stack.c  ../../error.c ../../stack.c  ../../token_list.c  ../../function_data_list.c ../../generator.c ../../recursive_syntactic.c ../../symtable.c
 
 .PHONY: test-expression clean
 

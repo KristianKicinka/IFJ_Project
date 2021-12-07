@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -std=c11 -pedantic -lm  -ggdb3
-FILES=test.c ../../lexical_analysis.c ../../token_list.c ../../error.c ../../custom_string.c
+FILES=test.c ../../lexical_analysis.c ../../token_list.c ../../error.c ../../custom_string.c 
 
 .PHONY: test-token-list clean
 
