@@ -20,12 +20,12 @@
 
 #define SYMBOL_TABLE_SIZE 30000
 
-typedef enum {
+/* typedef enum {
     IS_DECLARED,
     IS_NOT_DEFINED,
     IS_DEFINED,
     IS_UNSET        // default
-}Additional_info;
+}Additional_info; */
 
 typedef enum {
     TYPE_VARIABLE,
@@ -38,7 +38,9 @@ typedef struct symbol_table_data {
     char *identificator;
     Symbol_type symbol_type;
     Token_type symbol_variable_type;
-    Additional_info symbol_info;
+    //Additional_info symbol_info;
+    bool is_defined;
+    bool is_declared;
     Data_list *list_of_parameters;
     Data_list *list_of_return_types;
 
@@ -162,15 +164,10 @@ Symbol_type *get_symbol_type(symbol_table_t *table, char *key);
 Token_type *get_symbol_variable_type(symbol_table_t *table, char *key);
 
 
-/**
- * @brief Funkcia slúži na získanie dodatočných informácii o položke v tabuľke symbolov
- * 
- * @param table Ukazateľ na štruktúru tabuľky symbolov
- * @param key Reťazec s hashovacím kľúčom
- * @return Additional_info* Informácia o položke v tabuľke symbolov
- */
-Additional_info *get_additional_info(symbol_table_t *table, char *key);
 
+bool *get_is_defined(symbol_table_t *table, char *key);
+
+bool *get_is_declared(symbol_table_t *table, char *key);
 
 /**
  * @brief Funkcia slúži na získanie parametrov z funkcie uloženej v tabuľke symbolov
@@ -203,15 +200,9 @@ Data_list *get_return_types(symbol_table_t *table, char *key);
  */
 void set_symbol_variable_type(symbol_table_t *table, table_item_t *item, Token_type type);
 
+void set_is_declared(symbol_table_t *table, table_item_t *item, bool value);
 
-/**
- * @brief Funkcia slúži na nastavenie dodatočných informácií o položke v tabuľke symbolov
- * 
- * @param table Ukazateľ na štruktúru tabuľky symbolov
- * @param item Ukazateľ na aktuálnu položku
- * @param info Informácia, ktorá sa nastaví položke v tabuľke symbolov
- */
-void set_additional_info(symbol_table_t *table, table_item_t *item, Additional_info info);
+void set_is_defined(symbol_table_t *table, table_item_t *item, bool value);
 
 
 #endif // !SYMBOL_TABLE_H

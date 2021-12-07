@@ -97,7 +97,9 @@ table_item_t *insert_symbol_variable(symbol_table_t *table, char *key){
   strcpy(new_item->key,key);
   strcpy(new_item->data.identificator,key);
 
-  new_item->data.symbol_info = IS_UNSET;
+  new_item->data.is_defined = true;
+  
+  //new_item->data.symbol_info = IS_UNSET;
   new_item->data.symbol_variable_type = TYPE_UNSET;
   new_item->data.symbol_type = TYPE_VARIABLE;
   
@@ -148,8 +150,10 @@ table_item_t *insert_symbol_function(symbol_table_t *table, char *key){
   strcpy(new_item->key,key);
   strcpy(new_item->data.identificator,key);
 
-  new_item->data.symbol_info = IS_UNSET;
+  //new_item->data.symbol_info = IS_UNSET;
   new_item->data.symbol_type = TYPE_FUNCTION;
+  new_item->data.is_defined = false;
+  new_item->data.is_declared = false;
 
   new_item->data.list_of_parameters = (Data_list*) malloc(sizeof(Data_list));
   if(new_item->data.list_of_parameters == NULL)
@@ -228,20 +232,16 @@ void set_symbol_variable_type(symbol_table_t *table, table_item_t *item, Token_t
   
 }
 
-
-/**
- * @brief Funkcia slúži na nastavenie dodatočných informácií o položke v tabuľke symbolov
- * 
- * @param table Ukazateľ na štruktúru tabuľky symbolov
- * @param item Ukazateľ na aktuálnu položku
- * @param info Informácia, ktorá sa nastaví položke v tabuľke symbolov
- */
-void set_additional_info(symbol_table_t *table, table_item_t *item, Additional_info info){
-
+void set_is_declared(symbol_table_t *table, table_item_t *item, bool value){
   if(item != NULL){
-    item->data.symbol_info = info;
+    item->data.is_declared = value;
   }
+}
 
+void set_is_defined(symbol_table_t *table, table_item_t *item, bool value){
+  if(item != NULL){
+    item->data.is_defined = value;
+  }
 }
 
 
@@ -299,19 +299,23 @@ Token_type *get_symbol_variable_type(symbol_table_t *table, char *key){
 }
 
 
-/**
- * @brief Funkcia slúži na získanie dodatočných informácii o položke v tabuľke symbolov
- * 
- * @param table Ukazateľ na štruktúru tabuľky symbolov
- * @param key Reťazec s hashovacím kľúčom
- * @return Additional_info* Informácia o položke v tabuľke symbolov
- */
-Additional_info *get_additional_info(symbol_table_t *table, char *key){
+
+bool *get_is_defined(symbol_table_t *table, char *key){
 
   table_item_t *found_item = search_item(table,key);
 
   if(found_item != NULL)
-    return &(found_item->data.symbol_info);
+    return &(found_item->data.is_defined);
+  else
+    return NULL;
+}
+
+bool *get_is_declared(symbol_table_t *table, char *key){
+
+  table_item_t *found_item = search_item(table,key);
+
+  if(found_item != NULL)
+    return &(found_item->data.is_declared);
   else
     return NULL;
 }

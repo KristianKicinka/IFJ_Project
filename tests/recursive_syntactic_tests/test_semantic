@@ -1,6 +1,6 @@
 require "ifj21"
-global g : function (integer) : integer -- deklarace funkce
-function g(x : string) : integer
+global g : function (integer,string) : string -- deklarace funkce
+function g(x : integer, z : string) : string
 a=b
 end
 main()

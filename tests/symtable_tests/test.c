@@ -30,7 +30,7 @@ int main(int argc, char const *argv[]){
     // Working with function
 
     curr_function = insert_symbol_function(my_table,function_key);
-    set_additional_info(my_table,curr_function,IS_DEFINED);
+    //set_additional_info(my_table,curr_function,IS_DEFINED);
     insert_function_parameter(my_table,curr_function,TYPE_INT_NUMBER);
     insert_function_parameter(my_table,curr_function,TYPE_INT_NUMBER);
     insert_function_return_type(my_table,curr_function,TYPE_STRING);
@@ -45,7 +45,7 @@ int main(int argc, char const *argv[]){
 void print_symtable_items(symbol_table_t *table, char *key){
     char *name = get_identificator(table,key);
     Symbol_type *symbol_type = get_symbol_type(table,key);
-    Additional_info *symbol_info = get_additional_info(table,key);
+    //Additional_info *symbol_info = get_additional_info(table,key);
 
     printf("######################\n");
     printf("name is : %s \n",name);
@@ -56,7 +56,7 @@ void print_symtable_items(symbol_table_t *table, char *key){
         printf("Symbol var type is : %d \n",(int)*symbol_variable_type);
     }
     
-    printf("Symbol info is : %d \n",(int)*symbol_info);
+    //printf("Symbol info is : %d \n",(int)*symbol_info);
 
     if((*symbol_type) == TYPE_FUNCTION){
         Data_list *parameters = get_parameters(table,key);

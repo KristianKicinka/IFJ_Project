@@ -295,7 +295,14 @@ void double_dot_nt(syntactic_data_t *parser_data){
             
             insert_function_return_type(&parser_data->global_table,parser_data->current_item,parser_data->token.type_of_token);
 
-//KONTROLA prvého return parametru funkcie
+
+            if(search_item(&parser_data->global_table,parser_data->current_item->key) != NULL){
+                if(parser_data->token.type_of_token != parser_data->current_item->data.list_of_return_types->items[parser_data->parameter_index]){
+                    custom_string_free_memory(&parser_data->my_string);
+                    process_error(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ASSIGN);
+                }
+            }
+//KONTROLA prvého return parametru funkcie //asi fix
 //RETURN parameter deklarovanej funkcie musi byt zhondy s return parametrom definovanej funkcie
 //global f : function (integer) : INTEGER, integer
 //function f(x : integer) : INTEGER, integer
@@ -378,7 +385,8 @@ void function_declaration(syntactic_data_t *parser_data){
         }
 
         parser_data->current_item = insert_symbol_function(&parser_data->global_table,identificator);
-        set_additional_info(&parser_data->global_table, parser_data->current_item, IS_DECLARED);
+        set_is_declared(&parser_data->global_table, parser_data->current_item,true);
+        //set_additional_info(&parser_data->global_table, parser_data->current_item, IS_DECLARED);
         //set_symbol_variable_type(&parser_data->global_table, parser_data->current_item,TYPE_IDENTIFICATOR_FUNCTION);
 
 
@@ -509,16 +517,19 @@ void argument(syntactic_data_t *parser_data){
                     parser_data->token.type_of_token==TYPE_KW_NUMBER){
 //PARAMETRE DEKLAROVANEJ FUNKCIE MUSIA BYT ZHODNE S PARAMETRAMI DEFINOVANEJ FUNKCIE
                     //v TS sa najde definovana funkcia podla ID
-                    if(parser_data->token.type_of_token != parser_data->current_item->data.list_of_parameters->items[parser_data->parameter_index]){
-                        custom_string_free_memory(&parser_data->my_string);
-                        process_error(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ASSIGN);
-                    }else{
-                        parser_data->parameter_index++;
+                    if(*get_is_declared(&parser_data->global_table, parser_data->current_item->key)==true){
+
+                        if(parser_data->token.type_of_token != parser_data->current_item->data.list_of_parameters->items[parser_data->parameter_index]){
+                            custom_string_free_memory(&parser_data->my_string);
+                            process_error(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ASSIGN);
+                        }else{
+                            parser_data->parameter_index++;
+                        }
                     }
                     //Postupne sa rekurzivne kontroluju jej parametre
                     
                     //prvy s prvym, druhy s druhym,...    
-                    //global f : function (INTEGER) : integer, integer 
+                    //global f : function (INTEGER) : integer, integer // Poriesene
                     //function f(x : INTEGER) : integer, integer
             
                     //Semantic
@@ -569,13 +580,18 @@ void arg(syntactic_data_t *parser_data){
             //Semantic
             set_symbol_variable_type(&parser_data->local_table,parser_data->current_item_var,parser_data->token.type_of_token);
             printf("BASHKA is here %s\n",parser_data->current_item->data.identificator);
-    
-            if(parser_data->token.type_of_token != parser_data->current_item->data.list_of_parameters->items[parser_data->parameter_index]){
-                custom_string_free_memory(&parser_data->my_string);
-                process_error(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ASSIGN);
-            }else{
-                parser_data->parameter_index++;
-            }
+
+
+            if (*get_is_declared(&parser_data->global_table,parser_data->current_item->key) == true){
+                printf("param index : %d\n",parser_data->parameter_index);
+                if(parser_data->token.type_of_token != parser_data->current_item->data.list_of_parameters->items[parser_data->parameter_index]){
+                    custom_string_free_memory(&parser_data->my_string);
+                    process_error(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ASSIGN);
+                }else{
+                    parser_data->parameter_index++;
+                }
+           }
+           
             printf("BASHKA HAH,\n");
             
     
@@ -603,19 +619,23 @@ void function(syntactic_data_t *parser_data){
 
 //TEST DEKLARACIE FUNKCIE //asi fix
     
-    if(search_item(&parser_data->global_table,identificator)==NULL){
+    /* if(search_item(&parser_data->global_table,identificator)==NULL){
         custom_string_free_memory(&parser_data->my_string); 
         process_error(SEMANTIC_ANALYSIS_UNDEF_VAR);
-    }
-    
-    if((*get_additional_info(&parser_data->global_table,identificator)) == IS_DEFINED){ //test redefinicie
+    } */
+
+    if(search_item(&parser_data->global_table,identificator) != NULL){
+        if(*get_is_defined(&parser_data->global_table,identificator) == true){ //test redefinicie
         custom_string_free_memory(&parser_data->my_string); 
         printf("Daj pred to vypis\n");
         process_error(SEMANTIC_ANALYSIS_UNDEF_VAR);
+        }
+        parser_data->current_item = search_item(&parser_data->global_table,identificator);
+    }else{
+        parser_data->current_item = insert_symbol_function(&parser_data->global_table,identificator);
     }
-
-    parser_data->current_item = search_item(&parser_data->global_table,identificator);
-    set_additional_info(&parser_data->global_table, parser_data->current_item, IS_DEFINED);
+    
+    set_is_defined(&parser_data->global_table, parser_data->current_item,true);
     printf("current item %s\n",parser_data->current_item->data.identificator);
     //set_symbol_variable_type(&parser_data->global_table, parser_data->current_item,TYPE_IDENTIFICATOR_FUNCTION);
 

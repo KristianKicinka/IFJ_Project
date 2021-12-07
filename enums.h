@@ -70,10 +70,12 @@ typedef struct syntactic_data_t{
 
     Custom_string my_string;
 
-    Additional_info info;
+    //Additional_info info;
+    
     Symbol_type type_of_symbol;
 
     int parameter_index; //index 0 je prvý parameter, index -1 je bez parametrov
+    //int return_type_index; //index 0 je prvý return, index -1 je bez returnov
     int label_index;
 
     bool in_function;
