@@ -136,16 +136,41 @@ typedef struct token_t {
 }Token;
 
 
-
+/**
+ * @brief Funkcia slúži na spracovanie identifikátora
+ * 
+ * @param string Ukazateľ na štruktúru custom stringu
+ * @param token Ukazateľ na štruktúru tokenu
+ * @param character Aktuálny znak načítaný stavovým automatom
+ */
 void process_identificator(Custom_string *string, Token *token, char character);
 
+
+/**
+ * @brief Funkcia slúži na spracovanie double hodnoty (number)
+ * 
+ * @param string Ukazateľ na štruktúru custom stringu
+ * @param token Ukazateľ na štruktúru tokenu
+ */
 void process_double_value(Custom_string *string, Token *token);
 
+
+/**
+ * @brief Funckia slúži na spracovanie integer hodnoty
+ * 
+ * @param string Ukazateľ na štruktúru custom stringu
+ * @param token Ukazateľ na štruktúru tokenu
+ */
 void process_integer_value(Custom_string *string, Token *token);
 
-void generate_token(Token *token, Custom_string *string);
 
-void call_lex_error(char character,Error_type error);
+/**
+ * @brief Funkcia slúži na generovanie ďalšieho tokenu zo vstupu
+ * 
+ * @param token Ukazateľ na štruktúru tokenu
+ * @param string Ukazateľ na štruktúru custom stringu
+ */
+void generate_token(Token *token, Custom_string *string);
 
 
 #endif // !LEXICAL_ANALYSIS_H
