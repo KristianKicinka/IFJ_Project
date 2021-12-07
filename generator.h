@@ -10,8 +10,8 @@
  */
 
 
-#ifndef CODE_GENERATOR
-#define  CODE_GENERATOR
+#ifndef CODE_GENERATOR_H
+#define  CODE_GENERATOR_H
 
 #include "recursive_syntactic.h"
 
@@ -119,4 +119,4 @@ void print_exit(char *number);
 void print_break();
 void print_dprint(char *symb);
 
-#endif // !CODE_GENERATOR 
+#endif // !CODE_GENERATOR_H 
