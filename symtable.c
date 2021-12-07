@@ -227,9 +227,25 @@ void insert_function_return_type(symbol_table_t *table, table_item_t *item, Toke
 void set_symbol_variable_type(symbol_table_t *table, table_item_t *item, Token_type type){
 
   if(item != NULL){
-    item->data.symbol_variable_type = type;
-  }
-  
+
+    switch (type){
+
+    case TYPE_KW_INTEGER:
+      item->data.symbol_variable_type = TYPE_INT_NUMBER;
+      break;
+    case TYPE_KW_NUMBER:
+      item->data.symbol_variable_type = TYPE_DOUBLE_NUMBER;
+      break;
+    case TYPE_KW_STRING:
+      item->data.symbol_variable_type = TYPE_STRING;
+      break;
+    case TYPE_KW_NIL:
+      item->data.symbol_variable_type = TYPE_KW_NIL;
+      break;
+    default:
+      break;
+    }
+  } 
 }
 
 void set_is_declared(symbol_table_t *table, table_item_t *item, bool value){

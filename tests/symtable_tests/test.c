@@ -24,16 +24,16 @@ int main(int argc, char const *argv[]){
 
     // Working with variable
     curr_variable = insert_symbol_variable(my_table,variable_key);
-    set_symbol_variable_type(my_table,curr_variable,TYPE_INT_NUMBER);
+    set_symbol_variable_type(my_table,curr_variable,TYPE_KW_NUMBER);
     print_symtable_items(my_table,variable_key);
 
     // Working with function
 
     curr_function = insert_symbol_function(my_table,function_key);
     //set_additional_info(my_table,curr_function,IS_DEFINED);
-    insert_function_parameter(my_table,curr_function,TYPE_INT_NUMBER);
-    insert_function_parameter(my_table,curr_function,TYPE_INT_NUMBER);
-    insert_function_return_type(my_table,curr_function,TYPE_STRING);
+    insert_function_parameter(my_table,curr_function,TYPE_KW_NUMBER);
+    insert_function_parameter(my_table,curr_function,TYPE_KW_NUMBER);
+    insert_function_return_type(my_table,curr_function,TYPE_KW_STRING);
     print_symtable_items(my_table,function_key);
 
     table_dispose(my_table);
