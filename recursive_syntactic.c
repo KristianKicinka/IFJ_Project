@@ -46,6 +46,18 @@ void assign_new(syntactic_data_t *parser_data){
     //sem pridem s KW_LOCAL
     check_retuned_tokens_from_expression_analysis(parser_data);
     if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE){
+        //SEMANTIC
+        char *identificator=parser_data->token.token_info.custom_string->string_value;
+        if(search_item(&parser_data->local_table,identificator)!=NULL){
+            custom_string_free_memory(&parser_data->my_string);
+            process_error(SEMANTIC_ANALYSIS_UNDEF_VAR);
+        }
+        parser_data->current_item_var =  insert_symbol_variable(&parser_data->local_table, identificator);
+        set_is_declared(&parser_data->local_table, parser_data->current_item_var, true);
+
+
+        //END SEMANTIC
+
         check_retuned_tokens_from_expression_analysis(parser_data);
         if(parser_data->token.type_of_token==TYPE_COLON){               //<LOCAL> <ID> <:>
             check_retuned_tokens_from_expression_analysis(parser_data);
@@ -53,6 +65,9 @@ void assign_new(syntactic_data_t *parser_data){
                parser_data->token.type_of_token==TYPE_KW_NUMBER ||
                parser_data->token.type_of_token==TYPE_KW_STRING ||
                parser_data->token.type_of_token==TYPE_KW_NIL){       //<LOCAL> <ID> <:> <INT>
+
+                set_symbol_variable_type(&parser_data->local_table,parser_data->current_item_var, parser_data->token.type_of_token);
+
                 check_retuned_tokens_from_expression_analysis(parser_data);
                 if(parser_data->token.type_of_token==TYPE_ASSIGN){         //<LOCAL> <ID> <:> <INT> <=>
                     //assign_nt(parser_data);
@@ -113,6 +128,15 @@ void assign_value(syntactic_data_t *parser_data){
 void to_assign2(syntactic_data_t *parser_data){
     //tu mi pride a,a 
     //a loopujem kym nenarazim na =
+    //SEMANTIC
+
+    char *identificator = parser_data->token.token_info.custom_string->string_value;
+    parser_data->current_item_var=search_item(&parser_data->local_table, identificator);
+    if(parser_data->current_item_var==NULL){    //snaha o priradenie do nedeklarovanej premennej
+        custom_string_free_memory(&parser_data->my_string);
+        process_error(SYNTAX_ANALYSIS_FAIL);
+    }
+    //END SEMANTIC
     check_retuned_tokens_from_expression_analysis(parser_data);
     printf("token v to assing2 %d\n", parser_data->token.type_of_token);
     if(parser_data->token.type_of_token==TYPE_ASSIGN){
@@ -147,6 +171,16 @@ void to_assign(syntactic_data_t *parser_data){
 
 void assign_existing(syntactic_data_t *parser_data){
     //sem uz prislo IDcko, som pred = 
+    //SEMANTIC
+
+    char *identificator = parser_data->token.token_info.custom_string->string_value;
+    parser_data->current_item_var = search_item(&parser_data->local_table, identificator);
+    if(parser_data->current_item_var == NULL){    //snaha o priradenie do needeklarovanej premennej
+        custom_string_free_memory(&parser_data->my_string);
+        process_error(SEMANTIC_ANALYSIS_UNDEF_VAR);
+    }
+
+    //END SEMANTIC
     check_retuned_tokens_from_expression_analysis(parser_data);
     printf("token v assign_existing %d\n", parser_data->token.type_of_token);
     if(parser_data->token.type_of_token==TYPE_COMMA){   // a,  
@@ -234,7 +268,7 @@ void double_dots_nt(syntactic_data_t *parser_data){
              parser_data->parameter_index++; //prijaty dalsi navratovy typ
 
              // Semantic
-             if(*get_is_declared(&parser_data->global_table, parser_data->current_item->key)==false && parser_data->in_declaration==true){
+/* TODO      if(*get_is_declared(&parser_data->global_table, parser_data->current_item->key)==false && parser_data->in_declaration==true){
                   insert_function_return_type(&parser_data->global_table,parser_data->current_item,parser_data->token.type_of_token);
              }else{ //ak je doeklarovana
                 if(parser_data->token.type_of_token != parser_data->current_item->data.list_of_return_types->items[parser_data->parameter_index]){
@@ -242,7 +276,7 @@ void double_dots_nt(syntactic_data_t *parser_data){
                     process_error(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ASSIGN);
                 }
              }  
-            
+        */
 //SAME ako v double_dot, ale kontrolujes dalsi parameter rekurzivne
 //global f : function (integer) : integer, INTEGER
 //function f(x : integer) : integer, INTEGER                       
@@ -321,7 +355,7 @@ void double_dot_nt(syntactic_data_t *parser_data){
             parser_data->parameter_index=0; //funkcia ma prvy navratovy typ
             //semantic
             //printf("dadadadad\n");
-
+/* TODO
             if(*get_is_declared(&parser_data->global_table, parser_data->current_item->key)==false && parser_data->in_declaration==true){
                  insert_function_return_type(&parser_data->global_table,parser_data->current_item,parser_data->token.type_of_token);
             }else{  
@@ -331,7 +365,7 @@ void double_dot_nt(syntactic_data_t *parser_data){
                     process_error(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ASSIGN);
                 }
             }
-          
+*/
 //KONTROLA prvého return parametru funkcie //asi fix
 //RETURN parameter deklarovanej funkcie musi byt zhondy s return parametrom definovanej funkcie
 //global f : function (integer) : INTEGER, integer
@@ -510,6 +544,17 @@ void function_call(syntactic_data_t *parser_data){
     //check_retuned_tokens_from_expression_analysis(parser_data);
     //printf("tokenik is : %d \n",parser_data->token.type_of_token);
     if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION){
+        char *identificator = parser_data->token.token_info.custom_string->string_value;
+        parser_data->current_item=search_item(&parser_data->global_table, identificator);
+        if(parser_data->current_item==NULL){
+            custom_string_free_memory(&parser_data->my_string);
+            process_error(SEMANTIC_ANALYSIS_UNDEF_VAR);
+        }
+        if(*get_is_defined(&parser_data->global_table, parser_data->current_item->key)==false){
+            custom_string_free_memory(&parser_data->my_string);
+            printf("MAROS");
+            process_error(SEMANTIC_ANALYSIS_UNDEF_VAR);
+        }
         check_retuned_tokens_from_expression_analysis(parser_data);
         if(parser_data->token.type_of_token==TYPE_LEFT_ROUND_BRACKET){
             parser_data->parameter_index=-1; //na zaciatku nema funkcia ziadny parameter
