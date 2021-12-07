@@ -31,7 +31,7 @@ void optional_ekv(syntactic_data_t *parser_data){
              parser_data->token.type_of_token==TYPE_DOUBLE_NUMBER ||
              parser_data->token.type_of_token==TYPE_KW_NIL){          //LOCAL A : = a||2
              //TODO volat BOTTOM-UP
-             //precedence_analysis(parser_data);
+             precedence_analysis(parser_data);
              check_retuned_tokens_from_expression_analysis(parser_data);
              printf("optional_ekv vola code s tokenom %d\n", parser_data->token.type_of_token);
              code(parser_data); //moze byt deklarovana a zaroven inicializovana iba jedna hodnota, po uspesnej precedencnej idem spat do kodu a cakam, co je dalsie
@@ -95,7 +95,7 @@ void assign_values(syntactic_data_t *parser_data){
            parser_data->token.type_of_token==TYPE_INT_NUMBER ||
            parser_data->token.type_of_token==TYPE_DOUBLE_NUMBER){ // ...=a,b || ...=foo(), bar() || ...=2,3
             //volat BOTTOM UP
-            //precedence_analysis(parser_data);
+            precedence_analysis(parser_data);
             assign_values(parser_data);
         }else{
             printf("SE at asssign_valueS\n");
@@ -117,7 +117,7 @@ void assign_value(syntactic_data_t *parser_data){
        parser_data->token.type_of_token==TYPE_LEFT_ROUND_BRACKET ||
        parser_data->token.type_of_token==TYPE_STRING){ // ...=a || ...=foo() || ...=2
         //volat BOTTOM UP
-        //precedence_analysis(parser_data);
+        precedence_analysis(parser_data);
         assign_values(parser_data);
     }else{
         jonwick_the_memory_cleaner(parser_data);
@@ -237,7 +237,7 @@ void if_nt(syntactic_data_t *parser_data){
         //volat BOOTOM-UP a poslat jej token
         //TODO vratene tokeny
         //IF BOTTOM UP OK
-        //precedence_analysis(parser_data);
+        precedence_analysis(parser_data);
         check_retuned_tokens_from_expression_analysis(parser_data);
 
         printf("Token v if_nt %d\n", parser_data->token.type_of_token);
