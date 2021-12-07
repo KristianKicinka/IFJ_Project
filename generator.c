@@ -1,3 +1,14 @@
+/**
+ * 
+ * Project : Implementace překladače imperativního jazyka IFJ21.
+ * 
+ * @file generator.c 
+ * @author Lukáš Skopár (xskopa16)
+ * @author Kristián Kičinka (xkicin02)
+ * @brief  Spracovávanie generovania výstupného kódu (implementácia)
+ * 
+ */
+
 #include "generator.h"
 #include <stdio.h>
 

@@ -14,7 +14,8 @@
         "ll_table.h": "c",
         "symtable.h": "c",
         "token_list.h": "c",
-        "error.h": "c"
+        "error.h": "c",
+        "generator.h": "c"
     },
     "C_Cpp.dimInactiveRegions": false
 }
