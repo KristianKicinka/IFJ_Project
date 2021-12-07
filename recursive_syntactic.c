@@ -830,11 +830,16 @@ void init_parser_data(syntactic_data_t *parser_data){
 }
 */
 
+void parser_data_init(syntactic_data_t *data){
+    data->in_function=false;
+    data->in_if=false;
+    data->parameter_index=-1;
+}
+
 void analyze(){
     syntactic_data_t parser_data;
-    parser_data.in_function=false;
-    parser_data.in_if=false;
-    parser_data.parameter_index=-1; //defaultne je parameter index na -1
+    parser_data_init(&parser_data);
+    //defaultne je parameter index na -1
     //parser_data.in_while=false; toto by tu malo byt ale ked to tam je tak sa to rozdrbe tak radsej nak to tam nie je xD
 
     custom_string_init(&parser_data.my_string); 

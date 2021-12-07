@@ -45,6 +45,7 @@ typedef struct syntactic_data_t{
 
 }syntactic_data_t;
 
+void parser_data_init(syntactic_data_t *data);
 void analyze();
 void start(syntactic_data_t *parser_data);
 void double_dot_nt(syntactic_data_t *parser_data);
