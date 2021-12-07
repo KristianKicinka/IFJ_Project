@@ -14,6 +14,7 @@
 #include "error.h"
 
 
+
 /**
  * @brief Funkcia slúži na spracovanie chýb programu a ich výpis 
  * 

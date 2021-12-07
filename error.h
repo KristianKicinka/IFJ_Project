@@ -27,11 +27,15 @@ typedef enum {
 
 }Error_type;
 
+
+
 /**
  * @brief Funkcia slúži na spracovanie chýb programu a ich výpis 
  * 
  * @param err_type Typ chyby programu
  */
 void process_error(Error_type err_type);
+
+
 
 #endif // !ERROR_H
