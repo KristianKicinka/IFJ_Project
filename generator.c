@@ -101,28 +101,28 @@ void create_function_parameter(int param_id, char *parameter){
     printf("\nMOVE LF@%cparam%d LF@%c%d",'%',param_id,'%',param_id);
 }
 
-/* void create_read(int var_type){
+void create_read(Token_type var_type, char *var){
     switch (var_type){
-        case READS:
-        printf ("\nREAD LF@var string");
+        case TYPE_STRING:
+        printf ("\nREAD LF@%s string", var);
         break;
 
-        case READI:
-        printf ("\nREAD LF@var int");
+        case TYPE_INT_NUMBER:
+        printf ("\nREAD LF@%s int", var);
         break;
 
-        case READN:
-        printf ("\nREAD LF@var float");
+        case TYPE_DOUBLE_NUMBER:
+        printf ("\nREAD LF@%s float", var);
         break;
 
         case BOOL
-        printf ("\nREAD LF@var bool");
+        printf ("\nREAD LF@%s bool", var);
         break;
 
         default:
         break;
     }
-} */
+}
 
 void create_write(int var_type, Token *token){
     switch (var_type){
