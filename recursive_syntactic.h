@@ -20,6 +20,7 @@
 #include "enums.h"
 //#include "function_data_list.h"
 
+void jonwick_the_memory_cleaner(syntactic_data_t *parser_data);
 void analyze();
 void check_retuned_tokens_from_expression_analysis(syntactic_data_t *parser_data);
 void parser_data_init(syntactic_data_t *data);
@@ -49,5 +50,6 @@ void argument(syntactic_data_t *parser_data);
 void arg(syntactic_data_t *parser_data);
 void check_ret_prarams(syntactic_data_t *parser_data);
 void return_nt(syntactic_data_t *parser_data);
+
 
 #endif

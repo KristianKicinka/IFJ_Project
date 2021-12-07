@@ -38,7 +38,7 @@ void optional_ekv(syntactic_data_t *parser_data){
     }else{
         //code(parser_data); //toto je tu asi duplicitne ale Budis - ked ju raz zacnes pit uz neprestanes
         printf("SE at optional_ekv\n");
-        custom_string_free_memory(&parser_data->my_string);
+        jonwick_the_memory_cleaner(parser_data);
         process_error(SYNTAX_ANALYSIS_FAIL);
     }
 }
@@ -49,7 +49,7 @@ void assign_new(syntactic_data_t *parser_data){
         //SEMANTIC
         char *identificator=parser_data->token.token_info.custom_string->string_value;
         if(search_item(&parser_data->local_table,identificator)!=NULL){
-            custom_string_free_memory(&parser_data->my_string);
+            jonwick_the_memory_cleaner(parser_data);
             process_error(SEMANTIC_ANALYSIS_UNDEF_VAR);
         }
         parser_data->current_item_var =  insert_symbol_variable(&parser_data->local_table, identificator);
@@ -99,7 +99,7 @@ void assign_values(syntactic_data_t *parser_data){
             assign_values(parser_data);
         }else{
             printf("SE at asssign_valueS\n");
-            custom_string_free_memory(&parser_data->my_string);
+            jonwick_the_memory_cleaner(parser_data);
             process_error(SYNTAX_ANALYSIS_FAIL);
         }
     }else{
@@ -119,8 +119,7 @@ void assign_value(syntactic_data_t *parser_data){
         //precedence_analysis(parser_data);
         assign_values(parser_data);
     }else{
-        printf("SE at asssign_value\n");
-        custom_string_free_memory(&parser_data->my_string);
+        jonwick_the_memory_cleaner(parser_data);
         process_error(SYNTAX_ANALYSIS_FAIL);
     }
 }
@@ -133,7 +132,7 @@ void to_assign2(syntactic_data_t *parser_data){
     char *identificator = parser_data->token.token_info.custom_string->string_value;
     parser_data->current_item_var=search_item(&parser_data->local_table, identificator);
     if(parser_data->current_item_var==NULL){    //snaha o priradenie do nedeklarovanej premennej
-        custom_string_free_memory(&parser_data->my_string);
+        jonwick_the_memory_cleaner(parser_data);
         process_error(SYNTAX_ANALYSIS_FAIL);
     }
     //END SEMANTIC
@@ -146,13 +145,11 @@ void to_assign2(syntactic_data_t *parser_data){
         if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE){ //a,a,a
             to_assign2(parser_data);
         }else{
-            printf("SE at to_assign2\n");
-            custom_string_free_memory(&parser_data->my_string);
+            jonwick_the_memory_cleaner(parser_data);
             process_error(SYNTAX_ANALYSIS_FAIL);
         }
     }else{
-        printf("SE at to_assign\n");
-        custom_string_free_memory(&parser_data->my_string);
+        jonwick_the_memory_cleaner(parser_data);
         process_error(SYNTAX_ANALYSIS_FAIL);
     }
 }
@@ -163,8 +160,7 @@ void to_assign(syntactic_data_t *parser_data){
     if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE || parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION){ //a,a
         to_assign2(parser_data);
     }else{
-        printf("SE at to_assign\n");
-        custom_string_free_memory(&parser_data->my_string);
+        jonwick_the_memory_cleaner(parser_data);
         process_error(SYNTAX_ANALYSIS_FAIL);
     }
 }
@@ -176,7 +172,7 @@ void assign_existing(syntactic_data_t *parser_data){
     char *identificator = parser_data->token.token_info.custom_string->string_value;
     parser_data->current_item_var = search_item(&parser_data->local_table, identificator);
     if(parser_data->current_item_var == NULL){    //snaha o priradenie do needeklarovanej premennej
-        custom_string_free_memory(&parser_data->my_string);
+        jonwick_the_memory_cleaner(parser_data);
         process_error(SEMANTIC_ANALYSIS_UNDEF_VAR);
     }
 
@@ -188,8 +184,7 @@ void assign_existing(syntactic_data_t *parser_data){
     }else if(parser_data->token.type_of_token==TYPE_ASSIGN){ // a=
         assign_value(parser_data);  
     }else{
-        printf("SE at assign_existing\n");
-        custom_string_free_memory(&parser_data->my_string);
+        jonwick_the_memory_cleaner(parser_data);
         process_error(SYNTAX_ANALYSIS_FAIL);
     }
 }
@@ -211,13 +206,11 @@ void while_nt(syntactic_data_t *parser_data){
             check_retuned_tokens_from_expression_analysis(parser_data);
             code(parser_data);
         }else{
-            printf("Syntax error in while\n");
-            custom_string_free_memory(&parser_data->my_string);
+            jonwick_the_memory_cleaner(parser_data);
             process_error(SYNTAX_ANALYSIS_FAIL);
         }
     }else{
-        printf("Syntax error in while\n");
-        custom_string_free_memory(&parser_data->my_string);
+        jonwick_the_memory_cleaner(parser_data);
         process_error(SYNTAX_ANALYSIS_FAIL);
     }
 }
@@ -284,7 +277,7 @@ void double_dots_nt(syntactic_data_t *parser_data){
            
 
          }else{
-             custom_string_free_memory(&parser_data->my_string);
+             jonwick_the_memory_cleaner(parser_data);
              process_error(SYNTAX_ANALYSIS_FAIL);
          }
         
@@ -338,7 +331,7 @@ void double_dots_nt(syntactic_data_t *parser_data){
         //epsilon pravidla
         //printf("mam tuna token: %d\n", parser_data->token.type_of_token);
         //printf("tu som spadol\n");
-        custom_string_free_memory(&parser_data->my_string);
+        jonwick_the_memory_cleaner(parser_data);
         process_error(SYNTAX_ANALYSIS_FAIL);
     }     
 }
@@ -383,7 +376,7 @@ void double_dot_nt(syntactic_data_t *parser_data){
         code(parser_data);
     }
     //epsilon pravidla
-    custom_string_free_memory(&parser_data->my_string);
+    jonwick_the_memory_cleaner(parser_data);
     process_error(SYNTAX_ANALYSIS_FAIL);
 }
 
@@ -404,7 +397,7 @@ void params_nt(syntactic_data_t *parser_data){
         printf("\njedna\n");
         return; //koniec parametrov funkcie
     }else{
-        custom_string_free_memory(&parser_data->my_string);
+        jonwick_the_memory_cleaner(parser_data);;
         process_error(SYNTAX_ANALYSIS_FAIL);
     }
     //printf("Syntax error\n");
@@ -426,7 +419,7 @@ void param_nt(syntactic_data_t *parser_data){
          //printf("\nfunkcia nema parametre\n");
          return; //funkcia ziadne paramterne nema
      }else{
-         custom_string_free_memory(&parser_data->my_string);
+         jonwick_the_memory_cleaner(parser_data);
          process_error(SYNTAX_ANALYSIS_FAIL);
      }
 }
@@ -445,6 +438,7 @@ void function_declaration(syntactic_data_t *parser_data){
 
         //redelkaracia
         if(search_item(&parser_data->global_table,identificator) != NULL){
+            jonwick_the_memory_cleaner(parser_data);
             process_error(SEMANTIC_ANALYSIS_UNDEF_VAR);
         }
 
@@ -477,7 +471,7 @@ void function_declaration(syntactic_data_t *parser_data){
         }
     }
     printf("SE at function declaration \n");
-    custom_string_free_memory(&parser_data->my_string);
+    jonwick_the_memory_cleaner(parser_data);
     process_error(SYNTAX_ANALYSIS_FAIL);
 }
 
@@ -496,21 +490,19 @@ void call_params(syntactic_data_t *parser_data){
         {
             call_params(parser_data);
         }else{
-            printf("SE AT call_params\n");
-            custom_string_free_memory(&parser_data->my_string);
+            jonwick_the_memory_cleaner(parser_data);
             process_error(SYNTAX_ANALYSIS_FAIL); 
         }
     }else if(parser_data->token.type_of_token==TYPE_RIGHT_ROUND_BRACKET){ //funkcia ma len jeden parameter
         printf("SKACEM Z CALL PARAMS NA START\n");
         //check_retuned_tokens_from_expression_analysis(parser_data);
         if(parser_data->in_function==true){
-             check_retuned_tokens_from_expression_analysis(parser_data);
+            check_retuned_tokens_from_expression_analysis(parser_data);
             code(parser_data);
         }else
             start(parser_data);
     }else{
-        printf("SE AT call_params DOWN\n");
-        custom_string_free_memory(&parser_data->my_string);
+        jonwick_the_memory_cleaner(parser_data);
         process_error(SYNTAX_ANALYSIS_FAIL); 
     }
 }
@@ -533,7 +525,7 @@ void call_param(syntactic_data_t *parser_data){
        }
     }else{
         printf("SE AT call_param\n");
-        custom_string_free_memory(&parser_data->my_string);
+        jonwick_the_memory_cleaner(parser_data);
         process_error(SYNTAX_ANALYSIS_FAIL);
     }
 }
@@ -547,12 +539,11 @@ void function_call(syntactic_data_t *parser_data){
         char *identificator = parser_data->token.token_info.custom_string->string_value;
         parser_data->current_item=search_item(&parser_data->global_table, identificator);
         if(parser_data->current_item==NULL){
-            custom_string_free_memory(&parser_data->my_string);
+            jonwick_the_memory_cleaner(parser_data);
             process_error(SEMANTIC_ANALYSIS_UNDEF_VAR);
         }
         if(*get_is_defined(&parser_data->global_table, parser_data->current_item->key)==false){
-            custom_string_free_memory(&parser_data->my_string);
-            printf("MAROS");
+            jonwick_the_memory_cleaner(parser_data);
             process_error(SEMANTIC_ANALYSIS_UNDEF_VAR);
         }
         check_retuned_tokens_from_expression_analysis(parser_data);
@@ -561,7 +552,7 @@ void function_call(syntactic_data_t *parser_data){
             call_param(parser_data);
             //start(parser_data);
         }else{
-           custom_string_free_memory(&parser_data->my_string);
+           jonwick_the_memory_cleaner(parser_data);
            process_error(SYNTAX_ANALYSIS_FAIL);
         }   
     }
@@ -578,6 +569,7 @@ void argument(syntactic_data_t *parser_data){
              //SEmantic
              char *identificator = parser_data->token.token_info.custom_string->string_value;
              if(search_item(&parser_data->local_table,identificator)!=NULL){
+                 jonwick_the_memory_cleaner(parser_data);
                  process_error(SEMANTIC_ANALYSIS_UNDEF_VAR);
              }
 
@@ -595,7 +587,7 @@ void argument(syntactic_data_t *parser_data){
                     if(*get_is_declared(&parser_data->global_table, parser_data->current_item->key)==true){
 
                         if(parser_data->token.type_of_token != parser_data->current_item->data.list_of_parameters->items[parser_data->parameter_index]){
-                            custom_string_free_memory(&parser_data->my_string);
+                            jonwick_the_memory_cleaner(parser_data);
                             process_error(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ASSIGN);
                         }else{
                             parser_data->parameter_index++;
@@ -613,12 +605,12 @@ void argument(syntactic_data_t *parser_data){
                  }
              }else{
                 //printf("SE argument\n");
-                custom_string_free_memory(&parser_data->my_string);
+                jonwick_the_memory_cleaner(parser_data);
                 process_error(SYNTAX_ANALYSIS_FAIL);
              } 
          }else{
              //printf("SE argument\n");
-             custom_string_free_memory(&parser_data->my_string);
+             jonwick_the_memory_cleaner(parser_data);
              process_error(SYNTAX_ANALYSIS_FAIL);
          }
     }else if(parser_data->token.type_of_token==TYPE_RIGHT_ROUND_BRACKET){ //ziadny dalsi parameter nie je
@@ -627,7 +619,7 @@ void argument(syntactic_data_t *parser_data){
         double_dot_nt(parser_data); //idem kontrolovat navratove hodnoty
     }else{
         //printf("SE argument dole\n");
-        custom_string_free_memory(&parser_data->my_string);
+        jonwick_the_memory_cleaner(parser_data);
         process_error(SYNTAX_ANALYSIS_FAIL);
     }
 }
@@ -638,6 +630,7 @@ void arg(syntactic_data_t *parser_data){
     //SEmantic
     char *identificator = parser_data->token.token_info.custom_string->string_value;
     if(search_item(&parser_data->local_table,identificator)!=NULL){
+        jonwick_the_memory_cleaner(parser_data);
         process_error(SEMANTIC_ANALYSIS_UNDEF_VAR);
     }
 
@@ -675,12 +668,12 @@ void arg(syntactic_data_t *parser_data){
 
             argument(parser_data);
         }else{
-            custom_string_free_memory(&parser_data->my_string);
+            jonwick_the_memory_cleaner(parser_data);
             process_error(SYNTAX_ANALYSIS_FAIL);
         }
     }else{
         //printf("SE at arg");
-        custom_string_free_memory(&parser_data->my_string);
+        jonwick_the_memory_cleaner(parser_data);
         process_error(SYNTAX_ANALYSIS_FAIL);
     }
     //printf("END arg\n");
@@ -701,8 +694,7 @@ void function(syntactic_data_t *parser_data){
 
     if(search_item(&parser_data->global_table,identificator) != NULL){
         if(*get_is_defined(&parser_data->global_table,identificator) == true){ //test redefinicie
-        custom_string_free_memory(&parser_data->my_string); 
-        printf("Daj pred to vypis\n");
+        jonwick_the_memory_cleaner(parser_data);
         process_error(SEMANTIC_ANALYSIS_UNDEF_VAR);
         }
         parser_data->current_item = search_item(&parser_data->global_table,identificator);
@@ -729,11 +721,11 @@ void function(syntactic_data_t *parser_data){
             //check_retuned_tokens_from_expression_analysis(parser_data);
             double_dot_nt(parser_data);
          }else{
-            custom_string_free_memory(&parser_data->my_string);
+            jonwick_the_memory_cleaner(parser_data);
             process_error(SYNTAX_ANALYSIS_FAIL);
          }
      }else{
-          custom_string_free_memory(&parser_data->my_string);
+          jonwick_the_memory_cleaner(parser_data);
           process_error(SYNTAX_ANALYSIS_FAIL);
      }
      printf("END function\n");
@@ -757,7 +749,7 @@ void check_ret_prarams(syntactic_data_t *parser_data){
         start(parser_data); //nemoze byt funkcia vo funkcii, idem od znova
     }else{
         printf("SE at check ret params\n");
-        custom_string_free_memory(&parser_data->my_string);
+        jonwick_the_memory_cleaner(parser_data);
         process_error(SYNTAX_ANALYSIS_FAIL);
     }
 }
@@ -833,11 +825,12 @@ void code(syntactic_data_t *parser_data){
         check_retuned_tokens_from_expression_analysis(parser_data);
         start(parser_data);
     }
+//TODO PRECO JE TOTO TUNA    
     if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_function==true){
         //start(parser_data);
         parser_data->in_function=false;
         printf("\nSyntax ok code\n");
-        custom_string_free_memory(&parser_data->my_string);
+        jonwick_the_memory_cleaner(parser_data);
         exit(0);
     }  
 }
@@ -933,9 +926,7 @@ void start(syntactic_data_t *parser_data){
         printf("\n");
 
 
-        custom_string_free_memory(&parser_data->my_string);
-        table_dispose(&parser_data->global_table);
-        table_dispose(&parser_data->local_table);
+        jonwick_the_memory_cleaner(parser_data);
 
         /* token_list_insertfirst(&parser_data->list_of_tokens,parser_data->token);
         parser_data->list_of_tokens.activeElement = parser_data->list_of_tokens.firstElement; */
@@ -946,6 +937,12 @@ void start(syntactic_data_t *parser_data){
     process_error(SYNTAX_ANALYSIS_FAIL);
 }
 
+void jonwick_the_memory_cleaner(syntactic_data_t *babajaga){
+     custom_string_free_memory(&babajaga->my_string);
+     table_dispose(&babajaga->global_table);
+     table_dispose(&babajaga->local_table);
+     token_list_dispose(&babajaga->list_of_tokens);
+}
 
 void parser_data_init(syntactic_data_t *data){
     data->in_function=false;
@@ -964,6 +961,7 @@ void check_retuned_tokens_from_expression_analysis(syntactic_data_t *parser_data
     }
     
 }
+
 
 void analyze(){
     syntactic_data_t parser_data;
