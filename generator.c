@@ -115,10 +115,10 @@ void create_read(Token_type var_type, char *var){
         printf ("\nREAD LF@%s float", var);
         break;
 
-        case BOOL
+        /* case BOOL:
         printf ("\nREAD LF@%s bool", var);
         break;
-
+ */
         default:
         break;
     }

@@ -114,7 +114,8 @@ void assign_value(syntactic_data_t *parser_data){
        parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION || 
        parser_data->token.type_of_token==TYPE_INT_NUMBER ||
        parser_data->token.type_of_token==TYPE_DOUBLE_NUMBER ||
-       parser_data->token.type_of_token==TYPE_LEFT_ROUND_BRACKET){ // ...=a || ...=foo() || ...=2
+       parser_data->token.type_of_token==TYPE_LEFT_ROUND_BRACKET ||
+       parser_data->token.type_of_token==TYPE_STRING){ // ...=a || ...=foo() || ...=2
         //volat BOTTOM UP
         //precedence_analysis(parser_data);
         assign_values(parser_data);
