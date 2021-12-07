@@ -101,7 +101,7 @@ void create_function_parameter(int param_id, char *parameter){
     printf("\nMOVE LF@%cparam%d LF@%c%d",'%',param_id,'%',param_id);
 }
 
-void create_read(int var_type){
+/* void create_read(int var_type){
     switch (var_type){
         case READS:
         printf ("\nREAD LF@var string");
@@ -122,7 +122,7 @@ void create_read(int var_type){
         default:
         break;
     }
-}
+} */
 
 void create_write(int var_type, Token *token){
     switch (var_type){
