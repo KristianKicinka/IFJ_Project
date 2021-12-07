@@ -1,11 +1,11 @@
 /**
- * @file recursive_syntactic.c
- * @author your name (you@domain.com)
- * @brief 
- * @version 0.1
- * @date 2021-12-06
  * 
- * @copyright Copyright (c) 2021
+ * Project : Implementace překladače imperativního jazyka IFJ21.
+ * 
+ * @file recursive_syntactic.c
+ * @author Andrej Ľupták (xlupta05)
+ * @author Kristián Kičinka (xkicin02)
+ * @brief Syntaktická a sémantická analýza (implementácia)
  * 
  */
 

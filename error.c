@@ -13,6 +13,12 @@
 #include <stdio.h>
 #include "error.h"
 
+
+/**
+ * @brief Funkcia slúži na spracovanie chýb programu a ich výpis 
+ * 
+ * @param err_type Typ chyby programu
+ */
 void process_error(Error_type err_type){
 
     if(err_type == LEXICAL_ANALYSIS_FAIL){

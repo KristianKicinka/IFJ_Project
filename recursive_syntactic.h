@@ -1,3 +1,14 @@
+/**
+ * 
+ * Project : Implementace překladače imperativního jazyka IFJ21.
+ * 
+ * @file recursive_syntactic.h
+ * @author Andrej Ľupták (xlupta05)
+ * @author Kristián Kičinka (xkicin02)
+ * @brief Syntaktická a sémantická analýza (rozhranie)
+ * 
+ */
+
 #ifndef _UZMATONEBAVI_H_
 #define _UZMATONEBAVI_H_
 #include <stdbool.h> 
