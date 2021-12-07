@@ -1,0 +1,7 @@
+require "ifj21"
+global g : function (integer) : integer -- deklarace funkce
+function g(x : string) : integer
+a=b
+end
+main()
+

@@ -16,7 +16,8 @@
         "token_list.h": "c",
         "error.h": "c",
         "recursive_syntactic.h": "c",
-        "function_data_list.h": "c"
-},
+        "function_data_list.h": "c",
+        "generator.h": "c"
+    },
     "C_Cpp.dimInactiveRegions": false
 }

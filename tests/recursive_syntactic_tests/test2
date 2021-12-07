@@ -1,7 +1,7 @@
 require  "ifj21"
 global g : function (integer) : integer
 global foo : function (integer, integer) : integer, integer
-function f(x : integer) : integer
+function g(x : integer) : integer
 bar(x)
 if a then
 funkcia()

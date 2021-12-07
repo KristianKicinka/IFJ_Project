@@ -25,7 +25,7 @@ void optional_ekv(syntactic_data_t *parser_data){
              parser_data->token.type_of_token==TYPE_DOUBLE_NUMBER ||
              parser_data->token.type_of_token==TYPE_KW_NIL){          //LOCAL A : = a||2
              //TODO volat BOTTOM-UP
-             precedence_analysis(parser_data);
+             //precedence_analysis(parser_data);
              check_retuned_tokens_from_expression_analysis(parser_data);
              printf("optional_ekv vola code s tokenom %d\n", parser_data->token.type_of_token);
              code(parser_data); //moze byt deklarovana a zaroven inicializovana iba jedna hodnota, po uspesnej precedencnej idem spat do kodu a cakam, co je dalsie
@@ -74,7 +74,7 @@ void assign_values(syntactic_data_t *parser_data){
            parser_data->token.type_of_token==TYPE_INT_NUMBER ||
            parser_data->token.type_of_token==TYPE_DOUBLE_NUMBER){ // ...=a,b || ...=foo(), bar() || ...=2,3
             //volat BOTTOM UP
-            precedence_analysis(parser_data);
+            //precedence_analysis(parser_data);
             assign_values(parser_data);
         }else{
             printf("SE at asssign_valueS\n");
@@ -93,8 +93,8 @@ void assign_value(syntactic_data_t *parser_data){
        parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION || 
        parser_data->token.type_of_token==TYPE_INT_NUMBER ||
        parser_data->token.type_of_token==TYPE_DOUBLE_NUMBER){ // ...=a || ...=foo() || ...=2
-        //volat BOOTOM UP
-        precedence_analysis(parser_data);
+        //volat BOTTOM UP
+        //precedence_analysis(parser_data);
         assign_values(parser_data);
     }else{
         printf("SE at asssign_value\n");
@@ -202,7 +202,7 @@ void if_nt(syntactic_data_t *parser_data){
         //volat BOOTOM-UP a poslat jej token
         //TODO vratene tokeny
         //IF BOTTOM UP OK
-        precedence_analysis(parser_data);
+        //precedence_analysis(parser_data);
         check_retuned_tokens_from_expression_analysis(parser_data);
 
         printf("Token v if_nt %d\n", parser_data->token.type_of_token);
@@ -349,7 +349,7 @@ void param_nt(syntactic_data_t *parser_data){
 
         // SEMANTIC
         insert_function_parameter(&parser_data->global_table,parser_data->current_item, parser_data->token.type_of_token);
-        //printf("nazov strukuty je : %s typ parametra je : %d\n",parser_data->current_item->data.identificator ,parser_data->current_item->data.list_of_parameters->items[0]);
+        printf("nazov strukuty je : %s typ parametra je : %d\n",parser_data->current_item->data.identificator ,parser_data->current_item->data.list_of_parameters->items[0]);
          params_nt(parser_data);
      }else if(parser_data->token.type_of_token==TYPE_RIGHT_ROUND_BRACKET){
          //printf("\nfunkcia nema parametre\n");
@@ -379,7 +379,7 @@ void function_declaration(syntactic_data_t *parser_data){
 
         parser_data->current_item = insert_symbol_function(&parser_data->global_table,identificator);
         set_additional_info(&parser_data->global_table, parser_data->current_item, IS_DECLARED);
-        set_symbol_variable_type(&parser_data->global_table, parser_data->current_item,TYPE_IDENTIFICATOR_FUNCTION);
+        //set_symbol_variable_type(&parser_data->global_table, parser_data->current_item,TYPE_IDENTIFICATOR_FUNCTION);
 
 
         // END SEMANTIC
@@ -468,7 +468,7 @@ void call_param(syntactic_data_t *parser_data){
 
 
 void function_call(syntactic_data_t *parser_data){
-//TODO vyhodit SE     
+
     //check_retuned_tokens_from_expression_analysis(parser_data);
     //printf("tokenik is : %d \n",parser_data->token.type_of_token);
     if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION){
@@ -516,6 +516,7 @@ void argument(syntactic_data_t *parser_data){
                         parser_data->parameter_index++;
                     }
                     //Postupne sa rekurzivne kontroluju jej parametre
+                    
                     //prvy s prvym, druhy s druhym,...    
                     //global f : function (INTEGER) : integer, integer 
                     //function f(x : INTEGER) : integer, integer
@@ -555,7 +556,7 @@ void arg(syntactic_data_t *parser_data){
     }
 
     parser_data->current_item_var = insert_symbol_variable(&parser_data->local_table,identificator);
-    //printf("item name is :%s \n",parser_data->current_item_var->data.identificator);
+    printf("item name is :%s \n",parser_data->current_item_var->data.identificator);
 
     check_retuned_tokens_from_expression_analysis(parser_data);
     //printf("Token v arg %d\n", parser_data->token.type_of_token);
@@ -566,8 +567,18 @@ void arg(syntactic_data_t *parser_data){
             parser_data->token.type_of_token==TYPE_KW_NUMBER || parser_data->token.type_of_token == TYPE_KW_STRING){
             //printf("arg: idem do argumentu\n");
             //Semantic
-            //printf("BASHKA is here\n");
             set_symbol_variable_type(&parser_data->local_table,parser_data->current_item_var,parser_data->token.type_of_token);
+            printf("BASHKA is here %s\n",parser_data->current_item->data.identificator);
+    
+            if(parser_data->token.type_of_token != parser_data->current_item->data.list_of_parameters->items[parser_data->parameter_index]){
+                custom_string_free_memory(&parser_data->my_string);
+                process_error(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ASSIGN);
+            }else{
+                parser_data->parameter_index++;
+            }
+            printf("BASHKA HAH,\n");
+            
+    
             //printf("data : %d\n",parser_data->current_item->data.symbol_variable_type);
            // printf("name : %s\n",parser_data->current_item->key);
 
@@ -588,17 +599,25 @@ void function(syntactic_data_t *parser_data){
 
     //SEMANTIC
     char *identificator = parser_data->token.token_info.custom_string->string_value;
+    printf("identific : %s\n",identificator);
 
-//TEST DEKLARACIE FUNKCIE
-    if(search_item(&parser_data->global_table,identificator)!=NULL){ 
-        if(*get_additional_info(&parser_data->global_table,identificator) == IS_DEFINED){ //test redefinicie
-            process_error(SEMANTIC_ANALYSIS_UNDEF_VAR);
-        }
+//TEST DEKLARACIE FUNKCIE //asi fix
+    
+    if(search_item(&parser_data->global_table,identificator)==NULL){
+        custom_string_free_memory(&parser_data->my_string); 
+        process_error(SEMANTIC_ANALYSIS_UNDEF_VAR);
+    }
+    
+    if((*get_additional_info(&parser_data->global_table,identificator)) == IS_DEFINED){ //test redefinicie
+        custom_string_free_memory(&parser_data->my_string); 
+        printf("Daj pred to vypis\n");
+        process_error(SEMANTIC_ANALYSIS_UNDEF_VAR);
     }
 
-    parser_data->current_item = insert_symbol_function(&parser_data->global_table,identificator);
+    parser_data->current_item = search_item(&parser_data->global_table,identificator);
     set_additional_info(&parser_data->global_table, parser_data->current_item, IS_DEFINED);
-    set_symbol_variable_type(&parser_data->global_table, parser_data->current_item,TYPE_IDENTIFICATOR_FUNCTION);
+    printf("current item %s\n",parser_data->current_item->data.identificator);
+    //set_symbol_variable_type(&parser_data->global_table, parser_data->current_item,TYPE_IDENTIFICATOR_FUNCTION);
 
      check_retuned_tokens_from_expression_analysis(parser_data);
      //printf("token v function: %d\n", parser_data->token.type_of_token);
@@ -609,7 +628,7 @@ void function(syntactic_data_t *parser_data){
             //printf("function: idem do arg\n");
             //Semantic
             arg(parser_data);
-//TODO bez argumentov podporuje len void!!!! opravit!!!!            
+
          }else if(parser_data->token.type_of_token==TYPE_RIGHT_ROUND_BRACKET){ //funkcia nema ziadne parametre
             parser_data->in_function=true;
             //check_retuned_tokens_from_expression_analysis(parser_data);
@@ -822,6 +841,9 @@ void start(syntactic_data_t *parser_data){
         table_dispose(&parser_data->global_table);
         table_dispose(&parser_data->local_table);
 
+        /* token_list_insertfirst(&parser_data->list_of_tokens,parser_data->token);
+        parser_data->list_of_tokens.activeElement = parser_data->list_of_tokens.firstElement; */
+
         exit(0);
     }
     printf("\nSE AT START\n");
@@ -852,13 +874,14 @@ void analyze(){
     //defaultne je parameter index na -1
     //parser_data.in_while=false; toto by tu malo byt ale ked to tam je tak sa to rozdrbe tak radsej nak to tam nie je xD
 
-    custom_string_init(&parser_data.my_string); 
-
+    custom_string_init(&parser_data.my_string);
+    
     //inicializacia tabulky symbolov
     table_init(&parser_data.global_table);
     table_init(&parser_data.local_table);
 
     generate_token(&parser_data.token, &parser_data.my_string);
+
     printf("prvy vygenervany token %d \n", parser_data.token.type_of_token);
     if(parser_data.token.type_of_token==TYPE_KW_REQUIRE){
       generate_token(&parser_data.token, &parser_data.my_string);
