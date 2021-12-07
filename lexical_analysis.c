@@ -46,6 +46,16 @@ Token_type keywords_enum_array[COUNT_OF_KEYWORDS] = {
 };
 
 
+
+
+/**
+ * @brief Funkcia slúži na spracovanie identifikátora
+ * 
+ * @param string Ukazateľ na štruktúru custom stringu
+ * @param token Ukazateľ na štruktúru tokenu
+ * @param character Aktuálny znak načítaný stavovým automatom
+ */
+
 void process_identificator(Custom_string *string, Token *token, char character){
 
     bool keyword_is_set = false;
@@ -75,6 +85,13 @@ void process_identificator(Custom_string *string, Token *token, char character){
 
 }
 
+
+/**
+ * @brief Funkcia slúži na spracovanie double hodnoty (number)
+ * 
+ * @param string Ukazateľ na štruktúru custom stringu
+ * @param token Ukazateľ na štruktúru tokenu
+ */
 void process_double_value(Custom_string *string, Token *token){
     char *ptr;
     double double_value = (double) strtod(string->string_value, &ptr);
@@ -91,6 +108,13 @@ void process_double_value(Custom_string *string, Token *token){
     return;
 }
 
+
+/**
+ * @brief Funckia slúži na spracovanie integer hodnoty
+ * 
+ * @param string Ukazateľ na štruktúru custom stringu
+ * @param token Ukazateľ na štruktúru tokenu
+ */
 void process_integer_value(Custom_string *string, Token *token){
     char *ptr;
     int integer_value = (int) strtol(string->string_value, &ptr, 10);
@@ -109,6 +133,13 @@ void process_integer_value(Custom_string *string, Token *token){
 }
 
 
+
+/**
+ * @brief Funkcia slúži na generovanie ďalšieho tokenu zo vstupu
+ * 
+ * @param token Ukazateľ na štruktúru tokenu
+ * @param string Ukazateľ na štruktúru custom stringu
+ */
 void generate_token(Token *token, Custom_string *string){
 
     if(string == NULL){

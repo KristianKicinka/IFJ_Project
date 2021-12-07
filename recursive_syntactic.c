@@ -1,11 +1,11 @@
 /**
- * @file recursive_syntactic.c
- * @author your name (you@domain.com)
- * @brief 
- * @version 0.1
- * @date 2021-12-06
  * 
- * @copyright Copyright (c) 2021
+ * Project : Implementace překladače imperativního jazyka IFJ21.
+ * 
+ * @file recursive_syntactic.c
+ * @author Andrej Ľupták (xlupta05)
+ * @author Kristián Kičinka (xkicin02)
+ * @brief Syntaktická a sémantická analýza (implementácia)
  * 
  */
 
@@ -467,15 +467,18 @@ void call_param(syntactic_data_t *parser_data){
 
 
 void function_call(syntactic_data_t *parser_data){
+//TODO vyhodit SE     
     //generate_token(&parser_data->token, &parser_data->my_string);
     //printf("tokenik is : %d \n",parser_data->token.type_of_token);
-   
     if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION){
         generate_token(&parser_data->token, &parser_data->my_string);
         if(parser_data->token.type_of_token==TYPE_LEFT_ROUND_BRACKET){
             parser_data->parameter_index=-1; //na zaciatku nema funkcia ziadny parameter
             call_param(parser_data);
             //start(parser_data);
+        }else{
+           custom_string_free_memory(&parser_data->my_string);
+           process_error(SYNTAX_ANALYSIS_FAIL);
         }   
     }
 }
@@ -505,6 +508,12 @@ void argument(syntactic_data_t *parser_data){
                     parser_data->token.type_of_token==TYPE_KW_NUMBER){
 //PARAMETRE DEKLAROVANEJ FUNKCIE MUSIA BYT ZHODNE S PARAMETRAMI DEFINOVANEJ FUNKCIE
                     //v TS sa najde definovana funkcia podla ID
+                    if(parser_data->token.type_of_token != parser_data->current_item->data.list_of_parameters->items[parser_data->parameter_index]){
+                        custom_string_free_memory(&parser_data->my_string);
+                        process_error(SEMANTIC_ANALYSIS_UNCOMPATIBILE_TYPE_ASSIGN);
+                    }else{
+                        parser_data->parameter_index++;
+                    }
                     //Postupne sa rekurzivne kontroluju jej parametre
                     //prvy s prvym, druhy s druhym,...    
                     //global f : function (INTEGER) : integer, integer 
@@ -599,6 +608,7 @@ void function(syntactic_data_t *parser_data){
             //printf("function: idem do arg\n");
             //Semantic
             arg(parser_data);
+//TODO bez argumentov podporuje len void!!!! opravit!!!!            
          }else if(parser_data->token.type_of_token==TYPE_RIGHT_ROUND_BRACKET){ //funkcia nema ziadne parametre
             parser_data->in_function=true;
             generate_token(&parser_data->token, &parser_data->my_string);
@@ -620,7 +630,10 @@ void check_ret_prarams(syntactic_data_t *parser_data){
     generate_token(&parser_data->token, &parser_data->my_string);
     if(parser_data->token.type_of_token==TYPE_COMMA){ //funkcia ma viacero navratovych hodnot
        generate_token(&parser_data->token, &parser_data->my_string);  
-       if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE){
+       if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE ||  //fixed variables
+         parser_data->token.type_of_token==TYPE_INT_NUMBER || 
+         parser_data->token.type_of_token==TYPE_DOUBLE_NUMBER ||
+         parser_data->token.type_of_token==TYPE_STRING){
            check_ret_prarams(parser_data);
        }
     }if(parser_data->token.type_of_token==TYPE_KW_END){
@@ -823,11 +836,16 @@ void init_parser_data(syntactic_data_t *parser_data){
 }
 */
 
+void parser_data_init(syntactic_data_t *data){
+    data->in_function=false;
+    data->in_if=false;
+    data->parameter_index=-1;
+}
+
 void analyze(){
     syntactic_data_t parser_data;
-    parser_data.in_function=false;
-    parser_data.in_if=false;
-    parser_data.parameter_index=-1; //defaultne je parameter index na -1
+    parser_data_init(&parser_data);
+    //defaultne je parameter index na -1
     //parser_data.in_while=false; toto by tu malo byt ale ked to tam je tak sa to rozdrbe tak radsej nak to tam nie je xD
 
     custom_string_init(&parser_data.my_string); 

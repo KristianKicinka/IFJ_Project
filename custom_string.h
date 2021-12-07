@@ -39,6 +39,7 @@ void custom_string_init(Custom_string *str);
  */
 void custom_string_add_character(Custom_string *str, char character);
 
+
 /**
  * @brief Funkcia slúži na pridanie reťazca znakov do custom stringu
  * 
@@ -56,6 +57,7 @@ void custom_string_add_another_string(Custom_string *str, char *str_to_add);
  */
 void custom_string_copy_string(Custom_string *source, Custom_string *destination);
 
+
 /**
  * @brief Funkcia slúži na porovnanie custom stringu s reťazcom
  * 
@@ -64,6 +66,7 @@ void custom_string_copy_string(Custom_string *source, Custom_string *destination
  * @return int Vráti 0 ak sú zhodné
  */
 int custom_string_compare_with_basic_string(Custom_string *str, char *str_to_add);
+
 
 /**
  * @brief Funkcia slúži na vyčistenie pamäti

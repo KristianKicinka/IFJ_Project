@@ -4,7 +4,7 @@
  * 
  * @file table_item_list.h 
  * @author Kristián Kičinka (xkicin02)
- * @brief  Spracovanie itemov z tabulky symbolov.
+ * @brief  Spracovávanie položiek v tabuľke symbolov (rozhranie)
  * 
  */
 
@@ -22,10 +22,30 @@ typedef struct table_item_list_t {
 }Table_list;
 
 
+
+
+/**
+ * @brief Funkcia slúži na inicializáciu štruktúty Table list
+ * 
+ * @param list Ukazateľ na štruktúru Table list
+ */
 void table_item_list_init(Table_list *list);
 
+
+/**
+ * @brief Funkcia slúži na vloženie nového prvku do listu
+ * 
+ * @param list Ukazateľ na štruktúru Table listu
+ * @param item Položka, ktorá sa vkladá do listu
+ */
 void table_item_list_insert(Table_list *list, table_item_t *item);
 
+
+/**
+ * @brief Funkcia slúži na uvoľnenie pamäti
+ * 
+ * @param list Ukazateľ na štruktúru Table listu
+ */
 void table_item_list_free_memory(Table_list *list);
 
 #endif // TABLE_ITEM_LIST_H

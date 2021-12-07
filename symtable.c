@@ -13,6 +13,14 @@
 
 int HT_SIZE = SYMBOL_TABLE_SIZE;
 
+
+
+/**
+ * @brief Funkcia slúži na vytvorenie hashu
+ * 
+ * @param key Reťazec s hashovacím kľúčom
+ * @return int Hash v tabuľke symbolov
+ */
 int get_hash(char *key) {
   int result = 1;
   int length = strlen(key);
@@ -23,6 +31,11 @@ int get_hash(char *key) {
 }
 
 
+/**
+ * @brief Funkcia slúži na inicializáciu tabuľky symbolov
+ * 
+ * @param table Ukazateľ na štruktúru tabuľky symbolov
+ */
 void table_init(symbol_table_t *table){
 
   for (int index = 0; index < HT_SIZE; index++ ){
@@ -31,6 +44,13 @@ void table_init(symbol_table_t *table){
 }
 
 
+/**
+ * @brief Funkcia slúži na vyhľadanie položky v tabuľke symbolov
+ * 
+ * @param table Ukazateľ na štruktúru tabuľky symbolov
+ * @param key Reťazec s hashovacím kľúčom
+ * @return table_item_t* Ukazateľ na nájdenú položku v tabuľke (v prípade neúspechu hodnota NULL)
+ */
 table_item_t *search_item(symbol_table_t *table, char *key){
 
   int hash_index = get_hash(key);                                              
@@ -49,6 +69,14 @@ table_item_t *search_item(symbol_table_t *table, char *key){
   return NULL;
 }
 
+
+/**
+ * @brief Funkcia slúži na vloženie novej premennej do tabuľky symbolov
+ * 
+ * @param table Ukazateľ na štruktúru tabuľky symbolov
+ * @param key Reťazec s hashovacím kľúčom
+ * @return table_item_t* Ukazateľ na aktuálnu položku
+ */
 table_item_t *insert_symbol_variable(symbol_table_t *table, char *key){
 
   table_item_t *new_item = malloc(sizeof(table_item_t));
@@ -92,6 +120,14 @@ table_item_t *insert_symbol_variable(symbol_table_t *table, char *key){
 
 }
 
+
+/**
+ * @brief Funkcia slúži na vloženie novej funkcie do tabuľky symbolov
+ * 
+ * @param table Ukazateľ na štruktúru tabuľky symbolov
+ * @param key Reťazec s hashovacím kľúčom
+ * @return table_item_t* Ukazateľ na aktuálnu položku
+ */
 table_item_t *insert_symbol_function(symbol_table_t *table, char *key){
 
   table_item_t *new_item = malloc(sizeof(table_item_t));
@@ -144,6 +180,14 @@ table_item_t *insert_symbol_function(symbol_table_t *table, char *key){
 
 }
 
+
+/**
+ * @brief Funkcia slúži na vloženie nového parametra do zoznamu parametrov definovanej funkcie
+ * 
+ * @param table Ukazateľ na štruktúru tabuľky symbolov
+ * @param item Ukazateľ na aktuálnu položku
+ * @param parameter Parameter, ktorý sa vloží do zoznamu
+ */
 void insert_function_parameter(symbol_table_t *table, table_item_t *item, Token_type parameter){
 
   if(item != NULL){
@@ -152,6 +196,14 @@ void insert_function_parameter(symbol_table_t *table, table_item_t *item, Token_
 
 }
 
+
+/**
+ * @brief Funkcia slúži na vloženie nového návratového do zoznamu parametrov definovanej funkcie
+ * 
+ * @param table Ukazateľ na štruktúru tabuľky symbolov
+ * @param item Ukazateľ na aktuálnu položku
+ * @param parameter Návratový typ, ktorý sa vloží do zoznamu
+ */
 void insert_function_return_type(symbol_table_t *table, table_item_t *item, Token_type return_type){
 
   if(item != NULL){
@@ -160,6 +212,14 @@ void insert_function_return_type(symbol_table_t *table, table_item_t *item, Toke
 
 }
 
+
+/**
+ * @brief Funkcia slúži na nastavenie typu premennej v tabuľke symbolov
+ * 
+ * @param table Ukazateľ na štruktúru tabuľky symbolov
+ * @param item Ukazateľ na aktuálnu položku
+ * @param type Typ premennej, ktorý sa nastaví položke v tabuľke symbolov
+ */
 void set_symbol_variable_type(symbol_table_t *table, table_item_t *item, Token_type type){
 
   if(item != NULL){
@@ -168,6 +228,14 @@ void set_symbol_variable_type(symbol_table_t *table, table_item_t *item, Token_t
   
 }
 
+
+/**
+ * @brief Funkcia slúži na nastavenie dodatočných informácií o položke v tabuľke symbolov
+ * 
+ * @param table Ukazateľ na štruktúru tabuľky symbolov
+ * @param item Ukazateľ na aktuálnu položku
+ * @param info Informácia, ktorá sa nastaví položke v tabuľke symbolov
+ */
 void set_additional_info(symbol_table_t *table, table_item_t *item, Additional_info info){
 
   if(item != NULL){
@@ -176,6 +244,14 @@ void set_additional_info(symbol_table_t *table, table_item_t *item, Additional_i
 
 }
 
+
+/**
+ * @brief Funkcia slúži na získanie identifikátora položky v tabuľke symbolov
+ * 
+ * @param table Ukazateľ na štruktúru tabuľky symbolov
+ * @param key Reťazec s hashovacím kľúčom
+ * @return char* Identifikátor položky v tabuľke
+ */
 char *get_identificator(symbol_table_t *table, char *key){
 
   table_item_t *found_item = search_item(table,key);
@@ -186,6 +262,14 @@ char *get_identificator(symbol_table_t *table, char *key){
     return NULL;
 }
 
+
+/**
+ * @brief Funkcia slúži na získanie typu položky v tabuľke symbolov
+ * 
+ * @param table Ukazateľ na štruktúru tabuľky symbolov
+ * @param key Reťazec s hashovacím kľúčom
+ * @return Symbol_type* Typ položky v tabuľke symbolov
+ */
 Symbol_type *get_symbol_type(symbol_table_t *table, char *key){
 
   table_item_t *found_item = search_item(table,key);
@@ -196,6 +280,14 @@ Symbol_type *get_symbol_type(symbol_table_t *table, char *key){
     return NULL;
 }
 
+
+/**
+ * @brief Funkcia slúži na získanie typu premennej z tabuľky symbolov
+ * 
+ * @param table Ukazateľ na štruktúru tabuľky symbolov
+ * @param key Reťazec s hashovacím kľúčom
+ * @return Token_type* Typ premennej uloženej v tabuľke symbolov
+ */
 Token_type *get_symbol_variable_type(symbol_table_t *table, char *key){
 
   table_item_t *found_item = search_item(table,key);
@@ -206,6 +298,14 @@ Token_type *get_symbol_variable_type(symbol_table_t *table, char *key){
     return NULL;
 }
 
+
+/**
+ * @brief Funkcia slúži na získanie dodatočných informácii o položke v tabuľke symbolov
+ * 
+ * @param table Ukazateľ na štruktúru tabuľky symbolov
+ * @param key Reťazec s hashovacím kľúčom
+ * @return Additional_info* Informácia o položke v tabuľke symbolov
+ */
 Additional_info *get_additional_info(symbol_table_t *table, char *key){
 
   table_item_t *found_item = search_item(table,key);
@@ -216,6 +316,14 @@ Additional_info *get_additional_info(symbol_table_t *table, char *key){
     return NULL;
 }
 
+
+/**
+ * @brief Funkcia slúži na získanie parametrov z funkcie uloženej v tabuľke symbolov
+ * 
+ * @param table Ukazateľ na štruktúru tabuľky symbolov
+ * @param key Reťazec s hashovacím kľúčom
+ * @return Data_list* Zoznam parametrov uloženej funkcie
+ */
 Data_list *get_parameters(symbol_table_t *table, char *key){
 
   table_item_t *found_item = search_item(table,key);
@@ -226,6 +334,14 @@ Data_list *get_parameters(symbol_table_t *table, char *key){
     return NULL;
 }
 
+
+/**
+ * @brief Funkcia slúži na získanie návratových typov funkcie uloženej v tabuľke symbolov
+ * 
+ * @param table Ukazateľ na štruktúru tabuľky symbolov
+ * @param key Reťazec s hashovacím kľúčom
+ * @return Data_list* Zoznam návratových typov uloženej funkcie
+ */
 Data_list *get_return_types(symbol_table_t *table, char *key){
 
   table_item_t *found_item = search_item(table,key);
@@ -236,6 +352,12 @@ Data_list *get_return_types(symbol_table_t *table, char *key){
     return NULL;
 }
 
+
+/**
+ * @brief Funkcia slúži na vymazanie tabuľky symbolov a uvoľnenie pamäti
+ * 
+ * @param table Ukazateľ na štruktúru tabuľky symbolov
+ */
 void table_dispose(symbol_table_t *table){
 
   for (int index = 0; index < HT_SIZE; index ++){

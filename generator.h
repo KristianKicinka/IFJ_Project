@@ -1,5 +1,17 @@
-#ifndef CODE_GENERATOR
-#define  CODE_GENERATOR
+/**
+ * 
+ * Project : Implementace překladače imperativního jazyka IFJ21.
+ * 
+ * @file generator.c 
+ * @author Lukáš Skopár (xskopa16)
+ * @author Kristián Kičinka (xkicin02)
+ * @brief  Spracovávanie generovania výstupného kódu (rozhranie)
+ * 
+ */
+
+
+#ifndef CODE_GENERATOR_H
+#define  CODE_GENERATOR_H
 
 #include "recursive_syntactic.h"
 
@@ -107,4 +119,4 @@ void print_exit(char *number);
 void print_break();
 void print_dprint(char *symb);
 
-#endif // !CODE_GENERATOR 
+#endif // !CODE_GENERATOR_H 

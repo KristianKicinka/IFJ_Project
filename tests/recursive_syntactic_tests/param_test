@@ -1,0 +1,6 @@
+require  "ifj21"
+
+global f : function (INTEGER) : integer, integer 
+function f(x : INTEGER) : integer, integer
+
+main()
