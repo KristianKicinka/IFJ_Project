@@ -1,2 +1,11 @@
-2 + 3 == 5 
-i()
+require "ifj21"
+global g : function (integer) : integer -- deklarace funkce
+function g(x : integer) : integer
+a = 1
+if 4 < 5 then
+a = 2 + a 
+a = (1 - 2 * 3)+ 3 + #"str" * 2
+--a = "str"
+end
+end
+main()

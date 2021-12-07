@@ -150,24 +150,6 @@ bool reduce_by_rules(int pushes, Token token, syntactic_data_t *data)
             exp_stack_pop(&help_stack);
             return true;
 
-        }else if(stacksym->type == TYPE_IDENTIFICATOR_VARIABLE){
-            printf("Identifikator je premenna\n");
-            if(token.token_info.integer_value != 0){
-                printf("Identifikator je integer\n");
-                exp_stack_push(&stack, EXPRESSION_I, TYPE_INT_NUMBER);
-                exp_stack_pop(&help_stack);
-                return true;
-            }else if(token.token_info.double_value != 0.0){
-                printf("Identifikator je number\n");
-                exp_stack_push(&stack, EXPRESSION_N, TYPE_DOUBLE_NUMBER);
-                exp_stack_pop(&help_stack);
-                return true;
-            }
-
-            //exp_stack_push(&stack, EXPRESSION_N, TYPE_DOUBLE_NUMBER);
-            //exp_stack_pop(&help_stack);
-            //return true;
-
         }else{
             exp_stack_push(&stack, EXPRESSION, TYPE_UNSET);
             exp_stack_pop(&help_stack);
@@ -463,29 +445,29 @@ void precedence_analysis(syntactic_data_t *data)
     token_list_init(&infix);
     token_list_init(&postfix);
 
-    //char *identificator = data->token.token_info.custom_string->string_value;
-    
-    //if(search_item(&data->global_table, identificator)!=NULL){ 
-    //    if(*get_additional_info(&data->global_table, identificator) == IS_DEFINED){ //test redefinicie
-    //        process_error(SEMANTIC_ANALYSIS_UNDEF_VAR);
-    //    }
-    //}
+    char *identificator = data->token.token_info.custom_string->string_value;
+   
 
     do
     {
+        if(data->token.type_of_token == TYPE_IDENTIFICATOR_VARIABLE){
+            identificator = data->token.token_info.custom_string->string_value;
+
+            printf("Identifikator je %s\n", identificator);
+            printf("token value before %d\n", data->token.type_of_token);
+            if(search_item(&data->local_table, identificator)==NULL){      
+                stack_free_return(SEMANTIC_ANALYSIS_UNDEF_VAR, data);
+            }else
+            data->token.type_of_token = *get_symbol_variable_type(&data->local_table, identificator);
+
+            printf("token value after %d\n", data->token.type_of_token);
+        }
+
         stack_top_term = exp_stack_top(&stack);
         input_symbol = symbol_from_token(&data->token);
 
         if(stack_top_term == NULL)
             stack_free_return(INTERNAL_FAILATURE, data);
-
-       // if(input_symbol == ID && data->token.type_of_token == TYPE_IDENTIFICATOR_VARIABLE){
-       //     printf("\nTu budem pristupovat do symtable\n\n");
-       //     if((*get_additional_info(&data->global_table, identificator)) == IS_DEFINED){
-       //         data->token.type_of_token = *get_symbol_variable_type(&data->global_table, identificator);
-       //         printf("Test symtable: %d\n", data->token.type_of_token);
-       //     }
-       // }
 
         if(input_symbol == DOLLAR){
             if(data->list_of_tokens.firstElement == NULL){
