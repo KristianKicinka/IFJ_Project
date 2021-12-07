@@ -18,6 +18,7 @@
 #include "expression_stack.h"
 #include "enums.h"
 #include "recursive_syntactic.h"
+#include "symtable.h"
 #include <stdio.h>
 #include <stdlib.h>
 

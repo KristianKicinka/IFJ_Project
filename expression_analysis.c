@@ -455,6 +455,20 @@ void precedence_analysis(syntactic_data_t *data)
         if(stack_top_term == NULL)
             stack_free_return(INTERNAL_FAILATURE, data);
 
+        if(input_symbol == ID && data->token.type_of_token == TYPE_IDENTIFICATOR_VARIABLE){
+            printf("\nTu budem pristupovat do symtable\n\n");
+            //if(&data->local_table);
+        }
+
+        if(input_symbol == DOLLAR){
+            if(data->list_of_tokens.firstElement == NULL){
+                token_list_insertfirst(&data->list_of_tokens, data->token);
+                data->list_of_tokens.lastElement = data->list_of_tokens.firstElement;
+                data->list_of_tokens.activeElement = data->list_of_tokens.firstElement;
+                printf("Toto je token ulozeny do listu: %d\n", data->list_of_tokens.activeElement->token.type_of_token);
+            }
+        }
+
         printf("-----------------------------------\n");
         printf("Vrch stacku: %u\n", stack_top_term->symbol);
 
@@ -494,15 +508,20 @@ void precedence_analysis(syntactic_data_t *data)
 
             case E:
                 printf("E\n");
-                // TODO ulozit token do struktury pre Andyho
                 token_list_insertlast(&infix, data->token);
+
+                token_list_insertfirst(&data->list_of_tokens, data->token);
+                data->list_of_tokens.lastElement = data->list_of_tokens.firstElement;
+                data->list_of_tokens.activeElement = data->list_of_tokens.firstElement;
+                printf("Toto je token ulozeny do listu: %d\n", data->list_of_tokens.activeElement->token.type_of_token);
+
                 generate_token(&data->token, &data->my_string);
 
                 if(data->token.type_of_token == TYPE_ASSIGN || data->token.type_of_token == TYPE_COMMA 
                 || data->token.type_of_token == TYPE_LEFT_ROUND_BRACKET){
                     
-                    
-                    // TODO ulozit token do struktury pre Andyho
+                    token_list_insertlast(&data->list_of_tokens, data->token);
+                    printf("Toto je druhy token ulozeny do listu: %d\n", data->list_of_tokens.lastElement->token.type_of_token);
                     input_symbol = DOLLAR;
 
                 }else{
