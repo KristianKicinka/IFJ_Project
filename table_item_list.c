@@ -4,7 +4,7 @@
  * 
  * @file table_item_list.c 
  * @author Kristián Kičinka (xkicin02)
- * @brief  Spracovávanie parametrov funkcií (implementácia)
+ * @brief  Spracovávanie položiek v tabuľke symbolov (implementácia)
  * 
  */
 
@@ -13,6 +13,13 @@
 #include <stdbool.h>
 #include "table_item_list.h"
 
+
+
+/**
+ * @brief Funkcia slúži na inicializáciu štruktúty Table list
+ * 
+ * @param list Ukazateľ na štruktúru Table list
+ */
 void table_item_list_init(Table_list *list){
     list->items_count = 0;
     list->allocated_memory = 1;
@@ -27,6 +34,13 @@ void table_item_list_init(Table_list *list){
 
 }
 
+
+/**
+ * @brief Funkcia slúži na vloženie nového prvku do listu
+ * 
+ * @param list Ukazateľ na štruktúru Table listu
+ * @param item Položka, ktorá sa vkladá do listu
+ */
 void table_item_list_insert(Table_list *list, table_item_t *item){
     table_item_t **new_item;
     new_item = (table_item_t **) realloc(list->items,(list->allocated_memory + 1) * sizeof(table_item_t*));
@@ -42,6 +56,12 @@ void table_item_list_insert(Table_list *list, table_item_t *item){
 
 }
 
+
+/**
+ * @brief Funkcia slúži na uvoľnenie pamäti
+ * 
+ * @param list Ukazateľ na štruktúru Table listu
+ */
 void table_item_list_free_memory(Table_list *list){
     free(list->items);
 }
