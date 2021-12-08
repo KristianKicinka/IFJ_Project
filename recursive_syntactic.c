@@ -530,9 +530,9 @@ void call_param(syntactic_data_t *parser_data){
        parser_data->token.type_of_token==TYPE_STRING){
         call_params(parser_data);
     }else if(parser_data->token.type_of_token==TYPE_RIGHT_ROUND_BRACKET){ //funkcia nema parametre
-       //printf("Sem by som mal prist \n");
+      //printf("Sem by som mal prist \n");
        check_retuned_tokens_from_expression_analysis(parser_data);
-       if(parser_data->in_while==true){
+       if(parser_data->in_function==true){
            code(parser_data);
        }else{
            start(parser_data); 
@@ -549,8 +549,13 @@ void function_call(syntactic_data_t *parser_data){
 
     //check_retuned_tokens_from_expression_analysis(parser_data);
     //printf("tokenik is : %d \n",parser_data->token.type_of_token);
+
     if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION){
         char *identificator = parser_data->token.token_info.custom_string->string_value;
+        if(strcmp(identificator, "write")==0){
+            //printf("volan write\n");
+            param_nt(parser_data); 
+        }
         parser_data->current_item=search_item(&parser_data->global_table, identificator);
         create_function_call(identificator);        
         if(parser_data->current_item==NULL){
@@ -561,7 +566,8 @@ void function_call(syntactic_data_t *parser_data){
             jonwick_the_memory_cleaner(parser_data);
             process_error(SEMANTIC_ANALYSIS_UNDEF_VAR);
         }
-        check_retuned_tokens_from_expression_analysis(parser_data);
+        //check_retuned_tokens_from_expression_analysis(parser_data);
+        check_retuned_tokens_from_expression_analysis(parser_data); 
         if(parser_data->token.type_of_token==TYPE_LEFT_ROUND_BRACKET){
             parser_data->parameter_index=-1; //na zaciatku nema funkcia ziadny parameter
             call_param(parser_data);
@@ -790,7 +796,7 @@ void return_nt(syntactic_data_t *parser_data){
 
 void code(syntactic_data_t *parser_data){
     //printf("dostal som sa do code s tokenom %d\n", parser_data->token.type_of_token);
-    //printf("v code in_if %d\n", parser_data->in_if);
+   // printf("v code in_if %d\n", parser_data->in_if);
     //printf("v code in_function %d\n", parser_data->in_function);
     //printf("v code in_while %d\n", parser_data->in_while);
     //printf("statement index %d\n", parser_data->statement_index);
@@ -946,6 +952,8 @@ void parser_data_init(syntactic_data_t *data){
     set_is_defined(&data->global_table, data->current_item , true);
     data->current_item = insert_symbol_function(&data->global_table, "main");
     set_is_defined(&data->global_table, data->current_item, true);
+    data->current_item = insert_symbol_function(&data->global_table, "write");
+    set_is_defined(&data->global_table, data->current_item, true);
     data->current_item = NULL;
     //printf("VLOYILA SA %s\n", &(*get_identificator(&data->global_table, "read")));
 }
@@ -957,7 +965,7 @@ void check_retuned_tokens_from_expression_analysis(syntactic_data_t *parser_data
     }else{
         generate_token(&parser_data->token, &parser_data->my_string);
     }
-    
+    //printf("vrateny token %d\n", parser_data->token.type_of_token);
 }
 
 
