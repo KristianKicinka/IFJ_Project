@@ -911,7 +911,7 @@ void start(syntactic_data_t *parser_data){
 
         /* token_list_insertfirst(&parser_data->list_of_tokens,parser_data->token);
         parser_data->list_of_tokens.activeElement = parser_data->list_of_tokens.firstElement; */
-
+            generator_end();
             exit(0);
         }else{
             jonwick_the_memory_cleaner(parser_data);

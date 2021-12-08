@@ -4,7 +4,7 @@
  * 
  * @file generator.c 
  * @author Lukáš Skopár (xskopa16)
- * @author Kristián Kičinka (xkicin02)
+ * 
  * @brief  Spracovávanie generovania výstupného kódu (implementácia)
  * 
  */
@@ -71,12 +71,25 @@ void genertaor_start(){
     print_jump(MAIN_LABEL);
 }
 
-void create_main(){
+void generator_end(){
+    printf ("\n");
+}
+
+// Main function
+void create_start_main(){
     print_label(MAIN_LABEL);
     print_create_frame();
     print_push_frame();
 }
 
+
+void create_end_main(){
+    print_label(MAIN_LABEL);
+    print_pop_frame();
+    print_clears();
+}
+
+// Functions
 void create_function_label(char *label){
     print_label(label);
     print_push_frame();
@@ -118,13 +131,14 @@ void create_read(Token_type var_type, char *var){
         /* case BOOL:
         printf ("\nREAD LF@%s bool", var);
         break;
- */
+        */
+
         default:
         break;
     }
 }
 
-void create_write(int var_type, Token *token){
+void create_write(Token_type var_type, Token *token){
     switch (var_type){
         case TYPE_INT_NUMBER:
         printf ("\nWRITE int@%d",token->token_info.integer_value);
@@ -151,6 +165,7 @@ void create_write(int var_type, Token *token){
 void create_declaration_variable(char *var){
     print_def_var(DEF_VAR_LF,var);
 }
+
 
 //if
 void create_if_start(int label){
@@ -186,24 +201,25 @@ void create_while_jump(int label){
 void create_while_end(int label){
     printf("\nLABEL $while_end_label%d", label);
 }
-/*
-void def_type_of_var(int var_type, Token *token){
-    switch (var_type)
-    {
+
+
+void define_corect_type_of_var(Token_type var_type, Token *token){
+    switch (var_type){
+
     case TYPE_INT_NUMBER:
         printf ("int@%d",token->token_info.integer_value);
         break;
 
-        case TYPE_DOUBLE_NUMBER:
+    case TYPE_DOUBLE_NUMBER:
         printf ("float@%lf", token->token_info.double_value);
         break;
 
-        case TYPE_STRING:
+    case TYPE_STRING:
         printf ("string@%s",token->token_info.custom_string->string_value);
         break;
 
-        case TYPE_IDENTIFICATOR_FUNCTION:
-        case TYPE_IDENTIFICATOR_VARIABLE:
+    case TYPE_IDENTIFICATOR_FUNCTION:
+    case TYPE_IDENTIFICATOR_VARIABLE:
         printf ("LF@%s",token->token_info.custom_string->string_value);
         break;
     
@@ -211,7 +227,34 @@ void def_type_of_var(int var_type, Token *token){
         break;
     }
 }
-*/
+
+void define_temp_type_of_var(Token_type var_type){
+    switch (var_type){
+    case TYPE_INT_NUMBER:
+        printf ("int@nil");
+        break;
+
+    case TYPE_DOUBLE_NUMBER:
+        printf ("float@nil");
+        break;
+
+    case TYPE_STRING:
+        printf ("string@nil");
+        break;
+
+    case TYPE_IDENTIFICATOR_FUNCTION:
+    case TYPE_IDENTIFICATOR_VARIABLE:
+        printf ("LF@nil");
+        break;
+    
+    default:
+        break;
+    }
+}
+
+
+
+
 
 //compare
 void create_lt(int label){
@@ -288,47 +331,6 @@ void create_not(int label){
     printf("\nNOT LF@*res LF@*a LF@*b");
 }
 
-/* void create_frame_version_inst(int frame_inst){
-    switch (frame_inst)
-    {
-    case LTS:
-        printf("\nLTS");
-        break;
-    case GTS:
-        printf("\nGTS");
-        break;
-    case EQS:
-        printf("\nEQS");
-        break;
-    case ADDS:
-        printf("\nADDS");
-        break;
-    case SUBSS:
-        printf("\nSUBS");
-        break;
-    case MULS:
-        printf("\nMULS");
-        break;
-    case DIVS:
-        printf("\nDIVS");
-        break;
-    case IDIVS:
-        printf("\nIDIVS");
-        break;
-    case ANDS:
-        printf("\nANDS");
-        break;
-    case ORS:
-        printf("\nORS");
-        break;
-    case NOTS:
-        printf("\nNOTS");
-        break;
-    
-    default:
-        break;
-    }
-} */
 
 //Práca s rámci, volanie funkcií
 void print_move(char* var_type, char *var, char*symb_type, char *symb){
