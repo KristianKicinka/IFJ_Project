@@ -54,9 +54,9 @@ void assign_new(syntactic_data_t *parser_data){
         }
         parser_data->current_item_var =  insert_symbol_variable(&parser_data->local_table, identificator);
         set_is_declared(&parser_data->local_table, parser_data->current_item_var, true);
-
-
         //END SEMANTIC
+
+        create_declaration_variable(identificator);
 
         check_retuned_tokens_from_expression_analysis(parser_data);
         if(parser_data->token.type_of_token==TYPE_COLON){               //<LOCAL> <ID> <:>
@@ -220,6 +220,7 @@ void while_nt(syntactic_data_t *parser_data){
 
 void code_if_nt(syntactic_data_t *parser_data){
     //printf("Do code_if_nt som prisiel s tokenom %d\n", parser_data->token.type_of_token);
+    create_if_start(parser_data->statement_index);
     if(parser_data->token.type_of_token==TYPE_KW_ELSE){ //if statement je prazdny, po else nasleduju dalsie prikazy
         parser_data->nof_else++;
         check_retuned_tokens_from_expression_analysis(parser_data);
@@ -562,6 +563,7 @@ void function_call(syntactic_data_t *parser_data){
     if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION){
         char *identificator = parser_data->token.token_info.custom_string->string_value;
         parser_data->current_item=search_item(&parser_data->global_table, identificator);
+        create_function_call(identificator);        
         if(parser_data->current_item==NULL){
             jonwick_the_memory_cleaner(parser_data);
             process_error(SEMANTIC_ANALYSIS_UNDEF_VAR);
@@ -994,7 +996,8 @@ void analyze(){
         }
     }
 
-    custom_string_free_memory(&parser_data.my_string);
+    jonwick_the_memory_cleaner(&parser_data);
+    process_error(SYNTAX_ANALYSIS_FAIL);
 
     //printf("Syntax error\n");
     //exit;
