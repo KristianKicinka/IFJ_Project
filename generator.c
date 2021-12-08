@@ -87,8 +87,8 @@ void create_function_call(char *label){
 }
 
 void create_function_return(int return_id, char *return_type){
-    printf("\nDEFVAR LF@%cretval%d %s@nil",'%',return_id, return_type);
-    printf("\nMOVE LF@%cretval%d",'%',return_id);
+    printf("\nDEFVAR LF@%cretval%d",'%',return_id);
+    printf("\nMOVE LF@%cretval%d %s@nil",'%',return_id,return_type);
 }
 
 void create_function_end(char *label){
@@ -348,7 +348,7 @@ void print_pop_frame(){
 }
 
 void print_def_var(char *type, char *var){
-    printf("\nDEFVAR %s@ %s", type, var);
+    printf("\nDEFVAR %s@%s", type, var);
 }
 
 void print_call(char *label){
