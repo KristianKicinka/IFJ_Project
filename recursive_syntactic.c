@@ -298,57 +298,46 @@ void double_dots_nt(syntactic_data_t *parser_data){
     //navrat pre deklaraciu funkcie   
     }else if(parser_data->token.type_of_token==TYPE_KW_FUNCTION && !parser_data->in_function){
         //check_declaration(parser_data);
-        create_function_end(parser_data->current_item->data.identificator);
         start(parser_data);
     }else if(parser_data->token.type_of_token==TYPE_KW_GLOBAL && !parser_data->in_function){
         //check_declaration(parser_data);
-        create_function_end(parser_data->current_item->data.identificator);
         start(parser_data);
     }else if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION && !parser_data->in_function){
         //printf("Tu by som sa mal vracat\n");
         //check_declaration(parser_data);
-        create_function_end(parser_data->current_item->data.identificator);
         start(parser_data);    
     }else if(parser_data->token.type_of_token==TYPE_KW_EOF && !parser_data->in_function){
         //check_declaration(parser_data);
-        create_function_end(parser_data->current_item->data.identificator);
         start(parser_data);
         return;
     //navrat pre definiciu funkcie
     }else if(parser_data->token.type_of_token==TYPE_KW_WHILE && parser_data->in_function){
         //parser_data->in_function=false;
         //check_declaration(parser_data);
-        create_function_end(parser_data->current_item->data.identificator);
         code(parser_data);
     }else if(parser_data->token.type_of_token==TYPE_KW_IF && parser_data->in_function){
         //parser_data->in_function=false;
         //check_declaration(parser_data);
-        create_function_end(parser_data->current_item->data.identificator);
         code(parser_data);
     }else if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_FUNCTION && parser_data->in_function){
         //parser_data->in_function=false;
         //printf("NAPATE\n");
         //check_declaration(parser_data);
-        create_function_end(parser_data->current_item->data.identificator);
         code(parser_data);
     }else if(parser_data->token.type_of_token==TYPE_KW_RETURN && parser_data->in_function){
         //parser_data->in_function=false;
         //check_declaration(parser_data);
-        create_function_end(parser_data->current_item->data.identificator);
         code(parser_data);
     }else if(parser_data->token.type_of_token==TYPE_IDENTIFICATOR_VARIABLE && parser_data->in_function){
         //parser_data->in_function=false;
         //check_declaration(parser_data);
-        create_function_end(parser_data->current_item->data.identificator);
         code(parser_data);
     }else if(parser_data->token.type_of_token==TYPE_KW_LOCAL && parser_data->in_function){
         //parser_data->in_function=false;
         //check_declaration(parser_data);
-        create_function_end(parser_data->current_item->data.identificator);
         code(parser_data);
     }else if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_function){ //funkcia bez navratovych hodnot
         //check_declaration(parser_data);
-        create_function_end(parser_data->current_item->data.identificator);
         check_retuned_tokens_from_expression_analysis(parser_data);
         start(parser_data);
     }else{
@@ -645,7 +634,7 @@ void argument(syntactic_data_t *parser_data){
     }else if(parser_data->token.type_of_token==TYPE_RIGHT_ROUND_BRACKET){ //ziadny dalsi parameter nie je
         parser_data->in_function=true;
         //printf("argument: idem do doubledotnt\n");
-        create_function_end(parser_data->current_item->data.identificator);
+        //create_function_end(parser_data->current_item->data.identificator);
         double_dot_nt(parser_data); //idem kontrolovat navratove hodnoty
     }else{
         //printf("SE argument dole\n");
@@ -752,7 +741,7 @@ void function(syntactic_data_t *parser_data){
          }else if(parser_data->token.type_of_token==TYPE_RIGHT_ROUND_BRACKET){ //funkcia nema ziadne parametre
             parser_data->in_function=true;
             //check_retuned_tokens_from_expression_analysis(parser_data);
-            create_function_end(parser_data->current_item->data.identificator);
+            //create_function_end(parser_data->current_item->data.identificator);
             double_dot_nt(parser_data);
          }else{
             jonwick_the_memory_cleaner(parser_data);
@@ -862,6 +851,7 @@ void code(syntactic_data_t *parser_data){
     }
     if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_function==true && parser_data->in_if == false){
        parser_data->in_function=false;
+       create_function_end(parser_data->current_item->data.identificator);
        check_retuned_tokens_from_expression_analysis(parser_data);
        //printf("dalsi %d\n", parser_data->token.type_of_token);
        if(parser_data->statement_index>0){
