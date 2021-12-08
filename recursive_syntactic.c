@@ -930,6 +930,8 @@ void parser_data_init(syntactic_data_t *data){
     data->current_item = insert_symbol_function(&data->global_table, "readi");
     set_is_defined(&data->global_table, data->current_item , true);
     data->current_item = insert_symbol_function(&data->global_table, "readn");
+    set_is_defined(&data->global_table, data->current_item , true);
+    data->current_item = insert_symbol_function(&data->global_table, "main");
     set_is_defined(&data->global_table, data->current_item, true);
     data->current_item = NULL;
     printf("VLOYILA SA %s\n", &(*get_identificator(&data->global_table, "read")));
