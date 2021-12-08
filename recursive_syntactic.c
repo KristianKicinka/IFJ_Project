@@ -792,9 +792,9 @@ void return_nt(syntactic_data_t *parser_data){
 }
 
 void code(syntactic_data_t *parser_data){
-    printf("dostal som sa do code s tokenom %d\n", parser_data->token.type_of_token);
-    printf("v code in_if %d\n", parser_data->in_if);
-    printf("v code in_function %d\n", parser_data->in_function);
+    //printf("dostal som sa do code s tokenom %d\n", parser_data->token.type_of_token);
+    //printf("v code in_if %d\n", parser_data->in_if);
+    //printf("v code in_function %d\n", parser_data->in_function);
     if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_function==true && parser_data->in_if == false){
        parser_data->in_function=false;
        check_retuned_tokens_from_expression_analysis(parser_data);
@@ -934,7 +934,7 @@ void parser_data_init(syntactic_data_t *data){
     data->current_item = insert_symbol_function(&data->global_table, "main");
     set_is_defined(&data->global_table, data->current_item, true);
     data->current_item = NULL;
-    printf("VLOYILA SA %s\n", &(*get_identificator(&data->global_table, "read")));
+    //printf("VLOYILA SA %s\n", &(*get_identificator(&data->global_table, "read")));
 }
 
 void check_retuned_tokens_from_expression_analysis(syntactic_data_t *parser_data){
