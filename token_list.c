@@ -38,7 +38,6 @@ void token_list_insertfirst(token_list *list, Token token)
     token_list_elementPtr Elem = (token_list_elementPtr)malloc(sizeof(struct token_list_element));
     if (Elem == NULL)
     {
-        // DLL_Error();
         return;
     }
 
@@ -60,7 +59,6 @@ void token_list_insertlast(token_list *list, Token token)
     Elem = (token_list_elementPtr)malloc(sizeof(struct token_list_element));
     if (Elem == NULL)
     {
-        // token_list_Error();
         return;
     }
 
@@ -94,7 +92,6 @@ void token_list_getfirst(token_list *list, Token *dataPtr)
     }
     else
     {
-        // token_list_Error();
         return;
     }
 }
@@ -107,7 +104,6 @@ void token_list_getlast(token_list *list, Token *dataPtr)
     }
     else
     {
-        // token_list_Error();
         return;
     }
 }
