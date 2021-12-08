@@ -21,7 +21,7 @@ void genertaor_start();
 void create_main();
 void create_function_label(char *label);
 void create_function_call(char *label);
-void create_function_return(int return_id, char *return_value);
+void create_function_return(int return_id, char *return_type);
 void create_function_end(char *label);
 void create_function_parameter(int param_id, char *parameter);
 void create_write(int var_type, Token *token);

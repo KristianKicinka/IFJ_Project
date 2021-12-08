@@ -453,14 +453,14 @@ void precedence_analysis(syntactic_data_t *data)
         if(data->token.type_of_token == TYPE_IDENTIFICATOR_VARIABLE){
             identificator = data->token.token_info.custom_string->string_value;
 
-            printf("Identifikator je %s\n", identificator);
-            printf("token value before %d\n", data->token.type_of_token);
+            //printf("Identifikator je %s\n", identificator);
+            //printf("token value before %d\n", data->token.type_of_token);
             if(search_item(&data->local_table, identificator)==NULL){      
                 stack_free_return(SEMANTIC_ANALYSIS_UNDEF_VAR, data);
             }else
             data->token.type_of_token = *get_symbol_variable_type(&data->local_table, identificator);
 
-            printf("token value after %d\n", data->token.type_of_token);
+            //printf("token value after %d\n", data->token.type_of_token);
         }
 
         stack_top_term = exp_stack_top(&stack);
@@ -474,12 +474,12 @@ void precedence_analysis(syntactic_data_t *data)
                 token_list_insertfirst(&data->list_of_tokens, data->token);
                 data->list_of_tokens.lastElement = data->list_of_tokens.firstElement;
                 data->list_of_tokens.activeElement = data->list_of_tokens.firstElement;
-                printf("Toto je token ulozeny do listu: %d\n", data->list_of_tokens.activeElement->token.type_of_token);
+                //printf("Toto je token ulozeny do listu: %d\n", data->list_of_tokens.activeElement->token.type_of_token);
             }
         }
 
-        printf("-----------------------------------\n");
-        printf("Vrch stacku: %u\n", stack_top_term->symbol);
+        //printf("-----------------------------------\n");
+        //printf("Vrch stacku: %u\n", stack_top_term->symbol);
 
         if(stack_top_term->symbol == EXPRESSION   || stack_top_term->symbol == EXPRESSION_I 
         || stack_top_term->symbol == EXPRESSION_N || stack_top_term->symbol == EXPRESSION_S)
@@ -487,8 +487,8 @@ void precedence_analysis(syntactic_data_t *data)
                     stack_top_term = top_term(&stack);
         }
 
-        printf("Neterminal: %u\n", stack_top_term->symbol);
-        printf("Vstup: %u\n", input_symbol);
+        //printf("Neterminal: %u\n", stack_top_term->symbol);
+        //printf("Vstup: %u\n", input_symbol);
 
         // TODO
         // ked dostanem ID tak overim ci je deklarovane a definovane. ak nie tak je to semanticka chyba v programe CHYBA 3
@@ -497,32 +497,32 @@ void precedence_analysis(syntactic_data_t *data)
         switch(PSA_table[stack_top_term->symbol][input_symbol])
         {
             case PA:          
-                printf("PA\n");
+                //printf("PA\n");
                 token_list_insertlast(&infix, data->token);
                 stack_insert_after_term(&stack, input_symbol, data->token.type_of_token);
                 generate_token(&data->token, &data->my_string);
                 break;
 
             case R:
-                printf("R\n");
+                //printf("R\n");
                 stack_reduce(&stack, data->token, data);
                 break;
 
             case P:
-                printf("P\n");
+                //printf("P\n");
                 token_list_insertlast(&infix, data->token);
                 exp_stack_push(&stack, input_symbol, data->token.type_of_token);
                 generate_token(&data->token, &data->my_string);
                 break;
 
             case E:
-                printf("E\n");
+                //printf("E\n");
                 token_list_insertlast(&infix, data->token);
 
                 token_list_insertfirst(&data->list_of_tokens, data->token);
                 data->list_of_tokens.lastElement = data->list_of_tokens.firstElement;
                 data->list_of_tokens.activeElement = data->list_of_tokens.firstElement;
-                printf("Toto je token ulozeny do listu: %d\n", data->list_of_tokens.activeElement->token.type_of_token);
+                //printf("Toto je token ulozeny do listu: %d\n", data->list_of_tokens.activeElement->token.type_of_token);
 
                 generate_token(&data->token, &data->my_string);
 
@@ -530,7 +530,7 @@ void precedence_analysis(syntactic_data_t *data)
                 || data->token.type_of_token == TYPE_LEFT_ROUND_BRACKET){
                     
                     token_list_insertlast(&data->list_of_tokens, data->token);
-                    printf("Toto je druhy token ulozeny do listu: %d\n", data->list_of_tokens.lastElement->token.type_of_token);
+                    //printf("Toto je druhy token ulozeny do listu: %d\n", data->list_of_tokens.lastElement->token.type_of_token);
                     input_symbol = DOLLAR;
 
                 }else{
@@ -539,7 +539,7 @@ void precedence_analysis(syntactic_data_t *data)
                 break;
 
             case U:
-                printf("U\n");
+                //printf("U\n");
                 if (stack_top_term->symbol == DOLLAR && input_symbol == DOLLAR)
 			    	success = true;
 			    else
@@ -555,15 +555,15 @@ void precedence_analysis(syntactic_data_t *data)
     }while(success==false);
 
     
-    printf("\n-------------------------------------------------------\n");
+    //printf("\n-------------------------------------------------------\n");
     token_list_activefirst(&infix);
 
     while (infix.activeElement != NULL)
     {
-        printf("%u ", infix.activeElement->token.type_of_token);
+        //printf("%u ", infix.activeElement->token.type_of_token);
         token_list_next(&infix);
     }
-    printf("\n-------------------------------------------------------\n");
+    //printf("\n-------------------------------------------------------\n");
 
 
     stack_top_term = exp_stack_top(&stack);
@@ -578,9 +578,9 @@ void precedence_analysis(syntactic_data_t *data)
 
     free_everything();
 
-    printf("\n########################################\n\n");
+    /* printf("\n########################################\n\n");
     printf("#   Synatx analysis was succesfull !   #\n");
-    printf("\n########################################\n");
+    printf("\n########################################\n"); */
 }
 
 

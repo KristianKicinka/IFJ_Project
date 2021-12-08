@@ -1,5 +1,8 @@
 require "ifj21"
 --global g : function (integer,string) : string, integer -- deklarace funkce
+function haha()
+local a : integer
+end
 function g(x : integer, z : string) : integer, integer
 local a : integer
 --local a : string
