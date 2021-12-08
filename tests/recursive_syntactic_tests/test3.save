@@ -1,0 +1,4 @@
+require "ifj21"
+function program()a,b,x=3,,a
+end
+program()

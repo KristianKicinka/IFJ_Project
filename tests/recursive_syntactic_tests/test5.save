@@ -1,0 +1,3 @@
+printf("SE at asssign_valueS\n");
+            custom_string_free_memory(&parser_data->my_string);
+            process_error(SYNTAX_ANALYSIS_FAIL);

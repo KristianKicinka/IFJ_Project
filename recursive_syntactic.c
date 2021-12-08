@@ -192,7 +192,7 @@ void assign_existing(syntactic_data_t *parser_data){
 
 void while_nt(syntactic_data_t *parser_data){
     check_retuned_tokens_from_expression_analysis(parser_data);
-    //printf("Token vo while %d\n", parser_data->token.type_of_token);
+    printf("Token vo while 1 %d\n", parser_data->token.type_of_token);
     if(parser_data->token.type_of_token==TYPE_KW_INTEGER || 
     parser_data->token.type_of_token==TYPE_KW_NUMBER || 
     parser_data->token.type_of_token==TYPE_KW_STRING || 
@@ -200,7 +200,9 @@ void while_nt(syntactic_data_t *parser_data){
         //volat BOOTOM-UP a poslat jej token
         //TODO vratene tokeny
         //IF BOTOOM UP OK
+        precedence_analysis(parser_data);
         check_retuned_tokens_from_expression_analysis(parser_data); //dat doprec lebo semanticka vrati jeden token v tej structe
+        printf("Token vo while 2 %d\n", parser_data->token.type_of_token);
         if(parser_data->token.type_of_token==TYPE_KW_DO){
             parser_data->in_while=true;
             //printf("Z while idem do code\n");
@@ -228,8 +230,9 @@ void code_if_nt(syntactic_data_t *parser_data){
 }
 
 void if_nt(syntactic_data_t *parser_data){
+    
      check_retuned_tokens_from_expression_analysis(parser_data);
-     //printf("Token v if_nt %d\n", parser_data->token.type_of_token);
+     printf("Token v if_nt %d\n", parser_data->token.type_of_token);
      if(parser_data->token.type_of_token==TYPE_INT_NUMBER || 
         parser_data->token.type_of_token==TYPE_DOUBLE_NUMBER ||
         parser_data->token.type_of_token==TYPE_STRING ||
@@ -240,9 +243,9 @@ void if_nt(syntactic_data_t *parser_data){
         precedence_analysis(parser_data);
         check_retuned_tokens_from_expression_analysis(parser_data);
 
-        //printf("Token v if_nt %d\n", parser_data->token.type_of_token);
-        if(parser_data->token.type_of_token==TYPE_KW_THEN){
-            parser_data->in_if=true;
+        printf("Token v if_nt %d\n", parser_data->token.type_of_token);
+        if(parser_data->token.type_of_token==TYPE_KW_THEN || parser_data->token.type_of_token==TYPE_KW_ELSE){
+            parser_data->in_if=true;        
             check_retuned_tokens_from_expression_analysis(parser_data);
             code_if_nt(parser_data);
         }
@@ -789,8 +792,9 @@ void return_nt(syntactic_data_t *parser_data){
 }
 
 void code(syntactic_data_t *parser_data){
-    //printf("dostal som sa do code s tokenom %d\n", parser_data->token.type_of_token);
-    //printf("v code in_function %d\n", parser_data->in_function);
+    printf("dostal som sa do code s tokenom %d\n", parser_data->token.type_of_token);
+    printf("v code in_if %d\n", parser_data->in_if);
+    printf("v code in_function %d\n", parser_data->in_function);
     if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_function==true && parser_data->in_if == false){
        parser_data->in_function=false;
        check_retuned_tokens_from_expression_analysis(parser_data);
@@ -814,6 +818,7 @@ void code(syntactic_data_t *parser_data){
         function_call(parser_data);
     }  
     if(parser_data->token.type_of_token==TYPE_KW_RETURN && parser_data->in_function==true){
+        //printf("return\n");
         return_nt(parser_data);
         //if in function and function has parameters
         //generate and call start 
@@ -826,7 +831,7 @@ void code(syntactic_data_t *parser_data){
         //printf("z code sa vola assign_new\n");
         assign_new(parser_data);
     }
-    if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_while==true && parser_data->in_function==true){
+    if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_while==true){
         parser_data->in_while=false;
         check_retuned_tokens_from_expression_analysis(parser_data);
         code(parser_data);
@@ -836,10 +841,12 @@ void code(syntactic_data_t *parser_data){
     }
     if(parser_data->token.type_of_token==TYPE_KW_ELSE && parser_data->in_if==true){
         //EPS
+        //printf("lol\n");
         check_retuned_tokens_from_expression_analysis(parser_data);
         code(parser_data);
     }
     if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_if==true){
+        //printf("ENDUJEM IF\n");
         parser_data->in_if=false;
         check_retuned_tokens_from_expression_analysis(parser_data);
         code(parser_data);
@@ -912,8 +919,20 @@ void parser_data_init(syntactic_data_t *data){
     data->in_function=false;
     data->in_if=false;
     data->in_declaration=false;
+    //data->in_while=false;
     data->parameter_index=-1;
     token_list_init(&data->list_of_tokens);
+
+    data->current_item = insert_symbol_function(&data->global_table, "read");
+    set_is_defined(&data->global_table, data->current_item , true);
+    data->current_item = insert_symbol_function(&data->global_table, "reads");
+    set_is_defined(&data->global_table, data->current_item , true);
+    data->current_item = insert_symbol_function(&data->global_table, "readi");
+    set_is_defined(&data->global_table, data->current_item , true);
+    data->current_item = insert_symbol_function(&data->global_table, "readn");
+    set_is_defined(&data->global_table, data->current_item, true);
+    data->current_item = NULL;
+    printf("VLOYILA SA %s\n", &(*get_identificator(&data->global_table, "read")));
 }
 
 void check_retuned_tokens_from_expression_analysis(syntactic_data_t *parser_data){
