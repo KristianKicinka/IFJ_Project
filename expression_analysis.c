@@ -439,6 +439,8 @@ void precedence_analysis(syntactic_data_t *data)
         stack_free_return(INTERNAL_FAILATURE, data);
     }
 
+    token_list_dispose(&data->list_of_tokens);
+
     bool success = false;
 
     Exp_stack_item *stack_top_term;
@@ -472,6 +474,7 @@ void precedence_analysis(syntactic_data_t *data)
             stack_free_return(INTERNAL_FAILATURE, data);
 
         if(input_symbol == DOLLAR){
+            //printf("Input symbol je: %d\n", input_symbol);
             if(data->list_of_tokens.firstElement == NULL){
                 token_list_insertfirst(&data->list_of_tokens, data->token);
                 data->list_of_tokens.lastElement = data->list_of_tokens.firstElement;
@@ -581,9 +584,9 @@ void precedence_analysis(syntactic_data_t *data)
 
     free_everything();
 
-    /* printf("\n########################################\n\n");
-    printf("#   Synatx analysis was succesfull !   #\n");
-    printf("\n########################################\n"); */
+    //printf("\n########################################\n\n");
+    //printf("#   Synatx analysis was succesfull !   #\n");
+    //printf("\n########################################\n"); 
 }
 
 

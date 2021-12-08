@@ -1,0 +1,18 @@
+require "ifj21"
+function g(x : integer, z : string) : integer, integer
+local a : integer
+local b : string
+a = 3
+if a>5 then else
+a=7
+return
+else
+a=3
+end
+while a>5 do
+a=a+1
+end
+
+a = 3 * 2 + a
+end
+g()
