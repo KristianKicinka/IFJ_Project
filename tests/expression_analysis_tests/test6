@@ -1,3 +1,4 @@
+
 require "ifj21"
 function g(x : integer, z : string) : integer, integer
 local a : integer

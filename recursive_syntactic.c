@@ -192,7 +192,7 @@ void assign_existing(syntactic_data_t *parser_data){
 
 void while_nt(syntactic_data_t *parser_data){
     check_retuned_tokens_from_expression_analysis(parser_data);
-    printf("Token vo while 1 %d\n", parser_data->token.type_of_token);
+    //printf("Token vo while 1 %d\n", parser_data->token.type_of_token);
     if(parser_data->token.type_of_token==TYPE_KW_INTEGER || 
     parser_data->token.type_of_token==TYPE_KW_NUMBER || 
     parser_data->token.type_of_token==TYPE_KW_STRING || 
@@ -202,7 +202,7 @@ void while_nt(syntactic_data_t *parser_data){
         //IF BOTOOM UP OK
         precedence_analysis(parser_data);
         check_retuned_tokens_from_expression_analysis(parser_data); //dat doprec lebo semanticka vrati jeden token v tej structe
-        printf("Token vo while 2 %d\n", parser_data->token.type_of_token);
+        //printf("Token vo while 2 %d\n", parser_data->token.type_of_token);
         if(parser_data->token.type_of_token==TYPE_KW_DO){
             parser_data->in_while=true;
             //printf("Z while idem do code\n");
@@ -219,7 +219,7 @@ void while_nt(syntactic_data_t *parser_data){
 }
 
 void code_if_nt(syntactic_data_t *parser_data){
-    printf("Do code_if_nt som prisiel s tokenom %d\n", parser_data->token.type_of_token);
+    //printf("Do code_if_nt som prisiel s tokenom %d\n", parser_data->token.type_of_token);
     if(parser_data->token.type_of_token==TYPE_KW_ELSE){ //if statement je prazdny, po else nasleduju dalsie prikazy
         parser_data->nof_else++;
         check_retuned_tokens_from_expression_analysis(parser_data);
@@ -233,7 +233,7 @@ void code_if_nt(syntactic_data_t *parser_data){
 void if_nt(syntactic_data_t *parser_data){
     parser_data->statement_index++;
      check_retuned_tokens_from_expression_analysis(parser_data);
-     printf("Token v if_nt %d a zanorenie je %d\n", parser_data->token.type_of_token, parser_data->statement_index);
+     //printf("Token v if_nt %d a zanorenie je %d\n", parser_data->token.type_of_token, parser_data->statement_index);
      if(parser_data->token.type_of_token==TYPE_INT_NUMBER || 
         parser_data->token.type_of_token==TYPE_DOUBLE_NUMBER ||
         parser_data->token.type_of_token==TYPE_STRING ||
@@ -244,7 +244,7 @@ void if_nt(syntactic_data_t *parser_data){
         precedence_analysis(parser_data);
         check_retuned_tokens_from_expression_analysis(parser_data);
 
-        printf("Token v if_nt %d\n", parser_data->token.type_of_token);
+        //printf("Token v if_nt %d\n", parser_data->token.type_of_token);
         if(parser_data->token.type_of_token==TYPE_KW_THEN){
             parser_data->nof_if++;
             parser_data->in_if=true;  
@@ -908,7 +908,7 @@ void start(syntactic_data_t *parser_data){
     } 
     if(parser_data->token.type_of_token==TYPE_KW_EOF){
         if(parser_data->nof_else==parser_data->nof_if){
-            printf("\nSyntax ok\n");
+            //printf("\nSyntax ok\n");
             jonwick_the_memory_cleaner(parser_data);
 
         /* token_list_insertfirst(&parser_data->list_of_tokens,parser_data->token);
@@ -916,8 +916,8 @@ void start(syntactic_data_t *parser_data){
 
             exit(0);
         }else{
-            printf("%d vs %d", parser_data->nof_if, parser_data->nof_else);
-            printf("SE");
+            jonwick_the_memory_cleaner(parser_data);
+            process_error(SYNTAX_ANALYSIS_FAIL);
         }
         
     }
