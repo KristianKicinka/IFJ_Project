@@ -16,17 +16,21 @@
 #include "recursive_syntactic.h"
 
 void genertaor_start();
+void generator_end();
 
 // Create functions
-void create_main();
+void create_start_main();
+void create_end_main();
 void create_function_label(char *label);
 void create_function_call(char *label);
 void create_function_return(int return_id, char *return_type);
 void create_function_end(char *label);
 void create_function_parameter(int param_id, char *parameter);
-void create_write(int var_type, Token *token);
+void create_write(Token_type var_type, Token *token);
 void create_read(Token_type var_type, char *var);
 void create_declaration_variable(char *var);
+
+void define_def_type_of_var(int var_type, Token *token);
 
 //if 
 void create_if_start(int label);
