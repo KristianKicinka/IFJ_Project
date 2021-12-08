@@ -12,9 +12,7 @@
 
 Exp_stack_symbol stack;
 Exp_stack_symbol help_stack;
-//Custom_string *cstring;
 token_list infix;
-token_list postfix;
 
 int PSA_table[TABLE][TABLE] =
 {
@@ -102,7 +100,6 @@ static PSA_symbol symbol_from_token(Token* token)
 void free_everything()
 {
     token_list_dispose(&infix);
-    token_list_dispose(&postfix);
     exp_stack_free(&stack);
     exp_stack_free(&help_stack);
 }
@@ -122,7 +119,7 @@ void stack_insert_after_term(Exp_stack_symbol* stack, PSA_symbol symbol, Token_t
         exp_stack_push(stack, top->symbol, top->type);          // na zasobnik nahram top z pomocneho zasobniku
         exp_stack_push(stack, symbol, type);                    // na zasobnik nahram prichadzajuci symbol
         exp_stack_pop(&help_stack);                             // vyprazdnim pomocny zasobnik
-    }else{  // ak na vrchole zasobnika nie s
+    }else{ 
         exp_stack_push(stack, PUSH_SYMBOL, TYPE_UNSET);         // na zasobnik nahram <
         exp_stack_push(stack, symbol, type);                    // na zasobnik nahram prichadzajuci symbol
     }
@@ -446,7 +443,6 @@ void precedence_analysis(syntactic_data_t *data)
     Exp_stack_item *stack_top_term;
     PSA_symbol input_symbol;
     token_list_init(&infix);
-    token_list_init(&postfix);
 
     char *identificator;
    
@@ -456,15 +452,12 @@ void precedence_analysis(syntactic_data_t *data)
         if(data->token.type_of_token == TYPE_IDENTIFICATOR_VARIABLE){
             identificator = data->token.token_info.custom_string->string_value;
 
-            //printf("Identifikator je %s\n", identificator);
-            //printf("token value before %d\n", data->token.type_of_token);
             if(search_item(&data->local_table, identificator)==NULL){      
                 stack_free_return(SEMANTIC_ANALYSIS_UNDEF_VAR, data);
-            }else
+            }else{
             backup.type_of_token = data->token.type_of_token;
             data->token.type_of_token = *get_symbol_variable_type(&data->local_table, identificator);
-
-            //printf("token value after %d\n", data->token.type_of_token);
+            }
         }
 
         stack_top_term = exp_stack_top(&stack);
@@ -474,17 +467,12 @@ void precedence_analysis(syntactic_data_t *data)
             stack_free_return(INTERNAL_FAILATURE, data);
 
         if(input_symbol == DOLLAR){
-            //printf("Input symbol je: %d\n", input_symbol);
             if(data->list_of_tokens.firstElement == NULL){
                 token_list_insertfirst(&data->list_of_tokens, data->token);
                 data->list_of_tokens.lastElement = data->list_of_tokens.firstElement;
                 data->list_of_tokens.activeElement = data->list_of_tokens.firstElement;
-                //printf("Toto je token ulozeny do listu: %d\n", data->list_of_tokens.activeElement->token.type_of_token);
             }
         }
-
-        //printf("-----------------------------------\n");
-        //printf("Vrch stacku: %u\n", stack_top_term->symbol);
 
         if(stack_top_term->symbol == EXPRESSION   || stack_top_term->symbol == EXPRESSION_I 
         || stack_top_term->symbol == EXPRESSION_N || stack_top_term->symbol == EXPRESSION_S)
@@ -492,43 +480,32 @@ void precedence_analysis(syntactic_data_t *data)
                     stack_top_term = top_term(&stack);
         }
 
-        //printf("Neterminal: %u\n", stack_top_term->symbol);
-        //printf("Vstup: %u\n", input_symbol);
-
-        // TODO
-        // ked dostanem ID tak overim ci je deklarovane a definovane. ak nie tak je to semanticka chyba v programe CHYBA 3
-        // osetrenie prace s nil len ked je eq a not eq
         
         switch(PSA_table[stack_top_term->symbol][input_symbol])
         {
             case PA:          
-                //printf("PA\n");
                 token_list_insertlast(&infix, data->token);
                 stack_insert_after_term(&stack, input_symbol, data->token.type_of_token);
                 generate_token(&data->token, &data->my_string);
                 break;
 
             case R:
-                //printf("R\n");
                 stack_reduce(&stack, data->token, data);
                 break;
 
             case P:
-                //printf("P\n");
                 token_list_insertlast(&infix, data->token);
                 exp_stack_push(&stack, input_symbol, data->token.type_of_token);
                 generate_token(&data->token, &data->my_string);
                 break;
 
             case E:
-                //printf("E\n");
                 token_list_insertlast(&infix, data->token);
 
                 token_list_insertfirst(&data->list_of_tokens, backup);
                 data->list_of_tokens.lastElement = data->list_of_tokens.firstElement;
                 data->list_of_tokens.activeElement = data->list_of_tokens.firstElement;
                 data->list_of_tokens.activeElement->token.token_info.custom_string = data->token.token_info.custom_string;
-                //printf("Toto je token ulozeny do listu: %d\n", data->list_of_tokens.activeElement->token.type_of_token);
 
                 generate_token(&data->token, &data->my_string);
 
@@ -536,7 +513,6 @@ void precedence_analysis(syntactic_data_t *data)
                 || data->token.type_of_token == TYPE_LEFT_ROUND_BRACKET){
                     
                     token_list_insertlast(&data->list_of_tokens, data->token);
-                    //printf("Toto je druhy token ulozeny do listu: %d\n", data->list_of_tokens.lastElement->token.type_of_token);
                     input_symbol = DOLLAR;
 
                 }else{
@@ -545,7 +521,6 @@ void precedence_analysis(syntactic_data_t *data)
                 break;
 
             case U:
-                //printf("U\n");
                 if (stack_top_term->symbol == DOLLAR && input_symbol == DOLLAR)
 			    	success = true;
 			    else
@@ -557,21 +532,9 @@ void precedence_analysis(syntactic_data_t *data)
 
         }
 
-
     }while(success==false);
 
     
-    //printf("\n-------------------------------------------------------\n");
-    token_list_activefirst(&infix);
-
-    while (infix.activeElement != NULL)
-    {
-        //printf("%u ", infix.activeElement->token.type_of_token);
-        token_list_next(&infix);
-    }
-    //printf("\n-------------------------------------------------------\n");
-
-
     stack_top_term = exp_stack_top(&stack);
 
     if(stack_top_term == NULL)
@@ -581,12 +544,8 @@ void precedence_analysis(syntactic_data_t *data)
         stack_free_return(SYNTAX_ANALYSIS_FAIL, data);
 
 
-
     free_everything();
 
-    //printf("\n########################################\n\n");
-    //printf("#   Synatx analysis was succesfull !   #\n");
-    //printf("\n########################################\n"); 
 }
 
 
