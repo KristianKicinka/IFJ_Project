@@ -219,8 +219,9 @@ void while_nt(syntactic_data_t *parser_data){
 }
 
 void code_if_nt(syntactic_data_t *parser_data){
-    //printf("Do code_if_nt som prisiel s tokenom %d\n", parser_data->token.type_of_token);
+    printf("Do code_if_nt som prisiel s tokenom %d\n", parser_data->token.type_of_token);
     if(parser_data->token.type_of_token==TYPE_KW_ELSE){ //if statement je prazdny, po else nasleduju dalsie prikazy
+        parser_data->nof_else++;
         check_retuned_tokens_from_expression_analysis(parser_data);
         code(parser_data);
     }else{ //vo vetve if sa nachadza kod
@@ -230,9 +231,9 @@ void code_if_nt(syntactic_data_t *parser_data){
 }
 
 void if_nt(syntactic_data_t *parser_data){
-    
+    parser_data->statement_index++;
      check_retuned_tokens_from_expression_analysis(parser_data);
-     printf("Token v if_nt %d\n", parser_data->token.type_of_token);
+     printf("Token v if_nt %d a zanorenie je %d\n", parser_data->token.type_of_token, parser_data->statement_index);
      if(parser_data->token.type_of_token==TYPE_INT_NUMBER || 
         parser_data->token.type_of_token==TYPE_DOUBLE_NUMBER ||
         parser_data->token.type_of_token==TYPE_STRING ||
@@ -244,10 +245,15 @@ void if_nt(syntactic_data_t *parser_data){
         check_retuned_tokens_from_expression_analysis(parser_data);
 
         printf("Token v if_nt %d\n", parser_data->token.type_of_token);
-        if(parser_data->token.type_of_token==TYPE_KW_THEN || parser_data->token.type_of_token==TYPE_KW_ELSE){
-            parser_data->in_if=true;        
+        if(parser_data->token.type_of_token==TYPE_KW_THEN){
+            parser_data->nof_if++;
+            parser_data->in_if=true;  
+                  
             check_retuned_tokens_from_expression_analysis(parser_data);
             code_if_nt(parser_data);
+        }else{
+            jonwick_the_memory_cleaner(parser_data);
+            process_error(SYNTAX_ANALYSIS_FAIL);
         }
     }
 }
@@ -795,15 +801,9 @@ void code(syntactic_data_t *parser_data){
     //printf("dostal som sa do code s tokenom %d\n", parser_data->token.type_of_token);
     //printf("v code in_if %d\n", parser_data->in_if);
     //printf("v code in_function %d\n", parser_data->in_function);
-    if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_function==true && parser_data->in_if == false){
-       parser_data->in_function=false;
-       check_retuned_tokens_from_expression_analysis(parser_data);
-       if(parser_data->token.type_of_token!=TYPE_KW_EOF){
-           start(parser_data);
-       }else{
-           code(parser_data);
-       }
-    }
+    //printf("v code in_while %d\n", parser_data->in_while);
+    //printf("statement index %d\n", parser_data->statement_index);
+   
     
     if(parser_data->token.type_of_token==TYPE_KW_WHILE){
         //printf("z code sa vola while\n");
@@ -832,28 +832,44 @@ void code(syntactic_data_t *parser_data){
         assign_new(parser_data);
     }
     if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_while==true){
+        //printf("\nSyntax ok code\n");
         parser_data->in_while=false;
         check_retuned_tokens_from_expression_analysis(parser_data);
         code(parser_data);
-        //printf("\nSyntax ok code\n");
+        
         //custom_string_free_memory(&parser_data->my_string);
         // exit(0);
     }
-    if(parser_data->token.type_of_token==TYPE_KW_ELSE && parser_data->in_if==true){
+    if(parser_data->token.type_of_token==TYPE_KW_ELSE && (parser_data->statement_index>0 || parser_data->in_if==true)){
         //EPS
         //printf("lol\n");
+        parser_data->nof_else++;
         check_retuned_tokens_from_expression_analysis(parser_data);
         code(parser_data);
     }
     if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_if==true){
         //printf("ENDUJEM IF\n");
         parser_data->in_if=false;
+        parser_data->statement_index--;
         check_retuned_tokens_from_expression_analysis(parser_data);
         code(parser_data);
     }
     if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_function==false){
         check_retuned_tokens_from_expression_analysis(parser_data);
         start(parser_data);
+    }
+    if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_function==true && parser_data->in_if == false){
+       parser_data->in_function=false;
+       check_retuned_tokens_from_expression_analysis(parser_data);
+       //printf("dalsi %d\n", parser_data->token.type_of_token);
+       if(parser_data->statement_index>0){
+           //printf("dalsi %d\n", parser_data->token.type_of_token);
+           code(parser_data);
+       }if(parser_data->token.type_of_token!=TYPE_KW_EOF){
+           start(parser_data);
+       }else{
+           code(parser_data);
+       }
     }
 //TODO PRECO JE TOTO TUNA    
    /*  if(parser_data->token.type_of_token==TYPE_KW_END && parser_data->in_function==true){
@@ -891,17 +907,19 @@ void start(syntactic_data_t *parser_data){
         start(parser_data);
     } 
     if(parser_data->token.type_of_token==TYPE_KW_EOF){
-        printf("\nSyntax ok\n");
-
-        
-
-
-        jonwick_the_memory_cleaner(parser_data);
+        if(parser_data->nof_else==parser_data->nof_if){
+            printf("\nSyntax ok\n");
+            jonwick_the_memory_cleaner(parser_data);
 
         /* token_list_insertfirst(&parser_data->list_of_tokens,parser_data->token);
         parser_data->list_of_tokens.activeElement = parser_data->list_of_tokens.firstElement; */
 
-        exit(0);
+            exit(0);
+        }else{
+            printf("%d vs %d", parser_data->nof_if, parser_data->nof_else);
+            printf("SE");
+        }
+        
     }
     //printf("\nSE AT START\n");
     jonwick_the_memory_cleaner(parser_data);
@@ -919,8 +937,11 @@ void parser_data_init(syntactic_data_t *data){
     data->in_function=false;
     data->in_if=false;
     data->in_declaration=false;
-    //data->in_while=false;
+    data->in_while=false; //toto
     data->parameter_index=-1;
+    data->statement_index=0;
+    data->nof_else=0;
+    data->nof_if=0;
     token_list_init(&data->list_of_tokens);
 
     data->current_item = insert_symbol_function(&data->global_table, "read");

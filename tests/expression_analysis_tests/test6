@@ -3,9 +3,9 @@ function g(x : integer, z : string) : integer, integer
 local a : integer
 local b : string
 a = 3
-if a>5 then else
-a=7
-return
+if a>5 then 
+a=b
+
 else
 a=3
 end

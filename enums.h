@@ -77,12 +77,16 @@ typedef struct syntactic_data_t{
     int parameter_index; //index 0 je prvý parameter, index -1 je bez parametrov
     //int return_type_index; //index 0 je prvý return, index -1 je bez returnov
     int label_index;
+    int statement_index;
+    int nof_if;
+    int nof_else;
 
     bool in_function;
     bool in_statement;
     bool in_while;
     bool in_if;
     bool in_declaration;
+
 
     table_item_t *current_item;
     table_item_t *current_item_var;
