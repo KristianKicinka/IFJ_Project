@@ -524,6 +524,7 @@ void precedence_analysis(syntactic_data_t *data)
                 token_list_insertfirst(&data->list_of_tokens, backup);
                 data->list_of_tokens.lastElement = data->list_of_tokens.firstElement;
                 data->list_of_tokens.activeElement = data->list_of_tokens.firstElement;
+                data->list_of_tokens.activeElement->token.token_info.custom_string = data->token.token_info.custom_string;
                 //printf("Toto je token ulozeny do listu: %d\n", data->list_of_tokens.activeElement->token.type_of_token);
 
                 generate_token(&data->token, &data->my_string);
