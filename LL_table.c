@@ -1,5 +1,6 @@
 #include "LL_table.h"
 #include "nterms.h"
+//Andrej Ľupták
 //F - fixed
 //R - need repair 
 //C - check rule twice

@@ -9,7 +9,7 @@ if a>5 then
 	else
 	end	
 	
-g()
+write()
 a=7
 return
 else
